@@ -2,8 +2,11 @@ from google.adk.agents import LlmAgent
 from google.adk.tools.mcp_tool.mcp_toolset import MCPToolset, StdioConnectionParams
 from mcp.client.stdio import StdioServerParameters
 
-PYTHON = r"C:\Users\ahmad\Downloads\Hack2Skill\hack2skill-marketing-agents\venv\Scripts\python.exe"
-MCP_DIR = r"C:\Users\ahmad\Downloads\Hack2Skill\hack2skill-marketing-agents\mcp_servers"
+import sys
+from pathlib import Path
+
+PYTHON = sys.executable
+MCP_DIR = str(Path(__file__).resolve().parent.parent / "mcp_servers")
 
 
 def _mcp(server_script):
@@ -11,7 +14,7 @@ def _mcp(server_script):
         connection_params=StdioConnectionParams(
             server_params=StdioServerParameters(
                 command=PYTHON,
-                args=[f"{MCP_DIR}\\{server_script}"],
+                args=[str(Path(MCP_DIR) / server_script)],
             ),
             timeout=60,
         )

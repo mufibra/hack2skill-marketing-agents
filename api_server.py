@@ -4,6 +4,7 @@ Marketing Intelligence API Server — wraps ADK agents as a FastAPI app with cus
 Run:  python api_server.py
 """
 
+import os
 import uvicorn
 from google.adk.cli.fast_api import get_fast_api_app
 
@@ -62,4 +63,5 @@ def agents():
 
 
 if __name__ == "__main__":
-    uvicorn.run(app, host="127.0.0.1", port=8001)
+    port = int(os.environ.get("PORT", 8001))
+    uvicorn.run(app, host="0.0.0.0", port=port)
