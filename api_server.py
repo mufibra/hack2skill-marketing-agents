@@ -12,7 +12,7 @@ app = get_fast_api_app(
     agents_dir=".",
     session_service_uri="sqlite:///./db/sessions.db",
     allow_origins=["*"],
-    web=False,
+    web=True,
 )
 
 
