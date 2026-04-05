@@ -1,35 +1,20 @@
 from google.adk.agents import LlmAgent
-from google.adk.tools.mcp_tool.mcp_toolset import MCPToolset, StdioConnectionParams
-from google.genai import types
-from mcp.client.stdio import StdioServerParameters
 
-import sys
-from pathlib import Path
-
-# Force sub-agents to ALWAYS call a tool (mode=ANY) instead of responding with text.
-# Root agent uses AUTO so it can synthesize text after collecting sub-agent results.
-FORCE_TOOL_CALL = types.GenerateContentConfig(
-    tool_config=types.ToolConfig(
-        function_calling_config=types.FunctionCallingConfig(
-            mode=types.FunctionCallingConfigMode.ANY,
-        )
-    )
+from .tools import (
+    get_morning_briefing,
+    detect_anomalies,
+    scan_competitors,
+    get_competitive_history,
+    analyze_sentiment,
+    score_leads,
+    get_customer_segments,
+    check_pipeline_health,
+    get_attribution_analysis,
+    log_workflow,
+    log_action,
+    get_recent_workflows,
+    create_task,
 )
-
-PYTHON = sys.executable
-MCP_DIR = str(Path(__file__).resolve().parent.parent / "mcp_servers")
-
-
-def _mcp(server_script):
-    return MCPToolset(
-        connection_params=StdioConnectionParams(
-            server_params=StdioServerParameters(
-                command=PYTHON,
-                args=[str(Path(MCP_DIR) / server_script)],
-            ),
-            timeout=60,
-        )
-    )
 
 
 marketing_intel_agent = LlmAgent(
@@ -58,8 +43,7 @@ marketing_intel_agent = LlmAgent(
         'Example: When asked "how\'s marketing doing?", call get_morning_briefing immediately '
         "and present the full analysis. Don't ask \"what time period?\" — use all available data."
     ),
-    tools=[_mcp("analytics_server.py")],
-    generate_content_config=FORCE_TOOL_CALL,
+    tools=[get_morning_briefing, detect_anomalies],
 )
 
 competitive_intel_agent = LlmAgent(
@@ -88,8 +72,7 @@ competitive_intel_agent = LlmAgent(
         "to get all brands. When asked about a specific competitor like "
         '"how is HubSpot doing?", call scan_competitors("HubSpot").'
     ),
-    tools=[_mcp("competitive_server.py")],
-    generate_content_config=FORCE_TOOL_CALL,
+    tools=[scan_competitors, get_competitive_history],
 )
 
 customer_intel_agent = LlmAgent(
@@ -123,8 +106,7 @@ customer_intel_agent = LlmAgent(
         'Example: When asked "how do customers feel?", call analyze_sentiment immediately. '
         'When asked "tell me about our customers", run all 3 tools and synthesize.'
     ),
-    tools=[_mcp("customer_server.py")],
-    generate_content_config=FORCE_TOOL_CALL,
+    tools=[analyze_sentiment, score_leads, get_customer_segments],
 )
 
 operations_agent = LlmAgent(
@@ -156,12 +138,11 @@ operations_agent = LlmAgent(
         'Example: When asked "how\'s the pipeline?", call check_pipeline_health immediately. '
         'When asked "which channels perform best?", call get_attribution_analysis.'
     ),
-    tools=[_mcp("operations_server.py")],
-    generate_content_config=FORCE_TOOL_CALL,
+    tools=[check_pipeline_health, get_attribution_analysis],
 )
 
 root_agent = LlmAgent(
-    model="gemini-2.5-flash",
+    model="gemini-2.5-pro",
     name="marketing_orchestrator",
     description="Root orchestrator that coordinates marketing intelligence sub-agents",
     instruction=(
@@ -200,13 +181,13 @@ root_agent = LlmAgent(
         '- "full status update" / "executive summary" / "how\'s everything?" '
         "→ chain: marketing_intel → competitive_intel → customer_intel → synthesize\n"
         '- "competitor launched a product" / "competitive threat" '
-        "→ chain: competitive_intel → customer_intel → operations ��� synthesize action plan\n"
+        "→ chain: competitive_intel → customer_intel → operations → synthesize action plan\n"
         '- "analyze leads and pipeline" / "sales readiness" '
         "→ chain: customer_intel → operations → synthesize\n"
         '- "what should we focus on?" / "priorities" '
         "→ chain: all sub-agents → synthesize strategic priorities"
     ),
-    tools=[_mcp("database_server.py")],
+    tools=[log_workflow, log_action, get_recent_workflows, create_task],
     sub_agents=[
         marketing_intel_agent,
         competitive_intel_agent,
