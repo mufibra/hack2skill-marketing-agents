@@ -41,7 +41,12 @@ marketing_intel_agent = LlmAgent(
         "4. Insight: What this data suggests and what action to take\n\n"
 
         'Example: When asked "how\'s marketing doing?", call get_morning_briefing immediately '
-        "and present the full analysis. Don't ask \"what time period?\" — use all available data."
+        "and present the full analysis. Don't ask \"what time period?\" — use all available data.\n\n"
+
+        "IMPORTANT: After you have called your tools and presented your findings, you MUST "
+        "transfer control back to the marketing_orchestrator agent by calling transfer_to_agent "
+        "with agent_name='marketing_orchestrator'. Do not wait for follow-up questions — "
+        "complete your analysis and transfer back immediately."
     ),
     tools=[get_morning_briefing, detect_anomalies],
 )
@@ -70,7 +75,12 @@ competitive_intel_agent = LlmAgent(
 
         'Example: When asked "what about competitors?", call scan_competitors() with no filter '
         "to get all brands. When asked about a specific competitor like "
-        '"how is HubSpot doing?", call scan_competitors("HubSpot").'
+        '"how is HubSpot doing?", call scan_competitors("HubSpot").\n\n'
+
+        "IMPORTANT: After you have called your tools and presented your findings, you MUST "
+        "transfer control back to the marketing_orchestrator agent by calling transfer_to_agent "
+        "with agent_name='marketing_orchestrator'. Do not wait for follow-up questions — "
+        "complete your analysis and transfer back immediately."
     ),
     tools=[scan_competitors, get_competitive_history],
 )
@@ -104,7 +114,12 @@ customer_intel_agent = LlmAgent(
         "4. Recommendation: Specific action to take\n\n"
 
         'Example: When asked "how do customers feel?", call analyze_sentiment immediately. '
-        'When asked "tell me about our customers", run all 3 tools and synthesize.'
+        'When asked "tell me about our customers", run all 3 tools and synthesize.\n\n'
+
+        "IMPORTANT: After you have called your tools and presented your findings, you MUST "
+        "transfer control back to the marketing_orchestrator agent by calling transfer_to_agent "
+        "with agent_name='marketing_orchestrator'. Do not wait for follow-up questions — "
+        "complete your analysis and transfer back immediately."
     ),
     tools=[analyze_sentiment, score_leads, get_customer_segments],
 )
@@ -136,7 +151,12 @@ operations_agent = LlmAgent(
         "4. Recommendation: Where to invest or cut\n\n"
 
         'Example: When asked "how\'s the pipeline?", call check_pipeline_health immediately. '
-        'When asked "which channels perform best?", call get_attribution_analysis.'
+        'When asked "which channels perform best?", call get_attribution_analysis.\n\n'
+
+        "IMPORTANT: After you have called your tools and presented your findings, you MUST "
+        "transfer control back to the marketing_orchestrator agent by calling transfer_to_agent "
+        "with agent_name='marketing_orchestrator'. Do not wait for follow-up questions — "
+        "complete your analysis and transfer back immediately."
     ),
     tools=[check_pipeline_health, get_attribution_analysis],
 )
@@ -185,7 +205,12 @@ root_agent = LlmAgent(
         '- "analyze leads and pipeline" / "sales readiness" '
         "→ chain: customer_intel → operations → synthesize\n"
         '- "what should we focus on?" / "priorities" '
-        "→ chain: all sub-agents → synthesize strategic priorities"
+        "→ chain: all sub-agents → synthesize strategic priorities\n\n"
+
+        "MULTI-QUERY SESSIONS:\n"
+        "After a sub-agent completes its analysis and returns control to you, you are "
+        "responsible for the next routing decision. If the user asks a new question, "
+        "evaluate it fresh and delegate to the appropriate sub-agent."
     ),
     tools=[log_workflow, log_action, get_recent_workflows, create_task],
     sub_agents=[
