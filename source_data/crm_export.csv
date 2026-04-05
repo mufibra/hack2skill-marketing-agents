@@ -1,0 +1,501 @@
+contact_id,email,company,industry,lead_source,lifecycle_stage,created_date,last_activity_date,deal_value,num_touches,email_opens,page_views
+CRM-00001,johnsonjoshua@example.org,Doyle Ltd,Retail,social_media,lead,2021-01-21,2021-01-22,0.0,24,6,174
+CRM-00002,garzaanthony@example.org,Hall PLC,Healthcare,email_campaign,sql,2021-01-24,2021-01-25,1762.78,8,32,155
+CRM-00003,hoffmanjennifer@example.net,"Barnes, Cole and Ramirez",Consulting,trade_show,lead,2021-01-01,2021-01-18,0.0,8,28,151
+CRM-00004,blakeerik@example.com,Ramirez-Lewis,Real Estate,webinar,opportunity,2021-01-09,2021-01-09,16176.15,9,9,56
+CRM-00005,curtis61@example.com,Munoz-Roman,Education,webinar,lead,2021-01-31,2021-01-31,0.0,20,16,12
+CRM-00006,yherrera@example.org,"Carter, Fuller and Mcclure",Real Estate,paid_search,mql,2021-01-24,2021-01-31,4865.58,18,18,161
+CRM-00007,barbara10@example.net,Mejia Inc,Technology,email_campaign,sql,2021-01-20,2021-01-25,17909.72,25,18,21
+CRM-00008,michellejames@example.com,"Flowers, Martin and Kelly",Media,webinar,customer,2021-01-28,2021-01-29,63217.67,6,23,91
+CRM-00009,jacqueline19@example.net,Ferguson and Sons,Healthcare,social_media,lead,2021-01-07,2021-01-28,0.0,18,46,63
+CRM-00010,stevennelson@example.net,"Hawkins, Cohen and Cameron",Consulting,email_campaign,mql,2021-01-06,2021-01-20,4947.62,22,20,197
+CRM-00011,perezantonio@example.com,Adams-Clark,Education,trade_show,lead,2021-01-25,2021-01-25,0.0,9,4,55
+CRM-00012,jason76@example.net,Thomas-Taylor,Media,social_media,lead,2021-01-30,2021-01-31,0.0,9,8,64
+CRM-00013,julie69@example.com,Robinson-Bright,Energy,trade_show,opportunity,2021-01-24,2021-01-28,34990.37,12,14,36
+CRM-00014,ddavis@example.org,Burton Ltd,Healthcare,social_media,lead,2021-01-17,2021-01-24,0.0,21,10,175
+CRM-00015,ycarlson@example.com,"Ferrell, Rice and Maddox",Media,referral,mql,2021-01-14,2021-01-16,2979.44,18,0,175
+CRM-00016,frazierdanny@example.net,Mack-Peterson,Manufacturing,webinar,sql,2021-01-24,2021-01-25,13887.29,4,18,112
+CRM-00017,ryan70@example.net,"Baker, Mason and White",Manufacturing,social_media,lead,2021-01-06,2021-01-20,0.0,17,6,161
+CRM-00018,harrellkenneth@example.net,"Lynch, Hernandez and Farmer",Education,social_media,mql,2021-01-10,2021-01-30,994.56,18,49,136
+CRM-00019,georgetracy@example.org,Koch-Decker,Healthcare,webinar,sql,2021-01-30,2021-01-30,12726.54,29,19,62
+CRM-00020,john39@example.org,Dennis Inc,Healthcare,content_download,customer,2021-01-02,2021-01-09,142572.92,27,4,195
+CRM-00021,davidalvarez@example.net,Baker PLC,Consulting,social_media,lead,2021-01-18,2021-01-30,0.0,9,33,156
+CRM-00022,ibrandt@example.net,"Harris, Collins and Carney",Retail,referral,customer,2021-01-14,2021-01-20,115737.13,13,42,167
+CRM-00023,samuel87@example.org,Walker LLC,Retail,email_campaign,customer,2021-01-12,2021-01-26,73208.06,3,21,6
+CRM-00024,chapmanjerry@example.org,Jones Ltd,Healthcare,organic_search,lead,2021-01-19,2021-01-27,0.0,8,4,9
+CRM-00025,perezrebecca@example.com,Palmer LLC,Media,email_campaign,lead,2021-01-28,2021-01-30,0.0,18,8,186
+CRM-00026,ilewis@example.net,"Johnston, Sanchez and Kennedy",Real Estate,email_campaign,lead,2021-01-30,2021-01-31,0.0,4,6,169
+CRM-00027,glee@example.net,Gomez-Jenkins,Technology,paid_search,mql,2021-01-14,2021-01-25,2335.12,2,25,187
+CRM-00028,nuneztracey@example.org,Powell LLC,Media,social_media,lead,2021-01-11,2021-01-14,0.0,14,11,72
+CRM-00029,wrightjames@example.com,Henderson LLC,Consulting,paid_search,customer,2021-01-15,2021-01-22,20553.88,2,41,139
+CRM-00030,ewright@example.com,"Garcia, Pearson and Fernandez",Retail,social_media,churned,2021-01-27,2021-01-27,46318.35,14,31,124
+CRM-00031,novaksara@example.org,Russell Group,Technology,trade_show,customer,2021-01-07,2021-01-19,33049.2,9,50,117
+CRM-00032,michellebarrera@example.org,Smith-Myers,Consulting,content_download,sql,2021-01-10,2021-01-23,18532.13,5,12,76
+CRM-00033,smitchell@example.net,"Stanley, Tucker and Lee",Education,organic_search,sql,2021-01-07,2021-01-08,14012.68,2,37,123
+CRM-00034,tanyariley@example.net,Adkins Inc,Consulting,paid_search,customer,2021-01-17,2021-01-31,32040.58,28,11,18
+CRM-00035,silvawesley@example.net,Brown PLC,Healthcare,email_campaign,sql,2021-01-20,2021-01-21,6644.89,19,38,11
+CRM-00036,yorkcasey@example.org,"Hensley, Powell and David",Consulting,webinar,mql,2021-01-20,2021-01-21,2918.36,30,16,53
+CRM-00037,bethwilliams@example.org,Sandoval-Cunningham,Manufacturing,content_download,lead,2021-01-22,2021-01-27,0.0,11,48,19
+CRM-00038,sarah35@example.org,Foster-Powers,Healthcare,paid_search,sql,2021-01-01,2021-01-15,14511.85,18,13,130
+CRM-00039,stephen10@example.com,"Murillo, Ferrell and Jones",Retail,webinar,customer,2021-01-09,2021-01-13,133320.98,10,10,113
+CRM-00040,williamanderson@example.com,Suarez LLC,Consulting,organic_search,sql,2021-01-27,2021-01-31,15680.27,22,35,77
+CRM-00041,eric84@example.net,"Rice, Contreras and Spencer",Healthcare,paid_search,customer,2021-01-30,2021-01-30,28800.76,24,35,40
+CRM-00042,mcmillandennis@example.org,Newton and Sons,Retail,referral,sql,2021-01-09,2021-01-18,18222.69,17,31,65
+CRM-00043,juan35@example.org,"Walters, Baker and Freeman",Manufacturing,organic_search,lead,2021-01-29,2021-01-29,0.0,1,21,198
+CRM-00044,davisrodney@example.com,Smith and Sons,Media,trade_show,churned,2021-01-05,2021-01-25,8079.1,18,0,29
+CRM-00045,evan78@example.net,Hoffman-Rodriguez,Technology,webinar,sql,2021-01-03,2021-01-31,4577.3,19,35,38
+CRM-00046,amydavenport@example.net,"Hernandez, Anderson and Parker",Technology,webinar,lead,2021-01-14,2021-01-18,0.0,7,43,64
+CRM-00047,nolanjason@example.org,"Garcia, Deleon and Henson",Real Estate,social_media,mql,2021-01-22,2021-01-23,2799.42,30,15,42
+CRM-00048,vdickson@example.org,Hancock and Sons,Education,trade_show,customer,2021-01-26,2021-01-27,13470.09,26,42,189
+CRM-00049,vjohnson@example.com,Pham-Shields,Healthcare,trade_show,lead,2021-01-26,2021-01-27,0.0,28,2,121
+CRM-00050,josephcobb@example.org,Brennan-Garrison,Manufacturing,email_campaign,opportunity,2021-01-08,2021-01-14,37221.23,8,1,169
+CRM-00051,jamessellers@example.com,Hoover-Savage,Manufacturing,webinar,mql,2021-01-07,2021-01-19,4321.76,21,32,103
+CRM-00052,andrewlee@example.com,Lin-Rasmussen,Manufacturing,social_media,mql,2021-01-22,2021-01-30,138.0,19,16,10
+CRM-00053,michael86@example.net,"Rivera, Johnson and Wiley",Education,trade_show,mql,2021-01-04,2021-01-23,3642.73,20,32,30
+CRM-00054,gregory40@example.org,"Hamilton, Chandler and Edwards",Real Estate,organic_search,lead,2021-01-13,2021-01-31,0.0,17,34,176
+CRM-00055,cruzbarbara@example.com,Fletcher Inc,Education,webinar,mql,2021-01-24,2021-01-27,349.87,22,7,185
+CRM-00056,michaeljones@example.net,Hanson-Alvarado,Education,trade_show,mql,2021-01-29,2021-01-30,3334.46,23,18,142
+CRM-00057,cortezkevin@example.com,"Ortiz, Powell and Phillips",Finance,referral,mql,2021-01-05,2021-01-11,4701.82,13,35,1
+CRM-00058,jamesortega@example.com,"Adkins, Thompson and Carroll",Energy,webinar,lead,2021-01-10,2021-01-19,0.0,15,28,114
+CRM-00059,akelley@example.com,Clark-Floyd,Finance,paid_search,mql,2021-01-22,2021-01-25,3968.68,10,32,170
+CRM-00060,steven73@example.net,Leon-Moyer,Retail,referral,mql,2021-01-21,2021-01-30,4092.12,8,12,38
+CRM-00061,donnacampbell@example.net,"Harvey, Davis and Crane",Healthcare,content_download,lead,2021-01-01,2021-01-02,0.0,14,40,148
+CRM-00062,emilywalker@example.org,Johnson and Sons,Retail,social_media,sql,2021-01-07,2021-01-29,12865.05,21,44,2
+CRM-00063,xcarr@example.org,Perry-Soto,Consulting,content_download,opportunity,2021-01-29,2021-01-29,20318.88,2,35,64
+CRM-00064,jennifercruz@example.com,Hernandez Ltd,Consulting,webinar,mql,2021-01-30,2021-01-30,4007.08,25,28,157
+CRM-00065,staffordmichelle@example.org,Robinson-Brock,Media,social_media,mql,2021-01-27,2021-01-31,4534.27,24,30,116
+CRM-00066,pwilliams@example.org,Anderson-Marshall,Consulting,content_download,opportunity,2021-01-09,2021-01-16,24411.79,21,15,71
+CRM-00067,stephanie79@example.net,"Simmons, Meadows and Griffin",Education,webinar,sql,2021-01-15,2021-01-17,6627.85,29,34,21
+CRM-00068,juliawells@example.com,Larsen LLC,Retail,paid_search,lead,2021-01-05,2021-01-09,0.0,14,26,85
+CRM-00069,rsims@example.com,Reeves and Sons,Real Estate,trade_show,mql,2021-01-18,2021-01-25,1034.17,29,49,150
+CRM-00070,matthew81@example.org,Hall Ltd,Real Estate,content_download,customer,2021-01-31,2021-01-31,117183.24,1,22,77
+CRM-00071,jasminebrown@example.com,Daniels-Perry,Real Estate,email_campaign,customer,2021-01-25,2021-01-28,143480.25,16,14,70
+CRM-00072,marissaprice@example.net,"Smith, Gilmore and Johnston",Real Estate,social_media,lead,2021-01-14,2021-01-29,0.0,27,29,33
+CRM-00073,wsmith@example.com,Castaneda-Ashley,Energy,organic_search,lead,2021-01-20,2021-01-28,0.0,3,41,110
+CRM-00074,vmedina@example.net,"Hurst, Freeman and Nelson",Education,email_campaign,lead,2021-01-05,2021-01-19,0.0,15,20,87
+CRM-00075,vjohnson@example.net,"Yates, Ramsey and Pittman",Real Estate,referral,lead,2021-01-25,2021-01-28,0.0,27,5,121
+CRM-00076,tinaferguson@example.com,"Elliott, Johnson and Day",Education,email_campaign,mql,2021-01-01,2021-01-24,4999.54,21,4,200
+CRM-00077,michellewhite@example.com,Murphy-Gibson,Retail,organic_search,opportunity,2021-01-31,2021-01-31,71472.82,20,9,62
+CRM-00078,kathleen64@example.com,Conley-Ruiz,Retail,content_download,sql,2021-01-05,2021-01-20,14535.27,23,16,197
+CRM-00079,cookemichael@example.net,Harrington Ltd,Healthcare,social_media,sql,2021-01-12,2021-01-17,24129.63,10,6,149
+CRM-00080,websterstefanie@example.org,Howell and Sons,Real Estate,trade_show,mql,2021-01-01,2021-01-30,3386.74,23,12,20
+CRM-00081,thomaswilson@example.org,Lyons-Wang,Manufacturing,paid_search,opportunity,2021-01-19,2021-01-30,21999.46,26,36,11
+CRM-00082,catherinestuart@example.net,Strickland and Sons,Consulting,webinar,mql,2021-01-12,2021-01-29,1852.85,1,26,126
+CRM-00083,daniel04@example.net,"Odonnell, Brooks and David",Media,social_media,churned,2021-01-04,2021-01-17,31779.26,14,11,188
+CRM-00084,charlesvaughn@example.net,Garcia LLC,Consulting,content_download,lead,2021-01-17,2021-01-27,0.0,15,27,188
+CRM-00085,hoganashlee@example.org,Patel-Stanley,Healthcare,referral,mql,2021-01-19,2021-01-23,1227.48,29,28,63
+CRM-00086,huntermatthew@example.com,Garcia-Yu,Education,organic_search,sql,2021-01-25,2021-01-28,17036.52,16,20,47
+CRM-00087,bzimmerman@example.org,"Boyd, Santos and Gilbert",Manufacturing,referral,mql,2021-01-16,2021-01-22,1291.76,18,0,133
+CRM-00088,umarshall@example.net,Morris-Sanchez,Media,email_campaign,lead,2021-01-31,2021-01-31,0.0,23,30,166
+CRM-00089,ramirezshannon@example.com,"Bishop, Gray and Johnson",Manufacturing,email_campaign,mql,2021-01-23,2021-01-30,86.22,13,44,63
+CRM-00090,hunter35@example.com,Ramirez-Carlson,Consulting,webinar,sql,2021-01-10,2021-01-31,12358.25,14,47,141
+CRM-00091,angela83@example.org,Cortez Group,Manufacturing,email_campaign,sql,2021-01-11,2021-01-22,7501.99,4,46,50
+CRM-00092,hannahbrewer@example.com,Mcguire-Davis,Finance,email_campaign,opportunity,2021-01-11,2021-01-14,71561.43,7,47,124
+CRM-00093,richardsanchez@example.net,"Wood, Tran and Cooper",Manufacturing,paid_search,churned,2021-01-09,2021-01-27,26231.84,27,12,76
+CRM-00094,michael74@example.com,Hall-Griffith,Consulting,social_media,lead,2021-01-08,2021-01-19,0.0,9,2,14
+CRM-00095,david82@example.org,Rodgers LLC,Media,paid_search,sql,2021-01-18,2021-01-22,4030.71,28,0,147
+CRM-00096,tina34@example.org,White-Smith,Technology,referral,mql,2021-01-10,2021-01-25,1703.53,28,30,30
+CRM-00097,joshuamccann@example.net,Terry-Martinez,Technology,social_media,mql,2021-01-27,2021-01-27,370.41,5,36,78
+CRM-00098,agarcia@example.net,Harrison-Alexander,Energy,email_campaign,lead,2021-01-03,2021-01-10,0.0,25,33,98
+CRM-00099,tammyking@example.com,Short Group,Real Estate,referral,lead,2021-01-15,2021-01-29,0.0,19,39,16
+CRM-00100,ojones@example.net,Hernandez PLC,Retail,referral,lead,2021-01-20,2021-01-31,0.0,22,5,41
+CRM-00101,christopher31@example.net,Obrien-Gibbs,Real Estate,content_download,sql,2021-01-08,2021-01-13,4756.78,23,38,121
+CRM-00102,kimberlyjames@example.com,Dalton-Branch,Media,paid_search,lead,2021-01-10,2021-01-11,0.0,22,14,68
+CRM-00103,ashley09@example.net,Meza and Sons,Retail,trade_show,sql,2021-01-26,2021-01-31,20293.74,4,34,58
+CRM-00104,josephmiller@example.org,Arnold and Sons,Healthcare,organic_search,customer,2021-01-21,2021-01-23,125728.36,6,50,79
+CRM-00105,ortizhannah@example.com,Johnson-Roberts,Media,paid_search,opportunity,2021-01-20,2021-01-31,69483.48,15,44,78
+CRM-00106,jacqueline71@example.net,Bradshaw Ltd,Media,content_download,customer,2021-01-23,2021-01-29,80066.1,3,38,11
+CRM-00107,ronaldstephens@example.net,Kerr and Sons,Technology,paid_search,opportunity,2021-01-29,2021-01-30,47259.95,8,43,148
+CRM-00108,brownlaura@example.net,"Holloway, Morse and Gonzales",Manufacturing,organic_search,churned,2021-01-19,2021-01-19,33614.08,25,48,45
+CRM-00109,sbarker@example.com,Mason-Snyder,Energy,trade_show,customer,2021-01-16,2021-01-30,35408.48,21,31,24
+CRM-00110,georgepamela@example.net,Munoz-Johnson,Healthcare,social_media,mql,2021-01-16,2021-01-27,1605.29,11,26,178
+CRM-00111,suzannehuff@example.net,"Sampson, Key and Chambers",Consulting,organic_search,sql,2021-01-16,2021-01-25,10610.85,15,5,81
+CRM-00112,barbara27@example.net,"Ramos, Ramirez and Shea",Consulting,organic_search,lead,2021-01-09,2021-01-19,0.0,22,34,119
+CRM-00113,fwalters@example.org,Bailey-Cook,Media,content_download,lead,2021-01-14,2021-01-15,0.0,25,3,53
+CRM-00114,hodgemark@example.net,Roberts-Landry,Media,paid_search,lead,2021-01-09,2021-01-26,0.0,1,40,156
+CRM-00115,gibsonleonard@example.com,Cordova Group,Technology,trade_show,sql,2021-01-26,2021-01-27,8458.0,3,14,30
+CRM-00116,sandovalamy@example.com,Lopez LLC,Manufacturing,referral,sql,2021-01-15,2021-01-18,4695.31,14,30,121
+CRM-00117,wgarrett@example.org,Adams and Sons,Energy,social_media,sql,2021-01-08,2021-01-22,10206.06,28,4,71
+CRM-00118,samuel71@example.org,"Lynch, Allen and Moore",Consulting,referral,customer,2021-01-25,2021-01-31,57582.53,27,0,73
+CRM-00119,tranchristopher@example.org,Valentine-Holland,Media,social_media,opportunity,2021-01-24,2021-01-28,45594.64,15,34,124
+CRM-00120,tyronemoran@example.net,"Hill, Davenport and Baird",Media,webinar,sql,2021-01-12,2021-01-22,14042.32,28,12,179
+CRM-00121,stephenthomas@example.org,"Romero, Suarez and Shields",Real Estate,organic_search,mql,2021-01-08,2021-01-26,4280.06,11,47,122
+CRM-00122,kendra65@example.net,Hoover-Campbell,Finance,content_download,mql,2021-01-23,2021-01-29,3318.44,2,8,129
+CRM-00123,mary97@example.org,Ryan-Reed,Media,paid_search,customer,2021-01-31,2021-01-31,132386.65,17,29,4
+CRM-00124,ugibson@example.org,"Allen, Reyes and Chase",Finance,paid_search,mql,2021-01-24,2021-01-26,3273.91,16,50,68
+CRM-00125,vwilliams@example.com,"Mcintyre, James and Mcneil",Education,trade_show,sql,2021-01-11,2021-01-30,16596.08,11,40,184
+CRM-00126,tylerjohnson@example.net,"Rivera, Garcia and Kirk",Healthcare,email_campaign,customer,2021-01-29,2021-01-30,15025.87,21,43,74
+CRM-00127,foxstephen@example.net,Ortiz Ltd,Healthcare,content_download,lead,2021-01-08,2021-01-31,0.0,6,44,77
+CRM-00128,charlesharrington@example.com,Hanson-Sanders,Manufacturing,webinar,lead,2021-01-29,2021-01-29,0.0,12,27,38
+CRM-00129,christianmelissa@example.net,Finley-Sims,Finance,social_media,mql,2021-01-08,2021-01-24,3409.0,6,5,157
+CRM-00130,cbrennan@example.net,Young Ltd,Energy,social_media,sql,2021-01-28,2021-01-31,6779.92,8,29,164
+CRM-00131,wendy16@example.org,"Padilla, Garcia and Jackson",Media,referral,lead,2021-01-09,2021-01-23,0.0,22,34,41
+CRM-00132,rebecca05@example.org,Howard-Jordan,Manufacturing,trade_show,customer,2021-01-03,2021-01-17,148271.24,23,16,117
+CRM-00133,amandaknight@example.org,Thompson PLC,Media,paid_search,lead,2021-01-28,2021-01-30,0.0,8,24,147
+CRM-00134,pharvey@example.com,"Thomas, Murray and King",Technology,trade_show,lead,2021-01-12,2021-01-30,0.0,9,0,145
+CRM-00135,elizabeth74@example.net,"Moore, Alexander and Reed",Manufacturing,email_campaign,customer,2021-01-28,2021-01-28,114324.1,20,22,57
+CRM-00136,danielle64@example.com,Gonzalez-Cruz,Finance,paid_search,sql,2021-01-21,2021-01-24,17266.35,29,40,166
+CRM-00137,yrodriguez@example.net,Andrews-Haney,Education,social_media,opportunity,2021-01-02,2021-01-11,7335.52,3,18,84
+CRM-00138,andrew64@example.org,"Grimes, Osborne and Beltran",Consulting,webinar,lead,2021-01-24,2021-01-30,0.0,17,32,70
+CRM-00139,swall@example.org,"Pham, Robinson and Lee",Media,referral,lead,2021-01-27,2021-01-28,0.0,24,21,30
+CRM-00140,erica21@example.net,"Williams, Kramer and Johnson",Real Estate,webinar,lead,2021-01-15,2021-01-17,0.0,3,50,102
+CRM-00141,jessica14@example.com,"Perry, Gonzalez and Buchanan",Manufacturing,trade_show,mql,2021-01-01,2021-01-09,2273.93,27,40,96
+CRM-00142,alyssa42@example.com,Coffey-Phillips,Consulting,webinar,lead,2021-01-04,2021-01-25,0.0,30,39,57
+CRM-00143,linda71@example.org,Dalton Ltd,Manufacturing,trade_show,sql,2021-01-21,2021-01-22,12142.42,4,8,12
+CRM-00144,zcoffey@example.net,Davis-Foster,Healthcare,email_campaign,mql,2021-01-31,2021-01-31,2463.12,29,34,35
+CRM-00145,amanda75@example.net,"Chambers, Richards and Carson",Consulting,trade_show,mql,2021-01-13,2021-01-27,4746.9,19,47,187
+CRM-00146,daniel37@example.org,"Henson, Hoffman and Herman",Energy,trade_show,sql,2021-01-05,2021-01-18,21008.63,9,2,177
+CRM-00147,deborahreid@example.com,"Turner, Ortiz and Taylor",Education,paid_search,mql,2021-01-12,2021-01-18,4752.78,22,23,140
+CRM-00148,torrestravis@example.org,Clay and Sons,Retail,paid_search,mql,2021-01-29,2021-01-31,1990.7,28,29,24
+CRM-00149,qchavez@example.net,"Bautista, Barnes and Newton",Technology,organic_search,sql,2021-01-22,2021-01-25,15331.5,26,21,63
+CRM-00150,nicolepena@example.com,"Russell, Lynn and Johnson",Consulting,email_campaign,sql,2021-01-05,2021-01-30,2646.64,19,13,60
+CRM-00151,jeff73@example.com,Pollard LLC,Manufacturing,social_media,opportunity,2021-01-11,2021-01-15,46718.71,5,34,65
+CRM-00152,bruce43@example.org,Davis-Lewis,Finance,organic_search,lead,2021-01-26,2021-01-27,0.0,12,50,61
+CRM-00153,williamsmatthew@example.org,"Harris, Gallegos and Spencer",Finance,trade_show,lead,2021-01-19,2021-01-24,0.0,17,7,191
+CRM-00154,lisahall@example.org,"Smith, Garrison and Thomas",Energy,paid_search,mql,2021-01-03,2021-01-18,1810.19,15,32,57
+CRM-00155,amberlindsey@example.org,"Delacruz, Anderson and Howard",Consulting,referral,sql,2021-01-31,2021-01-31,22810.04,15,41,8
+CRM-00156,briannasmith@example.com,Martinez Group,Healthcare,content_download,opportunity,2021-01-02,2021-01-17,34839.15,23,28,19
+CRM-00157,reesethomas@example.com,"Wheeler, Hayes and Walker",Finance,referral,mql,2021-01-29,2021-01-29,741.67,20,40,150
+CRM-00158,acostaregina@example.net,"Turner, Schneider and Johnson",Consulting,referral,mql,2021-01-18,2021-01-29,4973.14,15,32,155
+CRM-00159,bboone@example.net,Henry Group,Consulting,email_campaign,opportunity,2021-01-14,2021-01-17,13008.99,14,28,59
+CRM-00160,lammarc@example.org,Martinez PLC,Healthcare,webinar,opportunity,2021-01-14,2021-01-24,32911.11,14,20,171
+CRM-00161,oscar98@example.com,Wagner-Jordan,Media,paid_search,churned,2021-01-09,2021-01-20,34341.05,3,5,24
+CRM-00162,farrelldebra@example.net,"Glenn, Jordan and Beasley",Finance,organic_search,opportunity,2021-01-14,2021-01-17,31085.28,19,35,144
+CRM-00163,dmorgan@example.com,Blair-Edwards,Real Estate,organic_search,mql,2021-01-11,2021-01-14,4368.04,10,38,80
+CRM-00164,elizabeth52@example.net,Jones-Decker,Media,email_campaign,sql,2021-01-12,2021-01-15,6105.73,28,6,90
+CRM-00165,reynoldsjulie@example.com,Hawkins PLC,Retail,trade_show,lead,2021-01-28,2021-01-30,0.0,28,35,197
+CRM-00166,elizabeth65@example.net,Parrish-Griffith,Technology,referral,sql,2021-01-27,2021-01-31,16424.78,1,11,70
+CRM-00167,caroline51@example.net,"Lewis, Douglas and Walker",Finance,social_media,customer,2021-01-23,2021-01-27,59143.28,19,42,103
+CRM-00168,bellangela@example.org,Andrews-Aguirre,Healthcare,email_campaign,opportunity,2021-01-03,2021-01-07,73026.72,13,26,117
+CRM-00169,lynchdiane@example.net,Johnson-Nelson,Energy,paid_search,mql,2021-01-11,2021-01-16,3607.98,29,3,40
+CRM-00170,sandra50@example.org,Knight Group,Manufacturing,content_download,sql,2021-01-06,2021-01-30,17175.25,22,27,125
+CRM-00171,thomascynthia@example.org,Reese and Sons,Consulting,paid_search,mql,2021-01-20,2021-01-27,1077.84,12,27,29
+CRM-00172,vbarnes@example.org,Collins-Nguyen,Manufacturing,organic_search,sql,2021-01-10,2021-01-31,12679.19,8,25,154
+CRM-00173,wareeric@example.net,Craig LLC,Finance,referral,lead,2021-01-02,2021-01-02,0.0,10,20,31
+CRM-00174,fstanley@example.net,Perry-Lewis,Real Estate,email_campaign,opportunity,2021-01-01,2021-01-16,17298.64,17,35,172
+CRM-00175,reeddaniel@example.net,"Watkins, Rose and Parker",Technology,trade_show,lead,2021-01-26,2021-01-28,0.0,1,29,20
+CRM-00176,randallgreene@example.org,Turner and Sons,Real Estate,referral,sql,2021-01-28,2021-01-30,14761.59,4,25,6
+CRM-00177,kathrynroberts@example.org,Jimenez Group,Media,webinar,lead,2021-01-31,2021-01-31,0.0,3,27,28
+CRM-00178,davidpatel@example.org,"Hansen, Barnett and Gomez",Real Estate,referral,sql,2021-01-08,2021-01-21,13575.1,24,21,57
+CRM-00179,chensley@example.com,Stevens Inc,Consulting,email_campaign,lead,2021-01-11,2021-01-16,0.0,29,49,90
+CRM-00180,barbara96@example.net,"Butler, Wilson and Smith",Retail,social_media,lead,2021-01-12,2021-01-16,0.0,20,9,195
+CRM-00181,george97@example.net,Davis-Richard,Media,content_download,lead,2021-01-25,2021-01-30,0.0,25,36,195
+CRM-00182,ryanmorales@example.org,Harrell-Reese,Energy,webinar,sql,2021-01-19,2021-01-26,22169.16,28,40,81
+CRM-00183,masonjackson@example.net,"Wilson, Hicks and Bullock",Manufacturing,referral,lead,2021-01-05,2021-01-19,0.0,19,3,91
+CRM-00184,michael23@example.org,Scott and Sons,Technology,webinar,mql,2021-01-17,2021-01-18,2259.57,27,18,20
+CRM-00185,kathleenrios@example.org,"Snyder, Webster and Wolf",Media,organic_search,sql,2021-01-21,2021-01-22,13169.63,15,36,167
+CRM-00186,kmaldonado@example.net,"Downs, Morris and Maddox",Technology,content_download,sql,2021-01-07,2021-01-17,13032.82,4,21,183
+CRM-00187,edward17@example.com,"Turner, Hill and Brown",Media,content_download,sql,2021-01-03,2021-01-19,1939.41,17,33,157
+CRM-00188,collinsshannon@example.org,Decker-Jones,Real Estate,webinar,mql,2021-01-06,2021-01-17,1414.47,22,38,14
+CRM-00189,gilbertwilliam@example.com,"Spencer, Conner and Huang",Healthcare,trade_show,sql,2021-01-26,2021-01-31,2581.88,10,16,186
+CRM-00190,kstout@example.net,Morris Group,Finance,webinar,mql,2021-01-28,2021-01-29,2913.7,10,41,179
+CRM-00191,susanhayes@example.com,"Miller, Lucas and Williams",Healthcare,referral,lead,2021-01-22,2021-01-28,0.0,18,24,165
+CRM-00192,hritter@example.net,"Moore, Watson and Campbell",Consulting,paid_search,opportunity,2021-01-26,2021-01-28,51908.15,21,42,109
+CRM-00193,rschroeder@example.net,Mccormick Ltd,Retail,webinar,lead,2021-01-17,2021-01-22,0.0,25,31,50
+CRM-00194,cameron18@example.net,Mitchell-Cummings,Healthcare,organic_search,lead,2021-01-08,2021-01-12,0.0,22,21,197
+CRM-00195,mathewaguilar@example.org,Collins-Douglas,Finance,social_media,sql,2021-01-20,2021-01-22,4702.07,24,28,12
+CRM-00196,tanderson@example.org,Hansen-Schneider,Media,referral,sql,2021-01-14,2021-01-25,6700.72,25,47,115
+CRM-00197,lisa81@example.net,"Henderson, Cox and Cox",Media,email_campaign,lead,2021-01-08,2021-01-25,0.0,12,43,147
+CRM-00198,stephaniepeterson@example.com,Perez and Sons,Consulting,trade_show,opportunity,2021-01-15,2021-01-29,59468.68,6,12,155
+CRM-00199,chrisrichard@example.org,"Wise, Conley and Stephenson",Education,paid_search,lead,2021-01-05,2021-01-13,0.0,23,33,32
+CRM-00200,stanleynancy@example.net,Harper and Sons,Consulting,social_media,opportunity,2021-01-10,2021-01-12,24095.39,27,27,24
+CRM-00201,henryschwartz@example.net,Griffith Inc,Technology,trade_show,opportunity,2021-01-31,2021-01-31,66924.08,2,25,129
+CRM-00202,udiaz@example.org,Bishop-Goodwin,Retail,organic_search,mql,2021-01-12,2021-01-19,408.03,11,6,183
+CRM-00203,pyoung@example.com,Mckee-Lee,Manufacturing,content_download,opportunity,2021-01-21,2021-01-26,14631.97,23,8,195
+CRM-00204,smurray@example.com,"Rose, Burch and Montoya",Healthcare,organic_search,mql,2021-01-23,2021-01-30,26.26,9,13,39
+CRM-00205,moniquewilliams@example.com,Spencer-Garcia,Manufacturing,email_campaign,sql,2021-01-18,2021-01-29,11158.11,10,7,13
+CRM-00206,mitchellkathryn@example.com,Whitehead-Hernandez,Healthcare,paid_search,sql,2021-01-08,2021-01-21,15947.45,27,31,153
+CRM-00207,odavis@example.com,Arias-Perry,Finance,referral,sql,2021-01-18,2021-01-18,14801.14,14,0,158
+CRM-00208,pshaw@example.com,Brooks Inc,Healthcare,webinar,sql,2021-01-12,2021-01-19,5495.53,3,33,140
+CRM-00209,sarah52@example.org,Mitchell Group,Real Estate,content_download,churned,2021-01-17,2021-01-29,27707.6,2,40,100
+CRM-00210,katherineharrison@example.net,Bullock Inc,Healthcare,webinar,opportunity,2021-01-12,2021-01-20,29996.57,8,46,169
+CRM-00211,jason28@example.net,"Rose, Rodriguez and Roberts",Education,social_media,opportunity,2021-01-21,2021-01-22,56463.09,2,22,140
+CRM-00212,david36@example.net,"Bryant, Rodriguez and Stein",Media,content_download,lead,2021-01-11,2021-01-31,0.0,21,11,35
+CRM-00213,chenbailey@example.net,Carter Inc,Manufacturing,email_campaign,opportunity,2021-01-03,2021-01-25,37037.57,2,50,52
+CRM-00214,john62@example.net,"Miller, Villegas and Jones",Real Estate,content_download,mql,2021-01-29,2021-01-29,1550.38,9,2,193
+CRM-00215,myerstheodore@example.net,Zavala-King,Technology,webinar,lead,2021-01-21,2021-01-24,0.0,9,7,95
+CRM-00216,kellycarlos@example.org,"Sandoval, Garcia and Perkins",Real Estate,webinar,opportunity,2021-01-14,2021-01-26,67624.62,6,31,178
+CRM-00217,dennis58@example.com,"Thompson, Maxwell and Marshall",Healthcare,trade_show,customer,2021-01-16,2021-01-27,82698.62,3,27,155
+CRM-00218,zwelch@example.org,Baldwin Group,Healthcare,webinar,mql,2021-01-27,2021-01-28,1606.06,22,18,79
+CRM-00219,carterbradley@example.org,Stewart LLC,Media,organic_search,lead,2021-01-15,2021-01-28,0.0,24,22,158
+CRM-00220,ihays@example.com,Johnson-Lucas,Technology,paid_search,sql,2021-01-14,2021-01-22,19995.47,22,40,104
+CRM-00221,michael05@example.com,Lloyd Group,Technology,social_media,opportunity,2021-01-12,2021-01-28,52558.74,28,38,174
+CRM-00222,ypaul@example.com,Crawford Group,Education,webinar,lead,2021-01-26,2021-01-29,0.0,13,36,9
+CRM-00223,sandra84@example.org,"Coleman, Jordan and Carney",Education,content_download,sql,2021-01-20,2021-01-22,23771.76,25,4,147
+CRM-00224,amymorris@example.org,Guerrero-Parker,Manufacturing,email_campaign,mql,2021-01-05,2021-01-21,1571.93,4,1,189
+CRM-00225,cjackson@example.com,Williams-Berg,Healthcare,referral,mql,2021-01-06,2021-01-21,4567.71,25,16,181
+CRM-00226,christina64@example.net,Jones Ltd,Media,email_campaign,churned,2021-01-15,2021-01-21,14278.84,4,8,19
+CRM-00227,zcox@example.net,"Moore, Johnson and Allison",Healthcare,webinar,customer,2021-01-15,2021-01-20,72315.57,22,22,182
+CRM-00228,ejohnson@example.org,"Diaz, Reyes and Bradley",Finance,social_media,mql,2021-01-03,2021-01-20,4456.66,26,23,131
+CRM-00229,erikarush@example.com,Hines-Berry,Retail,content_download,churned,2021-01-08,2021-01-11,39603.28,1,23,142
+CRM-00230,raymond43@example.org,Fitzgerald Group,Finance,paid_search,mql,2021-01-19,2021-01-24,4915.06,3,19,102
+CRM-00231,hmcintyre@example.com,Padilla-Lewis,Energy,paid_search,mql,2021-01-23,2021-01-30,3845.82,5,20,165
+CRM-00232,heather73@example.org,Farrell Group,Finance,social_media,mql,2021-01-03,2021-01-17,2586.8,25,8,111
+CRM-00233,rachelwallace@example.org,"Ponce, Downs and Contreras",Consulting,social_media,customer,2021-01-17,2021-01-31,126394.71,10,10,42
+CRM-00234,piercekelly@example.com,Joseph Ltd,Manufacturing,paid_search,mql,2021-01-11,2021-01-18,4704.52,9,12,163
+CRM-00235,laurahicks@example.org,Conner and Sons,Consulting,paid_search,lead,2021-01-31,2021-01-31,0.0,17,41,44
+CRM-00236,jjohnson@example.net,Mcdonald-Bird,Energy,webinar,lead,2021-01-19,2021-01-28,0.0,27,36,11
+CRM-00237,cherylmiller@example.com,Key-Higgins,Energy,referral,lead,2021-01-27,2021-01-27,0.0,21,13,197
+CRM-00238,khammond@example.org,Compton Ltd,Consulting,referral,sql,2021-01-19,2021-01-25,1726.86,21,19,124
+CRM-00239,coleerin@example.com,Humphrey PLC,Technology,social_media,mql,2021-01-08,2021-01-29,2267.72,15,26,124
+CRM-00240,katrinaanderson@example.net,Guerra PLC,Education,webinar,mql,2021-01-15,2021-01-21,718.34,13,8,195
+CRM-00241,kevinmartin@example.net,Reed PLC,Media,paid_search,sql,2021-01-12,2021-01-28,8658.78,9,28,64
+CRM-00242,meghan43@example.net,"Hill, Weber and Mendez",Energy,trade_show,lead,2021-01-05,2021-01-08,0.0,8,10,84
+CRM-00243,shawgary@example.net,Jackson PLC,Consulting,content_download,lead,2021-01-30,2021-01-31,0.0,16,19,128
+CRM-00244,megan90@example.org,Williams Ltd,Retail,email_campaign,customer,2021-01-01,2021-01-03,80762.22,19,22,13
+CRM-00245,debra96@example.net,"Johnson, Small and Gardner",Media,referral,mql,2021-01-02,2021-01-11,4411.7,18,0,28
+CRM-00246,timothy64@example.com,Barker and Sons,Real Estate,webinar,customer,2021-01-14,2021-01-18,111851.13,2,25,14
+CRM-00247,dperry@example.org,Lawson-Edwards,Healthcare,trade_show,lead,2021-01-19,2021-01-27,0.0,17,28,196
+CRM-00248,jessica56@example.org,Robertson-Rodriguez,Energy,paid_search,opportunity,2021-01-18,2021-01-22,48626.91,5,6,101
+CRM-00249,stevenadams@example.org,Davis LLC,Finance,email_campaign,sql,2021-01-12,2021-01-22,9774.55,20,32,103
+CRM-00250,alin@example.org,Li PLC,Education,content_download,lead,2021-01-17,2021-01-17,0.0,17,29,39
+CRM-00251,james27@example.net,Jimenez-Parker,Education,social_media,lead,2021-01-20,2021-01-28,0.0,13,39,190
+CRM-00252,davisphillip@example.com,Lewis LLC,Consulting,content_download,sql,2021-01-27,2021-01-29,13175.56,23,36,77
+CRM-00253,williamstroy@example.net,"Ruiz, Herrera and Boone",Real Estate,referral,mql,2021-01-16,2021-01-16,3369.03,26,46,177
+CRM-00254,qanderson@example.net,Gallagher-Diaz,Energy,email_campaign,sql,2021-01-21,2021-01-21,7372.73,24,3,150
+CRM-00255,jwilliams@example.org,Tran-Jones,Real Estate,social_media,mql,2021-01-16,2021-01-21,3605.91,27,43,63
+CRM-00256,rduran@example.net,"Carr, Anderson and Davis",Technology,content_download,customer,2021-01-02,2021-01-20,25385.37,11,26,39
+CRM-00257,laura58@example.com,Gonzalez PLC,Media,organic_search,mql,2021-01-14,2021-01-20,3874.86,23,8,133
+CRM-00258,cporter@example.org,Reeves Group,Consulting,trade_show,mql,2021-01-07,2021-01-24,3311.13,11,11,118
+CRM-00259,ghernandez@example.org,Velazquez-Flores,Manufacturing,content_download,mql,2021-01-30,2021-01-31,3379.34,7,15,72
+CRM-00260,vewing@example.com,"Rogers, Clayton and Patel",Manufacturing,referral,lead,2021-01-18,2021-01-22,0.0,23,13,177
+CRM-00261,thomas05@example.com,"Rodriguez, Butler and Parker",Manufacturing,referral,mql,2021-01-23,2021-01-30,1744.02,4,36,174
+CRM-00262,carlsonjoseph@example.net,"Lane, Griffith and Silva",Education,social_media,customer,2021-01-18,2021-01-24,65234.54,10,2,74
+CRM-00263,alexandriagriffith@example.com,Underwood and Sons,Manufacturing,content_download,mql,2021-01-31,2021-01-31,2211.88,7,12,138
+CRM-00264,armstrongjackie@example.org,Alexander Group,Energy,email_campaign,sql,2021-01-09,2021-01-26,4294.55,8,3,172
+CRM-00265,robertharris@example.net,"Knapp, Salas and Fitzgerald",Healthcare,trade_show,lead,2021-01-29,2021-01-31,0.0,11,45,121
+CRM-00266,thorntonapril@example.net,Bolton-Mendoza,Consulting,social_media,opportunity,2021-01-04,2021-01-25,5362.7,14,41,122
+CRM-00267,ledwards@example.com,"Peterson, Gomez and Ingram",Manufacturing,organic_search,opportunity,2021-01-16,2021-01-22,25107.15,30,49,23
+CRM-00268,chelsea33@example.com,"Evans, David and Hendrix",Technology,social_media,lead,2021-01-21,2021-01-30,0.0,14,11,10
+CRM-00269,janet75@example.com,Castro-Michael,Manufacturing,organic_search,opportunity,2021-01-27,2021-01-30,18041.81,1,19,146
+CRM-00270,keith98@example.com,Cardenas-Blevins,Media,content_download,customer,2021-01-20,2021-01-21,56905.9,29,8,130
+CRM-00271,kellyroberts@example.net,Reed Group,Finance,content_download,lead,2021-01-15,2021-01-23,0.0,21,16,184
+CRM-00272,julie33@example.net,Fitzpatrick-Horton,Energy,email_campaign,opportunity,2021-01-06,2021-01-06,60353.74,6,39,164
+CRM-00273,danielyang@example.org,Williams PLC,Healthcare,trade_show,opportunity,2021-01-29,2021-01-30,41069.65,22,6,48
+CRM-00274,danawilliams@example.com,Love-Garcia,Manufacturing,trade_show,mql,2021-01-05,2021-01-20,1240.24,8,28,193
+CRM-00275,adampierce@example.org,Delgado-Gilmore,Technology,referral,mql,2021-01-09,2021-01-19,3614.41,21,23,178
+CRM-00276,mwoods@example.com,Mitchell-Brown,Finance,trade_show,sql,2021-01-08,2021-01-09,12169.48,22,32,181
+CRM-00277,pearsonjesse@example.net,"Jefferson, Johnson and Dorsey",Manufacturing,webinar,sql,2021-01-25,2021-01-27,16329.07,20,14,57
+CRM-00278,lkhan@example.org,French-Lopez,Energy,webinar,mql,2021-01-31,2021-01-31,2274.89,14,44,141
+CRM-00279,nancy04@example.net,"Rodriguez, Bird and Mitchell",Retail,email_campaign,opportunity,2021-01-30,2021-01-31,61139.65,22,48,153
+CRM-00280,ismall@example.net,Nelson-Lamb,Education,paid_search,mql,2021-01-28,2021-01-28,2640.87,30,36,29
+CRM-00281,francisco74@example.net,Smith LLC,Energy,social_media,mql,2021-01-02,2021-01-28,2527.44,6,20,134
+CRM-00282,ashley32@example.net,"Prince, Wilcox and Robertson",Media,paid_search,sql,2021-01-15,2021-01-18,18206.03,29,32,115
+CRM-00283,moralescody@example.org,Morris-Wright,Media,organic_search,mql,2021-01-26,2021-01-26,2566.24,18,29,173
+CRM-00284,patrick74@example.com,Aguilar-Berry,Technology,email_campaign,sql,2021-01-26,2021-01-28,10502.77,19,4,12
+CRM-00285,desiree30@example.net,Marshall and Sons,Technology,paid_search,sql,2021-01-14,2021-01-25,13987.92,30,30,9
+CRM-00286,tparks@example.com,"Wilson, Hendricks and Phillips",Real Estate,webinar,lead,2021-01-10,2021-01-23,0.0,29,24,115
+CRM-00287,jeffreyanderson@example.org,Adkins-Obrien,Consulting,social_media,mql,2021-01-28,2021-01-31,3413.65,21,22,31
+CRM-00288,emiles@example.net,"Petersen, Gill and Becker",Retail,organic_search,mql,2021-01-06,2021-01-23,636.74,25,1,77
+CRM-00289,foxallison@example.com,Stark Inc,Retail,content_download,mql,2021-01-15,2021-01-28,4116.8,12,9,71
+CRM-00290,poolerebecca@example.org,"Herrera, Martin and Bond",Real Estate,organic_search,opportunity,2021-01-07,2021-01-30,7255.21,8,13,18
+CRM-00291,nwilson@example.net,"Burns, Nolan and Griffin",Technology,email_campaign,lead,2021-01-04,2021-01-23,0.0,24,2,103
+CRM-00292,chavezwilliam@example.com,"Brown, Ford and Roman",Technology,social_media,mql,2021-01-15,2021-01-22,3771.93,17,18,60
+CRM-00293,fosterlisa@example.net,Lane Inc,Education,email_campaign,mql,2021-01-27,2021-01-31,2989.59,10,9,170
+CRM-00294,ecooper@example.net,Michael Inc,Consulting,social_media,mql,2021-01-17,2021-01-20,1375.77,21,43,110
+CRM-00295,ajohnson@example.org,Cannon Ltd,Real Estate,webinar,lead,2021-01-18,2021-01-25,0.0,23,26,105
+CRM-00296,ybrooks@example.com,Bennett-Vega,Media,email_campaign,mql,2021-01-05,2021-01-14,3772.08,28,14,77
+CRM-00297,desireebailey@example.org,"Long, Anderson and Irwin",Consulting,trade_show,opportunity,2021-01-28,2021-01-29,69031.88,14,35,136
+CRM-00298,avilatiffany@example.com,"Ball, Coleman and Gray",Healthcare,content_download,lead,2021-01-05,2021-01-17,0.0,28,23,24
+CRM-00299,johnreed@example.com,Pineda Ltd,Real Estate,organic_search,opportunity,2021-01-18,2021-01-29,8607.56,28,4,49
+CRM-00300,johnsondonna@example.net,Allen Inc,Media,email_campaign,sql,2021-01-26,2021-01-30,14412.41,28,21,78
+CRM-00301,wheelersean@example.net,"Brennan, Sanchez and Williams",Healthcare,content_download,lead,2021-01-31,2021-01-31,0.0,30,15,179
+CRM-00302,nyoung@example.org,Gordon LLC,Consulting,webinar,lead,2021-01-20,2021-01-31,0.0,25,18,98
+CRM-00303,lisadennis@example.com,"Harper, Chambers and Flores",Media,content_download,mql,2021-01-15,2021-01-26,1798.22,4,46,121
+CRM-00304,nancy83@example.com,Hill-Hawkins,Education,trade_show,mql,2021-01-25,2021-01-31,1015.64,2,36,57
+CRM-00305,conniesimmons@example.com,Compton Ltd,Energy,trade_show,lead,2021-01-24,2021-01-26,0.0,10,9,51
+CRM-00306,ufloyd@example.net,Russell-Evans,Media,webinar,mql,2021-01-11,2021-01-18,4166.81,9,48,126
+CRM-00307,karenwells@example.org,Mathews-Thomas,Education,social_media,mql,2021-01-31,2021-01-31,3663.86,5,46,140
+CRM-00308,jmelendez@example.com,Grant-Anderson,Technology,organic_search,customer,2021-01-16,2021-01-21,85899.16,27,4,172
+CRM-00309,jonathanrivera@example.org,Boone-Davis,Retail,paid_search,lead,2021-01-02,2021-01-26,0.0,23,9,3
+CRM-00310,brettbennett@example.net,"Williams, Jones and Ballard",Energy,content_download,mql,2021-01-07,2021-01-23,302.25,22,31,5
+CRM-00311,timothybooth@example.com,Krueger-Smith,Consulting,referral,sql,2021-01-01,2021-01-18,1284.42,18,18,5
+CRM-00312,suzannewilson@example.com,Dominguez Ltd,Finance,paid_search,sql,2021-01-17,2021-01-30,11333.76,30,6,135
+CRM-00313,randyallen@example.com,James-Ferguson,Education,referral,lead,2021-01-05,2021-01-12,0.0,26,25,21
+CRM-00314,kyle58@example.com,Garcia-Zavala,Retail,referral,mql,2021-01-12,2021-01-24,1216.04,22,5,168
+CRM-00315,ugill@example.org,Edwards-Williams,Consulting,content_download,lead,2021-01-28,2021-01-28,0.0,2,40,3
+CRM-00316,joycesmith@example.net,"Riley, Butler and Hernandez",Education,paid_search,lead,2021-01-23,2021-01-25,0.0,29,33,11
+CRM-00317,jerry93@example.com,"Pena, Cohen and Scott",Energy,content_download,customer,2021-01-08,2021-01-14,106920.28,9,2,20
+CRM-00318,plevy@example.net,Murray-Oconnor,Technology,social_media,customer,2021-01-22,2021-01-26,88891.38,30,20,5
+CRM-00319,gary87@example.org,"Mooney, Bernard and Warren",Real Estate,paid_search,sql,2021-01-31,2021-01-31,19054.11,10,10,145
+CRM-00320,landryelizabeth@example.org,Taylor-Mccoy,Consulting,webinar,opportunity,2021-01-08,2021-01-26,32240.96,13,48,190
+CRM-00321,mannalbert@example.net,Brooks-Williamson,Consulting,webinar,churned,2021-01-05,2021-01-30,36208.18,2,6,112
+CRM-00322,bhopkins@example.org,"Arnold, Smith and Moreno",Energy,trade_show,mql,2021-01-08,2021-01-10,3845.03,25,20,8
+CRM-00323,amanda40@example.net,"Craig, Drake and Browning",Retail,webinar,opportunity,2021-01-21,2021-01-25,36538.51,18,24,111
+CRM-00324,hullalice@example.org,Harvey LLC,Energy,referral,sql,2021-01-06,2021-01-27,10121.75,26,15,183
+CRM-00325,joseph61@example.com,Stevens-Sanchez,Finance,trade_show,lead,2021-01-03,2021-01-05,0.0,11,23,28
+CRM-00326,kevinclayton@example.org,"Frey, Santos and Johnson",Manufacturing,paid_search,customer,2021-01-03,2021-01-03,72263.02,5,5,48
+CRM-00327,jgray@example.com,Walsh Ltd,Healthcare,organic_search,sql,2021-01-14,2021-01-28,13298.58,3,22,142
+CRM-00328,christopherbruce@example.net,Knight-Hodge,Real Estate,organic_search,sql,2021-01-03,2021-01-22,8786.33,10,26,100
+CRM-00329,jacobsonsamantha@example.org,Valenzuela Ltd,Retail,social_media,sql,2021-01-25,2021-01-25,14428.88,22,24,44
+CRM-00330,enelson@example.net,Lam-Elliott,Healthcare,social_media,mql,2021-01-05,2021-01-13,2465.62,14,17,108
+CRM-00331,whitemelissa@example.org,Matthews Ltd,Retail,content_download,opportunity,2021-01-10,2021-01-25,30278.74,20,39,51
+CRM-00332,thickman@example.org,"Allen, Davenport and Price",Real Estate,webinar,lead,2021-01-15,2021-01-18,0.0,27,39,98
+CRM-00333,patrick21@example.net,"Mccann, Brown and Kim",Energy,social_media,mql,2021-01-26,2021-01-28,2153.08,10,20,155
+CRM-00334,petersonkayla@example.net,Novak-Nguyen,Real Estate,webinar,mql,2021-01-31,2021-01-31,888.19,10,47,178
+CRM-00335,kristen77@example.org,Tran-Bennett,Education,trade_show,churned,2021-01-21,2021-01-28,39098.72,9,50,101
+CRM-00336,eringuerrero@example.org,"Phillips, Wright and Jones",Consulting,social_media,customer,2021-01-12,2021-01-15,37972.01,22,49,141
+CRM-00337,eric26@example.com,Rodriguez-Smith,Retail,content_download,sql,2021-01-01,2021-01-31,23631.4,26,18,178
+CRM-00338,sean41@example.org,Lopez Group,Media,social_media,opportunity,2021-01-03,2021-01-29,60653.19,21,19,62
+CRM-00339,fgarcia@example.com,"Davis, George and Nguyen",Real Estate,paid_search,lead,2021-01-09,2021-01-30,0.0,15,38,123
+CRM-00340,asmith@example.com,Hardy PLC,Real Estate,organic_search,mql,2021-01-19,2021-01-25,4617.48,26,23,180
+CRM-00341,ashleyjackson@example.com,Taylor LLC,Healthcare,email_campaign,sql,2021-01-29,2021-01-31,22945.63,22,42,91
+CRM-00342,trevor12@example.com,Fisher-Washington,Real Estate,webinar,sql,2021-01-06,2021-01-26,14517.29,26,27,28
+CRM-00343,wardsheryl@example.net,"Simpson, Jensen and Ellis",Consulting,email_campaign,lead,2021-01-01,2021-01-04,0.0,15,23,101
+CRM-00344,kevinrush@example.com,"James, Atkins and Alexander",Media,paid_search,lead,2021-01-15,2021-01-31,0.0,10,26,22
+CRM-00345,pochoa@example.net,Evans PLC,Manufacturing,webinar,customer,2021-01-04,2021-01-30,29834.52,15,50,53
+CRM-00346,timothythompson@example.com,Carter-Neal,Media,webinar,mql,2021-01-17,2021-01-24,488.12,3,19,12
+CRM-00347,yfaulkner@example.org,Bennett-Velasquez,Healthcare,social_media,lead,2021-01-26,2021-01-31,0.0,30,47,63
+CRM-00348,kdiaz@example.org,"Osborn, White and Saunders",Real Estate,content_download,sql,2021-01-17,2021-01-19,8943.75,8,25,162
+CRM-00349,bentonsteven@example.net,Gonzales LLC,Technology,email_campaign,sql,2021-01-06,2021-01-11,11371.23,15,37,110
+CRM-00350,fuenteslaura@example.com,"Porter, Schultz and Allen",Healthcare,paid_search,sql,2021-01-13,2021-01-13,5938.83,26,34,48
+CRM-00351,jennifermccormick@example.org,Ewing-Mendoza,Media,webinar,lead,2021-01-12,2021-01-22,0.0,20,24,157
+CRM-00352,sferguson@example.com,"Johnson, Schmitt and Miles",Media,social_media,lead,2021-01-13,2021-01-31,0.0,27,43,181
+CRM-00353,rodriguezjohn@example.net,Jackson-Salazar,Finance,webinar,customer,2021-01-26,2021-01-28,92623.57,4,15,79
+CRM-00354,vrasmussen@example.com,Smith LLC,Real Estate,trade_show,mql,2021-01-04,2021-01-09,706.79,20,8,148
+CRM-00355,williamstone@example.net,"Johnston, Griffin and Myers",Finance,social_media,lead,2021-01-13,2021-01-26,0.0,16,18,36
+CRM-00356,michaeljohnson@example.org,Perry-Nixon,Education,organic_search,opportunity,2021-01-06,2021-01-16,48358.7,16,8,50
+CRM-00357,guerrajessica@example.com,Cooper-Mueller,Media,trade_show,churned,2021-01-27,2021-01-30,25271.9,22,31,107
+CRM-00358,gbailey@example.com,"Horton, Flores and Evans",Technology,email_campaign,mql,2021-01-23,2021-01-30,413.35,10,2,71
+CRM-00359,johnsonmatthew@example.org,"Marsh, Spears and Yang",Energy,content_download,lead,2021-01-08,2021-01-25,0.0,18,32,29
+CRM-00360,andrearivera@example.com,Hall-Sullivan,Education,organic_search,lead,2021-01-19,2021-01-20,0.0,25,46,113
+CRM-00361,jacobsandoval@example.com,Mclaughlin and Sons,Retail,referral,churned,2021-01-18,2021-01-21,5120.82,28,2,116
+CRM-00362,yvargas@example.org,"Lewis, Ramirez and Padilla",Healthcare,email_campaign,customer,2021-01-09,2021-01-20,22177.62,7,47,151
+CRM-00363,raylauren@example.net,Diaz and Sons,Real Estate,social_media,customer,2021-01-23,2021-01-28,95436.65,20,8,53
+CRM-00364,qwilson@example.com,"Church, Edwards and Price",Consulting,referral,opportunity,2021-01-27,2021-01-28,44905.2,20,34,44
+CRM-00365,wmatthews@example.com,Williamson-Cervantes,Consulting,paid_search,lead,2021-01-11,2021-01-20,0.0,5,48,106
+CRM-00366,samantha91@example.net,Edwards and Sons,Finance,social_media,churned,2021-01-30,2021-01-30,43352.38,8,9,183
+CRM-00367,daryl52@example.net,Barnes-Taylor,Media,social_media,opportunity,2021-01-11,2021-01-18,52336.42,19,40,69
+CRM-00368,fhenderson@example.net,"Steele, Brewer and Cooke",Healthcare,trade_show,mql,2021-01-21,2021-01-27,377.58,17,47,72
+CRM-00369,tracytaylor@example.com,Harvey-Glenn,Energy,organic_search,mql,2021-01-23,2021-01-28,2440.22,28,49,188
+CRM-00370,washingtonjames@example.com,"Wagner, Simpson and Cohen",Education,paid_search,churned,2021-01-03,2021-01-26,31742.03,26,34,102
+CRM-00371,cmckinney@example.com,Miller Inc,Education,referral,opportunity,2021-01-07,2021-01-20,39630.05,11,35,148
+CRM-00372,kellyhill@example.net,Jackson-Ellis,Technology,organic_search,customer,2021-01-05,2021-01-23,120362.51,4,40,118
+CRM-00373,hdunn@example.net,Adams PLC,Media,organic_search,customer,2021-01-01,2021-01-04,32117.69,14,12,177
+CRM-00374,amber07@example.net,Fritz Inc,Manufacturing,paid_search,customer,2021-01-30,2021-01-30,52261.17,21,23,65
+CRM-00375,kennethkidd@example.com,Bailey-Montoya,Technology,trade_show,sql,2021-01-03,2021-01-14,16573.87,21,19,186
+CRM-00376,hgrimes@example.org,Cochran PLC,Healthcare,organic_search,mql,2021-01-23,2021-01-26,456.0,7,30,20
+CRM-00377,michelle96@example.org,"Taylor, Clark and Clark",Technology,organic_search,lead,2021-01-05,2021-01-23,0.0,23,21,31
+CRM-00378,hudsonamanda@example.net,"Jackson, Werner and Carter",Retail,trade_show,sql,2021-01-28,2021-01-31,12464.81,3,46,27
+CRM-00379,stephanie81@example.org,Sellers-Riddle,Real Estate,social_media,mql,2021-01-04,2021-01-14,1496.28,21,43,37
+CRM-00380,jacquelineanderson@example.org,"Morris, Wright and Bridges",Finance,content_download,sql,2021-01-03,2021-01-19,15647.66,12,46,55
+CRM-00381,kburns@example.net,Burton-Brooks,Media,email_campaign,customer,2021-01-21,2021-01-23,96250.64,3,6,36
+CRM-00382,schultznicole@example.org,Robertson-Ramirez,Real Estate,webinar,sql,2021-01-25,2021-01-25,10216.77,26,8,64
+CRM-00383,shawn75@example.net,Melton Ltd,Energy,referral,lead,2021-01-09,2021-01-29,0.0,25,44,7
+CRM-00384,simonstephen@example.net,"Howard, Brown and Ferguson",Retail,trade_show,lead,2021-01-28,2021-01-30,0.0,10,41,14
+CRM-00385,tammysummers@example.com,Morris-Campbell,Media,paid_search,mql,2021-01-26,2021-01-27,563.72,17,0,93
+CRM-00386,ashleewashington@example.com,"Farmer, Williams and Sims",Energy,trade_show,lead,2021-01-30,2021-01-31,0.0,12,34,175
+CRM-00387,ksmith@example.com,Smith-Rubio,Healthcare,organic_search,mql,2021-01-06,2021-01-30,4936.83,19,4,4
+CRM-00388,wendyblankenship@example.net,Moore-Cantu,Real Estate,referral,lead,2021-01-09,2021-01-15,0.0,21,45,129
+CRM-00389,clarence54@example.org,Beck-Banks,Consulting,social_media,mql,2021-01-25,2021-01-28,2011.39,9,5,80
+CRM-00390,sanderskevin@example.net,Patterson Inc,Finance,webinar,customer,2021-01-03,2021-01-19,146403.87,13,37,163
+CRM-00391,smiththomas@example.org,"Perez, Frazier and Smith",Manufacturing,trade_show,sql,2021-01-25,2021-01-31,16435.71,24,15,15
+CRM-00392,lisa62@example.com,Perez Inc,Energy,organic_search,customer,2021-01-08,2021-01-10,26238.12,10,42,190
+CRM-00393,garciamichael@example.com,Reyes and Sons,Technology,social_media,lead,2021-01-22,2021-01-24,0.0,16,22,134
+CRM-00394,caseyelliott@example.net,"Martin, Bell and Lewis",Education,social_media,opportunity,2021-01-17,2021-01-29,23147.29,24,49,69
+CRM-00395,samanthajensen@example.com,Miller Inc,Real Estate,referral,opportunity,2021-01-24,2021-01-25,7054.94,17,4,68
+CRM-00396,karenlawrence@example.com,Richmond-Edwards,Technology,content_download,mql,2021-01-23,2021-01-24,2553.91,28,36,43
+CRM-00397,johnnewman@example.org,"Burke, Griffith and Mitchell",Energy,paid_search,lead,2021-01-12,2021-01-17,0.0,8,47,131
+CRM-00398,abbottdominique@example.com,Holmes PLC,Technology,content_download,customer,2021-01-01,2021-01-02,11720.33,12,24,39
+CRM-00399,juliephillips@example.org,Simpson Inc,Real Estate,email_campaign,sql,2021-01-06,2021-01-07,22934.74,11,15,107
+CRM-00400,victorwheeler@example.net,Hatfield LLC,Education,paid_search,lead,2021-01-30,2021-01-31,0.0,17,43,14
+CRM-00401,paulcombs@example.com,Payne-Thompson,Real Estate,paid_search,opportunity,2021-01-06,2021-01-13,73698.97,29,29,73
+CRM-00402,xbest@example.org,Matthews Inc,Media,organic_search,mql,2021-01-25,2021-01-31,431.93,12,12,75
+CRM-00403,jason06@example.net,Fuller-Mason,Media,webinar,mql,2021-01-19,2021-01-31,3113.59,19,31,198
+CRM-00404,zhenderson@example.org,"Herrera, Jensen and Ramirez",Retail,social_media,opportunity,2021-01-25,2021-01-26,43259.15,1,26,7
+CRM-00405,christian32@example.net,Myers-Walters,Technology,webinar,mql,2021-01-08,2021-01-25,4197.87,1,48,169
+CRM-00406,collinssamuel@example.org,Sanchez Group,Retail,trade_show,lead,2021-01-13,2021-01-22,0.0,16,3,37
+CRM-00407,chavezchelsea@example.com,"Harmon, Yang and Wilson",Consulting,trade_show,lead,2021-01-23,2021-01-27,0.0,23,23,118
+CRM-00408,jacquelinemartin@example.com,"Holmes, Carson and Green",Real Estate,paid_search,sql,2021-01-24,2021-01-25,13130.27,19,36,16
+CRM-00409,david41@example.org,Roman-Nelson,Education,trade_show,lead,2021-01-14,2021-01-18,0.0,23,47,84
+CRM-00410,bakertheresa@example.net,Crawford PLC,Retail,social_media,lead,2021-01-11,2021-01-25,0.0,25,49,150
+CRM-00411,brian92@example.com,Scott Inc,Education,trade_show,lead,2021-01-04,2021-01-08,0.0,4,34,92
+CRM-00412,perezwilliam@example.org,Sanchez Group,Healthcare,paid_search,mql,2021-01-31,2021-01-31,2316.73,6,43,78
+CRM-00413,patrick22@example.org,"Pratt, Klein and Rios",Education,social_media,lead,2021-01-27,2021-01-31,0.0,3,45,64
+CRM-00414,marcbutler@example.net,Nelson-Miller,Manufacturing,referral,mql,2021-01-31,2021-01-31,244.75,27,11,8
+CRM-00415,david02@example.org,"Jarvis, Finley and Jones",Consulting,email_campaign,customer,2021-01-31,2021-01-31,87833.53,4,29,27
+CRM-00416,xcline@example.com,Miller-Bryant,Retail,social_media,lead,2021-01-26,2021-01-27,0.0,7,25,96
+CRM-00417,james94@example.net,"Sanchez, Richardson and Bonilla",Healthcare,organic_search,sql,2021-01-22,2021-01-23,7211.7,3,12,166
+CRM-00418,jessicapayne@example.org,Smith Group,Education,paid_search,lead,2021-01-15,2021-01-19,0.0,2,29,13
+CRM-00419,hallmichael@example.net,Tapia Inc,Media,organic_search,mql,2021-01-06,2021-01-24,3622.15,13,43,110
+CRM-00420,usweeney@example.com,Harris and Sons,Manufacturing,content_download,lead,2021-01-06,2021-01-17,0.0,29,9,9
+CRM-00421,dvasquez@example.org,"Ramirez, Williams and Hall",Media,trade_show,sql,2021-01-20,2021-01-29,16534.68,29,35,123
+CRM-00422,xhaynes@example.com,"Miller, Davis and Anderson",Retail,email_campaign,lead,2021-01-02,2021-01-04,0.0,21,34,5
+CRM-00423,kjones@example.org,Bates-Anderson,Education,webinar,mql,2021-01-13,2021-01-24,3907.18,13,17,47
+CRM-00424,jose56@example.net,"Nguyen, Chavez and Hall",Manufacturing,organic_search,sql,2021-01-01,2021-01-11,1703.28,26,30,136
+CRM-00425,derekcarrillo@example.org,Garcia Group,Healthcare,email_campaign,churned,2021-01-12,2021-01-30,48698.99,22,15,69
+CRM-00426,hedwards@example.net,Oconnell-Clark,Retail,trade_show,opportunity,2021-01-18,2021-01-31,56594.21,12,11,46
+CRM-00427,steven11@example.org,"Torres, Bush and Morrison",Education,organic_search,mql,2021-01-08,2021-01-26,3690.53,23,44,91
+CRM-00428,marymurphy@example.org,"Wright, Kelly and Palmer",Media,referral,sql,2021-01-31,2021-01-31,5517.61,6,31,10
+CRM-00429,jorge20@example.com,Hawkins-Pierce,Consulting,content_download,lead,2021-01-03,2021-01-04,0.0,1,21,158
+CRM-00430,murraylinda@example.org,Smith and Sons,Education,organic_search,mql,2021-01-07,2021-01-11,887.3,1,9,151
+CRM-00431,jamesmorales@example.net,"Pace, Miller and Willis",Education,paid_search,opportunity,2021-01-23,2021-01-25,64253.66,12,45,170
+CRM-00432,johnsoncaleb@example.net,Lamb-Davis,Finance,social_media,lead,2021-01-13,2021-01-31,0.0,24,27,164
+CRM-00433,david70@example.org,"Hamilton, Ramsey and Crawford",Consulting,webinar,sql,2021-01-31,2021-01-31,5180.86,8,42,151
+CRM-00434,lvega@example.com,Odonnell LLC,Manufacturing,social_media,mql,2021-01-27,2021-01-28,3669.97,6,46,1
+CRM-00435,sean20@example.net,"Jensen, Holland and Porter",Energy,organic_search,customer,2021-01-31,2021-01-31,117916.25,6,38,82
+CRM-00436,rbrown@example.com,Barnes Ltd,Media,social_media,sql,2021-01-30,2021-01-30,3498.65,11,47,20
+CRM-00437,crystalpham@example.org,Casey-Howard,Healthcare,webinar,churned,2021-01-08,2021-01-19,8394.37,15,0,68
+CRM-00438,kcooper@example.net,Price-White,Healthcare,organic_search,sql,2021-01-07,2021-01-14,9411.55,2,24,113
+CRM-00439,carla04@example.org,Moreno-Wang,Media,trade_show,churned,2021-01-24,2021-01-30,44227.6,12,34,97
+CRM-00440,terrigarcia@example.net,Adams Ltd,Retail,social_media,mql,2021-01-04,2021-01-30,4320.25,15,4,9
+CRM-00441,gallagherstacie@example.net,Kelly-Combs,Healthcare,webinar,mql,2021-01-10,2021-01-10,4758.31,6,24,42
+CRM-00442,gregorywatkins@example.net,"Howard, Vargas and Warner",Healthcare,webinar,mql,2021-01-24,2021-01-25,4490.62,20,39,124
+CRM-00443,stacey92@example.net,Copeland Group,Energy,trade_show,mql,2021-01-23,2021-01-23,3268.18,6,3,26
+CRM-00444,gregory01@example.org,Guzman Inc,Consulting,referral,churned,2021-01-11,2021-01-17,20463.99,22,18,77
+CRM-00445,nsmith@example.org,Peterson and Sons,Media,social_media,lead,2021-01-08,2021-01-11,0.0,2,23,1
+CRM-00446,brian29@example.net,Schroeder PLC,Energy,content_download,lead,2021-01-14,2021-01-16,0.0,7,6,7
+CRM-00447,susan56@example.net,Rogers LLC,Media,paid_search,sql,2021-01-07,2021-01-12,24449.38,10,50,102
+CRM-00448,theresaoconnor@example.com,"Yu, Banks and Thompson",Consulting,trade_show,customer,2021-01-16,2021-01-31,47100.62,6,23,98
+CRM-00449,jeffrey92@example.com,Gross-Phillips,Media,referral,mql,2021-01-12,2021-01-17,1316.48,8,17,145
+CRM-00450,jessicarush@example.net,Rosales-Townsend,Healthcare,webinar,opportunity,2021-01-02,2021-01-06,51722.79,26,34,106
+CRM-00451,whitelucas@example.net,Bowman Inc,Real Estate,trade_show,lead,2021-01-25,2021-01-29,0.0,18,43,122
+CRM-00452,vtaylor@example.org,Reed LLC,Technology,social_media,mql,2021-01-19,2021-01-22,394.78,4,48,115
+CRM-00453,daisymccarty@example.net,"Fowler, Tanner and Griffin",Finance,organic_search,churned,2021-01-06,2021-01-11,40423.04,14,5,175
+CRM-00454,jason15@example.com,Le Inc,Energy,referral,churned,2021-01-14,2021-01-20,31361.31,11,46,18
+CRM-00455,akim@example.org,Snyder-Gray,Manufacturing,content_download,sql,2021-01-03,2021-01-15,14249.3,30,0,180
+CRM-00456,egarcia@example.net,"Chang, Perez and Hayes",Real Estate,social_media,mql,2021-01-20,2021-01-29,2097.97,5,36,151
+CRM-00457,phillipslucas@example.org,Peterson Group,Healthcare,paid_search,churned,2021-01-19,2021-01-31,5010.2,26,18,138
+CRM-00458,brooke97@example.net,Reynolds Ltd,Media,content_download,customer,2021-01-29,2021-01-30,46979.13,2,11,71
+CRM-00459,catherinehamilton@example.org,Rivera and Sons,Real Estate,organic_search,sql,2021-01-13,2021-01-17,17339.51,13,21,177
+CRM-00460,uterry@example.net,"Baker, Campbell and Young",Education,organic_search,opportunity,2021-01-08,2021-01-09,69458.45,11,50,78
+CRM-00461,longandrea@example.com,Brown Inc,Healthcare,email_campaign,opportunity,2021-01-10,2021-01-18,65076.43,5,19,191
+CRM-00462,qmiller@example.net,"Castillo, Davis and Clark",Healthcare,email_campaign,lead,2021-01-15,2021-01-25,0.0,15,13,105
+CRM-00463,tiffany71@example.com,Ruiz-Jacobson,Technology,social_media,opportunity,2021-01-24,2021-01-31,65703.23,3,19,182
+CRM-00464,christopher86@example.org,Mcclure-Wood,Energy,organic_search,lead,2021-01-17,2021-01-23,0.0,6,12,52
+CRM-00465,cwilliams@example.com,Perez-Adams,Education,email_campaign,lead,2021-01-27,2021-01-27,0.0,9,23,119
+CRM-00466,hernandezheather@example.org,Barnett PLC,Technology,email_campaign,sql,2021-01-17,2021-01-23,3972.95,12,31,153
+CRM-00467,larellano@example.org,"Brown, Hughes and Mills",Consulting,webinar,churned,2021-01-15,2021-01-20,23729.11,12,10,67
+CRM-00468,parmstrong@example.com,Miller-Orr,Finance,email_campaign,lead,2021-01-24,2021-01-25,0.0,28,14,166
+CRM-00469,shawrachel@example.net,"Mcgrath, Hernandez and Avery",Consulting,organic_search,lead,2021-01-08,2021-01-29,0.0,28,49,197
+CRM-00470,kthompson@example.org,Martinez Group,Finance,organic_search,mql,2021-01-22,2021-01-22,661.57,8,16,156
+CRM-00471,mcneilryan@example.net,Flowers LLC,Manufacturing,trade_show,sql,2021-01-26,2021-01-28,18024.84,29,24,90
+CRM-00472,renee11@example.com,"Sanders, Nguyen and Hill",Consulting,trade_show,lead,2021-01-15,2021-01-23,0.0,19,6,2
+CRM-00473,astark@example.net,"Matthews, Harrington and Rodriguez",Consulting,referral,churned,2021-01-17,2021-01-27,41968.92,10,43,28
+CRM-00474,eddiematthews@example.org,Hart Inc,Education,referral,mql,2021-01-16,2021-01-18,1382.42,9,41,183
+CRM-00475,mikayla56@example.com,Pena-Armstrong,Retail,organic_search,lead,2021-01-31,2021-01-31,0.0,26,38,104
+CRM-00476,rjohnson@example.com,Montgomery Ltd,Media,referral,sql,2021-01-22,2021-01-27,18310.8,9,26,104
+CRM-00477,vwilliams@example.net,Williams Group,Retail,webinar,sql,2021-01-13,2021-01-14,24874.09,24,45,57
+CRM-00478,penny05@example.com,Ramirez-Vasquez,Education,referral,sql,2021-01-22,2021-01-30,12417.64,28,10,169
+CRM-00479,comptonjeremy@example.com,"Ramos, Petersen and Adams",Finance,referral,lead,2021-01-29,2021-01-31,0.0,24,35,196
+CRM-00480,fjacobs@example.org,Lewis-Holloway,Healthcare,email_campaign,customer,2021-01-30,2021-01-30,135942.76,12,14,191
+CRM-00481,xmalone@example.org,"Moody, Jones and Mckinney",Education,referral,mql,2021-01-28,2021-01-30,4434.22,19,18,119
+CRM-00482,htaylor@example.net,Thompson and Sons,Energy,paid_search,mql,2021-01-28,2021-01-28,4331.97,16,12,129
+CRM-00483,wrightstephen@example.com,"Gonzalez, Richardson and Marshall",Real Estate,organic_search,sql,2021-01-04,2021-01-31,13716.12,28,9,36
+CRM-00484,hreid@example.net,Allen Group,Media,social_media,mql,2021-01-07,2021-01-17,2847.02,11,45,47
+CRM-00485,ethompson@example.net,"Bailey, Martin and Kline",Finance,webinar,mql,2021-01-25,2021-01-25,3155.16,21,3,2
+CRM-00486,mitchellpaul@example.org,"Chan, Lewis and Walker",Energy,social_media,lead,2021-01-15,2021-01-23,0.0,16,50,196
+CRM-00487,ericaadams@example.com,"Smith, Deleon and Saunders",Real Estate,trade_show,lead,2021-01-25,2021-01-25,0.0,14,30,99
+CRM-00488,wellsdavid@example.org,"Owen, Walker and Franklin",Technology,webinar,mql,2021-01-01,2021-01-02,3653.3,25,33,49
+CRM-00489,jennifer46@example.com,Stevens-Robinson,Retail,webinar,lead,2021-01-01,2021-01-22,0.0,10,8,27
+CRM-00490,erica96@example.net,Smith Ltd,Technology,referral,sql,2021-01-13,2021-01-29,5008.48,10,29,187
+CRM-00491,anna99@example.com,Cohen-Olson,Finance,webinar,mql,2021-01-17,2021-01-26,2168.33,29,31,92
+CRM-00492,vanessa54@example.com,"Dawson, Stafford and Evans",Real Estate,organic_search,lead,2021-01-25,2021-01-26,0.0,8,14,187
+CRM-00493,zacharyallen@example.org,"Powell, Flores and Taylor",Finance,paid_search,opportunity,2021-01-05,2021-01-11,46278.5,12,45,167
+CRM-00494,rioswhitney@example.com,Sullivan-Doyle,Consulting,organic_search,mql,2021-01-26,2021-01-26,3201.61,20,3,170
+CRM-00495,matthewreeves@example.net,"Little, Alvarez and Shepard",Healthcare,trade_show,opportunity,2021-01-04,2021-01-24,8376.45,15,24,32
+CRM-00496,william28@example.org,Davis-Anderson,Technology,referral,mql,2021-01-18,2021-01-22,765.64,14,42,26
+CRM-00497,jessica82@example.net,Pena-Walker,Finance,trade_show,lead,2021-01-22,2021-01-30,0.0,27,6,131
+CRM-00498,julieparker@example.com,Green-Carter,Media,email_campaign,lead,2021-01-24,2021-01-25,0.0,20,12,200
+CRM-00499,ruizmichelle@example.net,"Blackburn, Jones and Preston",Real Estate,referral,churned,2021-01-09,2021-01-25,17896.09,6,2,141
+CRM-00500,dillonpatrick@example.com,Brown-Dickerson,Retail,organic_search,sql,2021-01-16,2021-01-22,12535.93,1,42,23

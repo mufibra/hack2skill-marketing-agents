@@ -2,6 +2,7 @@
 env.yaml
 venv/
 __pycache__/
-*.db
+db/*.db
+!source_data/competitive_intel.db
 .adk/
 .claude/
