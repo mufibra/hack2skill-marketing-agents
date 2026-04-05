@@ -1,0 +1,63 @@
+{
+  "timestamp": "2026-04-04T18:27:28.997186",
+  "pipeline_status": "degraded",
+  "api_health": {
+    "api_reachable": false,
+    "api_status": "unknown",
+    "bigquery_connected": false,
+    "tables_available": [],
+    "api_response_time_ms": null,
+    "error": "API unreachable: Not Found"
+  },
+  "pipeline_tables": {
+    "pipeline_status_available": false,
+    "tables": [],
+    "total_tables": 0,
+    "total_rows": 0,
+    "error": "Pipeline status endpoint unreachable"
+  },
+  "data_freshness": {
+    "raw_data_files": [
+      {
+        "file": "crm_export.csv",
+        "size_bytes": 59385,
+        "last_modified": "2026-03-26T15:41:12.303921",
+        "age_hours": 218.8
+      }
+    ],
+    "processed_data_files": [],
+    "newest_raw_file": "crm_export.csv",
+    "newest_raw_age_hours": 218.8,
+    "pipeline_config_exists": true,
+    "source_code_exists": true
+  },
+  "pipeline_config": {
+    "pipeline_file_exists": true,
+    "api_file_exists": true,
+    "extractors_present": [
+      "crm_extractor",
+      "ga4_extractor",
+      "runner",
+      "social_extractor"
+    ],
+    "transformers_present": [
+      "crm_transformer",
+      "ga4_transformer",
+      "social_transformer"
+    ],
+    "validators_present": [
+      "schema_validator"
+    ],
+    "requirements_file": true,
+    "config_file": true,
+    "issues": []
+  },
+  "errors": [],
+  "warnings": [
+    "API not reachable at configured URL \u2014 API unreachable: Not Found",
+    "Newest local data is 219h old"
+  ],
+  "error_count": 0,
+  "warning_count": 2,
+  "checks_in_history": 1
+}

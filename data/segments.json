@@ -1,0 +1,190 @@
+{
+  "timestamp": "2026-04-04T18:26:54.763199",
+  "data_source": "p5_precomputed",
+  "overall_severity": "stable",
+  "total_customers": 4338,
+  "total_segments": 4,
+  "segment_summary": [
+    {
+      "segment_name": "VIP Champions",
+      "customer_count": 716,
+      "customer_pct": 16.5,
+      "total_revenue": 5781175.08,
+      "revenue_pct": 64.9,
+      "avg_recency_days": 12.1,
+      "avg_frequency": 13.7,
+      "avg_monetary": 8074.27,
+      "avg_clv": 10049.81,
+      "avg_prob_alive": 1.0,
+      "avg_pred_purchases_90d": 2.86,
+      "clv_tier_distribution": {
+        "Platinum": 326,
+        "High": 225,
+        "Medium": 137,
+        "Low": 27
+      }
+    },
+    {
+      "segment_name": "Loyal Regulars",
+      "customer_count": 1173,
+      "customer_pct": 27.0,
+      "total_revenue": 2114718.42,
+      "revenue_pct": 23.7,
+      "avg_recency_days": 71.1,
+      "avg_frequency": 4.1,
+      "avg_monetary": 1802.83,
+      "avg_clv": 3538.83,
+      "avg_prob_alive": 1.0,
+      "avg_pred_purchases_90d": 1.04,
+      "clv_tier_distribution": {
+        "Medium": 345,
+        "Low": 291,
+        "High": 267,
+        "Platinum": 228
+      }
+    },
+    {
+      "segment_name": "Lost Causes",
+      "customer_count": 1612,
+      "customer_pct": 37.2,
+      "total_revenue": 553641.45,
+      "revenue_pct": 6.2,
+      "avg_recency_days": 182.5,
+      "avg_frequency": 1.3,
+      "avg_monetary": 343.45,
+      "avg_clv": 1655.33,
+      "avg_prob_alive": 1.0,
+      "avg_pred_purchases_90d": 0.54,
+      "clv_tier_distribution": {
+        "Low": 203,
+        "Medium": 87,
+        "High": 86,
+        "Platinum": 15
+      }
+    },
+    {
+      "segment_name": "New Potentials",
+      "customer_count": 837,
+      "customer_pct": 19.3,
+      "total_revenue": 461872.95,
+      "revenue_pct": 5.2,
+      "avg_recency_days": 18.1,
+      "avg_frequency": 2.1,
+      "avg_monetary": 551.82,
+      "avg_clv": 3634.08,
+      "avg_prob_alive": 1.0,
+      "avg_pred_purchases_90d": 1.15,
+      "clv_tier_distribution": {
+        "Low": 177,
+        "Platinum": 129,
+        "Medium": 128,
+        "High": 119
+      }
+    }
+  ],
+  "segment_shifts": [],
+  "campaign_triggers": [
+    {
+      "segment": "VIP Champions",
+      "campaign_type": "loyalty_retention",
+      "priority": "high",
+      "churn_risk": "low",
+      "customer_count": 716,
+      "avg_clv": 10049.81,
+      "recommended_campaigns": [
+        "Protect 716 VIPs \u2014 ensure satisfaction & retention",
+        "VIP exclusive early access to new products",
+        "Referral reward program (give $X, get $X)",
+        "Personalized thank-you with premium perks"
+      ],
+      "channel_mix": [
+        "email",
+        "sms",
+        "direct_mail"
+      ],
+      "urgency": "maintain"
+    },
+    {
+      "segment": "Lost Causes",
+      "campaign_type": "win_back",
+      "priority": "high",
+      "churn_risk": "low",
+      "customer_count": 1612,
+      "avg_clv": 1655.33,
+      "recommended_campaigns": [
+        "URGENT: 1612 dormant customers need win-back",
+        "Win-back email: 'We miss you' with 20% off",
+        "Sunset flow: last-chance offer before list removal",
+        "Survey: 'What made you leave?' feedback request"
+      ],
+      "channel_mix": [
+        "email",
+        "retargeting",
+        "sms"
+      ],
+      "urgency": "re_engage"
+    },
+    {
+      "segment": "Loyal Regulars",
+      "campaign_type": "upsell_cross_sell",
+      "priority": "medium",
+      "churn_risk": "low",
+      "customer_count": 1173,
+      "avg_clv": 3538.83,
+      "recommended_campaigns": [
+        "Cross-sell complementary product bundles",
+        "Tiered loyalty program with upgrade incentives",
+        "Early access to seasonal collections",
+        "Personalized product recommendations email series"
+      ],
+      "channel_mix": [
+        "email",
+        "retargeting",
+        "social"
+      ],
+      "urgency": "grow"
+    },
+    {
+      "segment": "New Potentials",
+      "campaign_type": "onboarding_nurture",
+      "priority": "medium",
+      "churn_risk": "low",
+      "customer_count": 837,
+      "avg_clv": 3634.08,
+      "recommended_campaigns": [
+        "Welcome email series with brand story",
+        "First repeat-purchase discount (10-15% off)",
+        "Educational content about product usage",
+        "Social proof campaign (reviews, testimonials)"
+      ],
+      "channel_mix": [
+        "email",
+        "social",
+        "push"
+      ],
+      "urgency": "convert"
+    }
+  ],
+  "recommended_actions": [
+    {
+      "priority": "high",
+      "action": "Launch loyalty_retention for VIP Champions",
+      "detail": "716 customers | Churn risk: low | Channels: email, sms, direct_mail"
+    },
+    {
+      "priority": "high",
+      "action": "Launch win_back for Lost Causes",
+      "detail": "1612 customers | Churn risk: low | Channels: email, retargeting, sms"
+    },
+    {
+      "priority": "medium",
+      "action": "Revenue concentration: VIP Champions = 64.9% of total",
+      "detail": "Diversify revenue sources. Over-reliance on one segment is risky."
+    },
+    {
+      "priority": "medium",
+      "action": "Lost Causes is 37.2% of customer base",
+      "detail": "Large dormant segment. Consider aggressive win-back or list hygiene."
+    }
+  ]
+}

@@ -1,0 +1,104 @@
+{
+  "timestamp": "2026-04-04T18:26:13.491351",
+  "data_source": "p8_synthetic",
+  "analysis_method": "pre_labeled",
+  "overall_severity": "stable",
+  "overall_sentiment": -0.375,
+  "sentiment_distribution": {
+    "negative": 113,
+    "neutral": 49,
+    "positive": 38
+  },
+  "sentiment_ratios": {
+    "negative_ratio": 0.565,
+    "neutral_ratio": 0.245,
+    "positive_ratio": 0.19
+  },
+  "spike_info": {
+    "spike_detected": false,
+    "baseline_negative_ratio": 0.565,
+    "current_negative_ratio": 0.565,
+    "delta": 0.0,
+    "message": "First scan \u2014 establishing baseline."
+  },
+  "worst_categories": [
+    {
+      "category": "product_defect",
+      "negative_ratio": 0.7805
+    },
+    {
+      "category": "account_access",
+      "negative_ratio": 0.625
+    },
+    {
+      "category": "cancellation",
+      "negative_ratio": 0.5625
+    }
+  ],
+  "high_priority_negative_count": 24,
+  "sample_negative_reviews": [
+    {
+      "text": "I cannot believe you still do not have auto-save. Every competitor has this.",
+      "confidence": 0.969,
+      "category": "feature_request",
+      "priority": "medium",
+      "customer_id": "CUST-00433"
+    },
+    {
+      "text": "I cannot believe you still do not have bulk export. Every competitor has this.",
+      "confidence": 0.969,
+      "category": "feature_request",
+      "priority": "medium",
+      "customer_id": "CUST-00027"
+    },
+    {
+      "text": "I keep getting charged even after downgrading my plan. This is borderline fraudulent.",
+      "confidence": 0.969,
+      "category": "billing",
+      "priority": "medium",
+      "customer_id": "CUST-00061"
+    },
+    {
+      "text": "My order was marked as delivered but I never received it.",
+      "confidence": 0.966,
+      "category": "shipping",
+      "priority": "medium",
+      "customer_id": "CUST-00013"
+    },
+    {
+      "text": "I was charged twice for my subscription this month. Order #965076. Please fix this immediately.",
+      "confidence": 0.966,
+      "category": "billing",
+      "priority": "medium",
+      "customer_id": "CUST-00044"
+    }
+  ],
+  "recommended_actions": [
+    {
+      "priority": "high",
+      "action": "Review product_defect feedback \u2014 78% negative",
+      "detail": "The 'product_defect' category has a very high negative ratio. Consider escalating to the relevant team."
+    },
+    {
+      "priority": "high",
+      "action": "Review account_access feedback \u2014 62% negative",
+      "detail": "The 'account_access' category has a very high negative ratio. Consider escalating to the relevant team."
+    },
+    {
+      "priority": "high",
+      "action": "Review cancellation feedback \u2014 56% negative",
+      "detail": "The 'cancellation' category has a very high negative ratio. Consider escalating to the relevant team."
+    },
+    {
+      "priority": "medium",
+      "action": "Address 24 high-priority negative tickets",
+      "detail": "These tickets are marked high priority with negative sentiment and should be reviewed promptly."
+    },
+    {
+      "priority": "medium",
+      "action": "Overall sentiment is significantly negative",
+      "detail": "Sentiment score: -0.375. Consider a broader review of customer experience and support processes."
+    }
+  ],
+  "total_analyzed": 200
+}

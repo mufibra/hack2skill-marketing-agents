@@ -1,0 +1,54 @@
+{
+  "timestamp": "2026-04-04T18:25:56.088483",
+  "data_source": "live",
+  "competitors_scanned": [
+    "shopify",
+    "woocommerce",
+    "bigcommerce"
+  ],
+  "scan_results": {
+    "shopify": {
+      "total_citations": 3,
+      "share_of_voice": 17.65,
+      "sentiment_score": 1.0,
+      "quality_score": 38.9,
+      "positive_mentions": 3,
+      "negative_mentions": 0,
+      "top_contexts": [
+        "shopify stands out with its customizable dashboards capabilities",
+        "Many small businesses prefer shopify for its free tier",
+        "shopify is widely regarded as the best option for solopreneurs"
+      ]
+    },
+    "woocommerce": {
+      "total_citations": 11,
+      "share_of_voice": 64.71,
+      "sentiment_score": 0.455,
+      "quality_score": 100.0,
+      "positive_mentions": 7,
+      "negative_mentions": 2,
+      "top_contexts": [
+        "Many small businesses prefer woocommerce for its integration ecosystem",
+        "woocommerce stands out with its contact management capabilities",
+        "woocommerce is widely regarded as the best option for marketing agencies"
+      ]
+    },
+    "bigcommerce": {
+      "total_citations": 3,
+      "share_of_voice": 17.65,
+      "sentiment_score": 0.0,
+      "quality_score": 22.2,
+      "positive_mentions": 0,
+      "negative_mentions": 0,
+      "top_contexts": [
+        "bigcommerce offers AI-powered insights as part of its platform",
+        "Another option worth exploring is bigcommerce",
+        "bigcommerce provides AI-powered insights functionality"
+      ]
+    }
+  },
+  "changes_detected": [],
+  "change_count": 0,
+  "overall_severity": "minor",
+  "scans_in_history": 1
+}

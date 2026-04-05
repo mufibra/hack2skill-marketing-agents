@@ -1,0 +1,339 @@
+{
+  "timestamp": "2026-04-04T18:27:29.878616",
+  "query": "Which channel drives the most conversions?",
+  "query_type": "top_channel",
+  "data_source": "p6_precomputed",
+  "journey_stats": {
+    "total_journeys": 47364,
+    "conversions": 3341,
+    "conversion_rate": 7.05,
+    "avg_journey_length": 2.9,
+    "total_revenue": 260813.0,
+    "unique_channels": 5
+  },
+  "models_active": [
+    "first_click",
+    "last_click",
+    "linear",
+    "time_decay",
+    "position_based",
+    "markov",
+    "lstm_deep_learning"
+  ],
+  "models_count": 7,
+  "model_results": {
+    "first_click": [
+      {
+        "channel": "organic_search",
+        "display_name": "Organic Search",
+        "attribution_weight": 0.358,
+        "attribution_pct": 35.8
+      },
+      {
+        "channel": "direct",
+        "display_name": "Direct",
+        "attribution_weight": 0.2284,
+        "attribution_pct": 22.84
+      },
+      {
+        "channel": "other",
+        "display_name": "Other",
+        "attribution_weight": 0.1978,
+        "attribution_pct": 19.78
+      },
+      {
+        "channel": "referral",
+        "display_name": "Referral",
+        "attribution_weight": 0.1697,
+        "attribution_pct": 16.97
+      },
+      {
+        "channel": "paid_search",
+        "display_name": "Paid Search",
+        "attribution_weight": 0.0461,
+        "attribution_pct": 4.61
+      }
+    ],
+    "last_click": [
+      {
+        "channel": "other",
+        "display_name": "Other",
+        "attribution_weight": 0.2733,
+        "attribution_pct": 27.33
+      },
+      {
+        "channel": "referral",
+        "display_name": "Referral",
+        "attribution_weight": 0.2661,
+        "attribution_pct": 26.61
+      },
+      {
+        "channel": "organic_search",
+        "display_name": "Organic Search",
+        "attribution_weight": 0.2386,
+        "attribution_pct": 23.86
+      },
+      {
+        "channel": "direct",
+        "display_name": "Direct",
+        "attribution_weight": 0.2128,
+        "attribution_pct": 21.28
+      },
+      {
+        "channel": "paid_search",
+        "display_name": "Paid Search",
+        "attribution_weight": 0.0093,
+        "attribution_pct": 0.93
+      }
+    ],
+    "linear": [
+      {
+        "channel": "organic_search",
+        "display_name": "Organic Search",
+        "attribution_weight": 0.271,
+        "attribution_pct": 27.1
+      },
+      {
+        "channel": "other",
+        "display_name": "Other",
+        "attribution_weight": 0.254,
+        "attribution_pct": 25.4
+      },
+      {
+        "channel": "referral",
+        "display_name": "Referral",
+        "attribution_weight": 0.2355,
+        "attribution_pct": 23.55
+      },
+      {
+        "channel": "direct",
+        "display_name": "Direct",
+        "attribution_weight": 0.216,
+        "attribution_pct": 21.6
+      },
+      {
+        "channel": "paid_search",
+        "display_name": "Paid Search",
+        "attribution_weight": 0.0236,
+        "attribution_pct": 2.36
+      }
+    ],
+    "time_decay": [
+      {
+        "channel": "organic_search",
+        "display_name": "Organic Search",
+        "attribution_weight": 0.2705,
+        "attribution_pct": 27.05
+      },
+      {
+        "channel": "other",
+        "display_name": "Other",
+        "attribution_weight": 0.2544,
+        "attribution_pct": 25.44
+      },
+      {
+        "channel": "referral",
+        "display_name": "Referral",
+        "attribution_weight": 0.2363,
+        "attribution_pct": 23.63
+      },
+      {
+        "channel": "direct",
+        "display_name": "Direct",
+        "attribution_weight": 0.2155,
+        "attribution_pct": 21.55
+      },
+      {
+        "channel": "paid_search",
+        "display_name": "Paid Search",
+        "attribution_weight": 0.0234,
+        "attribution_pct": 2.34
+      }
+    ],
+    "position_based": [
+      {
+        "channel": "organic_search",
+        "display_name": "Organic Search",
+        "attribution_weight": 0.2884,
+        "attribution_pct": 28.84
+      },
+      {
+        "channel": "other",
+        "display_name": "Other",
+        "attribution_weight": 0.2421,
+        "attribution_pct": 24.21
+      },
+      {
+        "channel": "referral",
+        "display_name": "Referral",
+        "attribution_weight": 0.2241,
+        "attribution_pct": 22.41
+      },
+      {
+        "channel": "direct",
+        "display_name": "Direct",
+        "attribution_weight": 0.2195,
+        "attribution_pct": 21.95
+      },
+      {
+        "channel": "paid_search",
+        "display_name": "Paid Search",
+        "attribution_weight": 0.026,
+        "attribution_pct": 2.6
+      }
+    ],
+    "markov": [
+      {
+        "channel": "organic_search",
+        "display_name": "Organic Search",
+        "attribution_weight": 0.2596,
+        "attribution_pct": 25.96
+      },
+      {
+        "channel": "other",
+        "display_name": "Other",
+        "attribution_weight": 0.2441,
+        "attribution_pct": 24.41
+      },
+      {
+        "channel": "referral",
+        "display_name": "Referral",
+        "attribution_weight": 0.2339,
+        "attribution_pct": 23.39
+      },
+      {
+        "channel": "direct",
+        "display_name": "Direct",
+        "attribution_weight": 0.2252,
+        "attribution_pct": 22.52
+      },
+      {
+        "channel": "paid_search",
+        "display_name": "Paid Search",
+        "attribution_weight": 0.0372,
+        "attribution_pct": 3.72
+      }
+    ],
+    "shapley": [],
+    "lstm_deep_learning": [
+      {
+        "channel": "organic_search",
+        "display_name": "Organic Search",
+        "attribution_weight": 0.3186,
+        "attribution_pct": 31.86
+      },
+      {
+        "channel": "other",
+        "display_name": "Other",
+        "attribution_weight": 0.2255,
+        "attribution_pct": 22.55
+      },
+      {
+        "channel": "direct",
+        "display_name": "Direct",
+        "attribution_weight": 0.2159,
+        "attribution_pct": 21.59
+      },
+      {
+        "channel": "referral",
+        "display_name": "Referral",
+        "attribution_weight": 0.2054,
+        "attribution_pct": 20.54
+      },
+      {
+        "channel": "paid_search",
+        "display_name": "Paid Search",
+        "attribution_weight": 0.0346,
+        "attribution_pct": 3.46
+      }
+    ]
+  },
+  "top_channel": {
+    "channel": "organic_search",
+    "display_name": "Organic Search",
+    "models_agreeing": 6,
+    "total_models": 8,
+    "confidence": "high",
+    "avg_attribution_weight": 0.2506
+  },
+  "model_agreement": {
+    "score": 90.0,
+    "avg_rank_correlation": 0.8,
+    "model_pairs_compared": 21,
+    "interpretation": "strong_agreement"
+  },
+  "budget_recommendations": [
+    {
+      "rank": 1,
+      "channel": "organic_search",
+      "display_name": "Organic Search",
+      "avg_attribution_pct": 25.1,
+      "recommended_action": "increase",
+      "rationale": "Organic Search has the highest average attribution (25.1%) across all models. Consider increasing budget allocation."
+    },
+    {
+      "rank": 2,
+      "channel": "other",
+      "display_name": "Other",
+      "avg_attribution_pct": 21.1,
+      "recommended_action": "maintain_or_increase",
+      "rationale": "Other ranks #2 in attribution (21.1%). Maintain current spend or explore incremental increases."
+    },
+    {
+      "rank": 3,
+      "channel": "referral",
+      "display_name": "Referral",
+      "avg_attribution_pct": 19.6,
+      "recommended_action": "maintain",
+      "rationale": "Referral contributes 19.6% of conversions. Maintain current investment level."
+    },
+    {
+      "rank": 4,
+      "channel": "direct",
+      "display_name": "Direct",
+      "avg_attribution_pct": 19.2,
+      "recommended_action": "maintain",
+      "rationale": "Direct contributes 19.2% of conversions. Maintain current investment level."
+    },
+    {
+      "rank": 5,
+      "channel": "paid_search",
+      "display_name": "Paid Search",
+      "avg_attribution_pct": 2.5,
+      "recommended_action": "review",
+      "rationale": "Paid Search shows low attribution (2.5%). Review ROI and consider reallocating budget."
+    }
+  ],
+  "model_disagreements": [
+    {
+      "channel": "organic_search",
+      "display_name": "Organic Search",
+      "spread": 0.1194,
+      "spread_pct": 11.9,
+      "highest_model": "first_click",
+      "highest_value": 35.8,
+      "lowest_model": "last_click",
+      "lowest_value": 23.9
+    },
+    {
+      "channel": "referral",
+      "display_name": "Referral",
+      "spread": 0.0964,
+      "spread_pct": 9.6,
+      "highest_model": "last_click",
+      "highest_value": 26.6,
+      "lowest_model": "first_click",
+      "lowest_value": 17.0
+    },
+    {
+      "channel": "other",
+      "display_name": "Other",
+      "spread": 0.0755,
+      "spread_pct": 7.5,
+      "highest_model": "last_click",
+      "highest_value": 27.3,
+      "lowest_model": "first_click",
+      "lowest_value": 19.8
+    }
+  ]
+}

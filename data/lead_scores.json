@@ -1,0 +1,253 @@
+{
+  "timestamp": "2026-04-04T18:26:38.263185",
+  "data_source": "p4_precomputed",
+  "model_performance": {
+    "accuracy": 0.9377705627705628,
+    "precision": 0.9222065063649222,
+    "recall": 0.9157303370786517,
+    "f1": 0.9189570119802678,
+    "roc_auc": 0.9785122250356069,
+    "cv_roc_auc": 0.9793168469694906
+  },
+  "total_leads_scored": 1848,
+  "hot_leads_count": 677,
+  "warm_leads_count": 45,
+  "cold_leads_count": 1126,
+  "hot_threshold": 0.7,
+  "score_distribution": {
+    "min": 0.0,
+    "max": 100.0,
+    "mean": 38.8,
+    "median": 5.9,
+    "std": 44.8,
+    "p25": 0.6,
+    "p75": 97.8
+  },
+  "hot_leads": [
+    {
+      "rank": 1,
+      "lead_score": 100.0,
+      "predicted_proba": 0.9998,
+      "tags": "Closed by Horizzon",
+      "occupation": "Working Professional",
+      "lead_source": "Google",
+      "time_on_site": 811,
+      "page_views": 1.3,
+      "last_activity": "Email Link Clicked",
+      "shap_reasons": [
+        "High website engagement: 811s spent on site",
+        "Working professional (higher conversion likelihood)"
+      ]
+    },
+    {
+      "rank": 2,
+      "lead_score": 100.0,
+      "predicted_proba": 0.9997,
+      "tags": "Will revert after reading the email",
+      "occupation": "Unemployed",
+      "lead_source": "Organic Search",
+      "time_on_site": 1138,
+      "page_views": 2.0,
+      "last_activity": "SMS Sent",
+      "shap_reasons": [
+        "Pipeline stage 'Will revert after reading the email' strongly indicates intent (top predictor)",
+        "High website engagement: 1138s spent on site",
+        "Active communication: SMS Sent",
+        "Unemployed (lower conversion likelihood)"
+      ]
+    },
+    {
+      "rank": 3,
+      "lead_score": 100.0,
+      "predicted_proba": 0.9997,
+      "tags": "Will revert after reading the email",
+      "occupation": "Working Professional",
+      "lead_source": "Organic Search",
+      "time_on_site": 1189,
+      "page_views": 4.0,
+      "last_activity": "SMS Sent",
+      "shap_reasons": [
+        "Pipeline stage 'Will revert after reading the email' strongly indicates intent (top predictor)",
+        "High website engagement: 1189s spent on site",
+        "Active communication: SMS Sent",
+        "Working professional (higher conversion likelihood)"
+      ]
+    },
+    {
+      "rank": 4,
+      "lead_score": 100.0,
+      "predicted_proba": 0.9997,
+      "tags": "Closed by Horizzon",
+      "occupation": "Working Professional",
+      "lead_source": "Direct Traffic",
+      "time_on_site": 1115,
+      "page_views": 1.3,
+      "last_activity": "Page Visited on Website",
+      "shap_reasons": [
+        "High website engagement: 1115s spent on site",
+        "Working professional (higher conversion likelihood)"
+      ]
+    },
+    {
+      "rank": 5,
+      "lead_score": 100.0,
+      "predicted_proba": 0.9997,
+      "tags": "Lost to EINS",
+      "occupation": "Working Professional",
+      "lead_source": "Reference",
+      "time_on_site": 1721,
+      "page_views": 2.0,
+      "last_activity": "Modified",
+      "shap_reasons": [
+        "Pipeline stage 'Lost to EINS' signals disengagement",
+        "High website engagement: 1721s spent on site",
+        "Working professional (higher conversion likelihood)"
+      ]
+    },
+    {
+      "rank": 6,
+      "lead_score": 100.0,
+      "predicted_proba": 0.9997,
+      "tags": "Will revert after reading the email",
+      "occupation": "Unemployed",
+      "lead_source": "Direct Traffic",
+      "time_on_site": 1839,
+      "page_views": 2.0,
+      "last_activity": "SMS Sent",
+      "shap_reasons": [
+        "Pipeline stage 'Will revert after reading the email' strongly indicates intent (top predictor)",
+        "High website engagement: 1839s spent on site",
+        "Active communication: SMS Sent",
+        "Unemployed (lower conversion likelihood)"
+      ]
+    },
+    {
+      "rank": 7,
+      "lead_score": 100.0,
+      "predicted_proba": 0.9996,
+      "tags": "Will revert after reading the email",
+      "occupation": "Unemployed",
+      "lead_source": "Google",
+      "time_on_site": 842,
+      "page_views": 3.5,
+      "last_activity": "SMS Sent",
+      "shap_reasons": [
+        "Pipeline stage 'Will revert after reading the email' strongly indicates intent (top predictor)",
+        "High website engagement: 842s spent on site",
+        "Active communication: SMS Sent",
+        "Unemployed (lower conversion likelihood)"
+      ]
+    },
+    {
+      "rank": 8,
+      "lead_score": 100.0,
+      "predicted_proba": 0.9996,
+      "tags": "Closed by Horizzon",
+      "occupation": "Unemployed",
+      "lead_source": "Google",
+      "time_on_site": 1131,
+      "page_views": 5.0,
+      "last_activity": "Modified",
+      "shap_reasons": [
+        "High website engagement: 1131s spent on site",
+        "Unemployed (lower conversion likelihood)",
+        "Deep browsing: 5.0 pages per visit"
+      ]
+    },
+    {
+      "rank": 9,
+      "lead_score": 100.0,
+      "predicted_proba": 0.9996,
+      "tags": "Closed by Horizzon",
+      "occupation": "Unemployed",
+      "lead_source": "Reference",
+      "time_on_site": 1007,
+      "page_views": 2.0,
+      "last_activity": "Modified",
+      "shap_reasons": [
+        "High website engagement: 1007s spent on site",
+        "Unemployed (lower conversion likelihood)",
+        "Rated 'High in Relevance' by lead quality assessment"
+      ]
+    },
+    {
+      "rank": 10,
+      "lead_score": 100.0,
+      "predicted_proba": 0.9996,
+      "tags": "Closed by Horizzon",
+      "occupation": "Working Professional",
+      "lead_source": "Organic Search",
+      "time_on_site": 1584,
+      "page_views": 1.5,
+      "last_activity": "Modified",
+      "shap_reasons": [
+        "High website engagement: 1584s spent on site",
+        "Working professional (higher conversion likelihood)"
+      ]
+    }
+  ],
+  "top_predictive_features": [
+    {
+      "feature": "Tags",
+      "shap_importance": 2.4945
+    },
+    {
+      "feature": "Total Time Spent on Website",
+      "shap_importance": 0.7201
+    },
+    {
+      "feature": "Last Notable Activity",
+      "shap_importance": 0.6479
+    },
+    {
+      "feature": "What is your current occupation",
+      "shap_importance": 0.6341
+    },
+    {
+      "feature": "Last Activity",
+      "shap_importance": 0.4282
+    },
+    {
+      "feature": "Lead Quality",
+      "shap_importance": 0.3672
+    },
+    {
+      "feature": "Page Views Per Visit",
+      "shap_importance": 0.2834
+    },
+    {
+      "feature": "Specialization",
+      "shap_importance": 0.2413
+    },
+    {
+      "feature": "website_engagement_level",
+      "shap_importance": 0.177
+    },
+    {
+      "feature": "Lead Source",
+      "shap_importance": 0.1465
+    }
+  ],
+  "recommended_actions": [
+    {
+      "priority": "high",
+      "action": "Immediately follow up with 677 hot leads",
+      "detail": "These leads have >70% conversion probability. Prioritize personal outreach, phone calls, and demo scheduling."
+    },
+    {
+      "priority": "medium",
+      "action": "Nurture 45 warm leads with targeted content",
+      "detail": "These leads show moderate intent (40-70%). Use email sequences, case studies, and webinar invites."
+    },
+    {
+      "priority": "low",
+      "action": "Deprioritize 1126 cold leads",
+      "detail": "Low conversion probability (<40%). Keep in automated nurture campaigns but don't allocate sales time."
+    },
+    {
+      "priority": "medium",
+      "action": "Monitor pipeline stage transitions",
+      "detail": "'Tags' (pipeline stage) is the strongest conversion predictor. Leads moving to 'Will revert' or 'Ringing' stages deserve immediate attention."
+    }
+  ]
+}
