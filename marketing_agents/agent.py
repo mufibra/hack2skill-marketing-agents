@@ -1,9 +1,20 @@
 from google.adk.agents import LlmAgent
 from google.adk.tools.mcp_tool.mcp_toolset import MCPToolset, StdioConnectionParams
+from google.genai import types
 from mcp.client.stdio import StdioServerParameters
 
 import sys
 from pathlib import Path
+
+# Force sub-agents to ALWAYS call a tool (mode=ANY) instead of responding with text.
+# Root agent uses AUTO so it can synthesize text after collecting sub-agent results.
+FORCE_TOOL_CALL = types.GenerateContentConfig(
+    tool_config=types.ToolConfig(
+        function_calling_config=types.FunctionCallingConfig(
+            mode=types.FunctionCallingConfigMode.ANY,
+        )
+    )
+)
 
 PYTHON = sys.executable
 MCP_DIR = str(Path(__file__).resolve().parent.parent / "mcp_servers")
@@ -48,6 +59,7 @@ marketing_intel_agent = LlmAgent(
         "and present the full analysis. Don't ask \"what time period?\" — use all available data."
     ),
     tools=[_mcp("analytics_server.py")],
+    generate_content_config=FORCE_TOOL_CALL,
 )
 
 competitive_intel_agent = LlmAgent(
@@ -77,6 +89,7 @@ competitive_intel_agent = LlmAgent(
         '"how is HubSpot doing?", call scan_competitors("HubSpot").'
     ),
     tools=[_mcp("competitive_server.py")],
+    generate_content_config=FORCE_TOOL_CALL,
 )
 
 customer_intel_agent = LlmAgent(
@@ -111,6 +124,7 @@ customer_intel_agent = LlmAgent(
         'When asked "tell me about our customers", run all 3 tools and synthesize.'
     ),
     tools=[_mcp("customer_server.py")],
+    generate_content_config=FORCE_TOOL_CALL,
 )
 
 operations_agent = LlmAgent(
@@ -143,6 +157,7 @@ operations_agent = LlmAgent(
         'When asked "which channels perform best?", call get_attribution_analysis.'
     ),
     tools=[_mcp("operations_server.py")],
+    generate_content_config=FORCE_TOOL_CALL,
 )
 
 root_agent = LlmAgent(
