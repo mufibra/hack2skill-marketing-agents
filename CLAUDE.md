@@ -28,7 +28,7 @@ python api_server.py          # default port 8001
 
 ### Agent Hierarchy (`marketing_agents/agent.py`)
 
-`root_agent` (marketing_orchestrator, gemini-3.1-pro-preview) delegates to 4 sub-agents (all gemini-3.1-flash):
+`root_agent` (marketing_orchestrator, gemini-3.1-pro-preview) delegates to 4 sub-agents (all gemini-3.1-pro-preview):
 - `marketing_intel` — GA4 analytics, anomaly detection
 - `competitive_intel` — competitor share-of-voice, citations
 - `customer_intel` — sentiment, lead scoring, RFM segmentation
