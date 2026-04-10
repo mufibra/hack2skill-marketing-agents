@@ -162,7 +162,7 @@ operations_agent = LlmAgent(
 )
 
 root_agent = LlmAgent(
-    model="gemini-3.1-pro",
+    model="gemini-3.1-pro-preview",
     name="marketing_orchestrator",
     description="Root orchestrator that coordinates marketing intelligence sub-agents",
     instruction=(
