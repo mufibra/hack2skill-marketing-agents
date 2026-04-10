@@ -38,7 +38,7 @@ def agents():
     return {
         "orchestrator": {
             "name": "marketing_orchestrator",
-            "model": "gemini-2.5-flash",
+            "model": "gemini-3.1-flash",
             "tools": ["log_workflow", "log_action", "get_recent_workflows", "create_task"],
             "sub_agents": [
                 {

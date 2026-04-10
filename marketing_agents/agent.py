@@ -18,7 +18,7 @@ from .tools import (
 
 
 marketing_intel_agent = LlmAgent(
-    model="gemini-2.5-flash",
+    model="gemini-3.1-flash",
     name="marketing_intel",
     description="Marketing analytics: daily metrics, performance trends, anomaly detection",
     instruction=(
@@ -52,7 +52,7 @@ marketing_intel_agent = LlmAgent(
 )
 
 competitive_intel_agent = LlmAgent(
-    model="gemini-2.5-flash",
+    model="gemini-3.1-flash",
     name="competitive_intel",
     description="Competitor monitoring: share of voice, citations, sentiment, market positioning",
     instruction=(
@@ -86,7 +86,7 @@ competitive_intel_agent = LlmAgent(
 )
 
 customer_intel_agent = LlmAgent(
-    model="gemini-2.5-flash",
+    model="gemini-3.1-flash",
     name="customer_intel",
     description="Customer intelligence: sentiment analysis, lead scoring, segmentation and CLV",
     instruction=(
@@ -125,7 +125,7 @@ customer_intel_agent = LlmAgent(
 )
 
 operations_agent = LlmAgent(
-    model="gemini-2.5-flash",
+    model="gemini-3.1-flash",
     name="operations",
     description="Marketing operations: pipeline health, CRM funnel, ETL status, attribution modeling",
     instruction=(
@@ -162,7 +162,7 @@ operations_agent = LlmAgent(
 )
 
 root_agent = LlmAgent(
-    model="gemini-2.5-pro",
+    model="gemini-3.1-pro",
     name="marketing_orchestrator",
     description="Root orchestrator that coordinates marketing intelligence sub-agents",
     instruction=(
