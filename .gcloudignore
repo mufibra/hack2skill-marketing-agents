@@ -1,0 +1,22 @@
+.git/
+.gitignore
+venv/
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Local-only env / state
+_server.log
+_server.err
+_server.pid
+_vertex_smoke.py
+
+# GCP service account JSON key (must not ship into container)
+galvanic-smoke-489914-u7-*.json
+
+# Local databases (rebuilt at container build time)
+db/marketing_intel.db
+db/sessions.db

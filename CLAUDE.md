@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What This Is
 
-Google ADK (v1.28.1) multi-agent marketing intelligence platform. Five LlmAgents (1 root orchestrator + 4 sub-agents) query a 16-table SQLite database with 70K+ rows of marketing data. Dual-model architecture: Gemini 2.5 Pro for the root orchestrator, Gemini 2.5 Flash for sub-agents.
+Google ADK (v1.28.1) multi-agent marketing intelligence platform. Five LlmAgents (1 root orchestrator + 4 sub-agents) query a 16-table SQLite database with 70K+ rows of marketing data. All agents run on `gemini-3.1-pro-preview` via Vertex AI. The Cloud Run service is in `asia-southeast1`, but `GOOGLE_CLOUD_LOCATION=global` because Gemini 3.x is only served from the global Vertex endpoint.
 
 ## Commands
 
@@ -61,10 +61,32 @@ Contains upstream project implementations (briefing, competitive, sentiment, etc
 ## Environment Variables
 
 Requires `.env` with:
-- `GOOGLE_GENAI_API_KEY` — Gemini API key (used by ADK)
+- `GOOGLE_GENAI_USE_VERTEXAI=True` — route ADK Gemini calls through Vertex AI
+- `GOOGLE_CLOUD_PROJECT=galvanic-smoke-489914-u7`
+- `GOOGLE_CLOUD_LOCATION=global` (Gemini 3.x is only available on the global Vertex endpoint; the Cloud Run service still runs in `asia-southeast1`)
+
+Local auth: run `gcloud auth application-default login` and `gcloud auth application-default set-quota-project galvanic-smoke-489914-u7` once. Cloud Run uses the compute service account (`778200673789-compute@developer.gserviceaccount.com`) with `roles/aiplatform.user`.
+
+## Deployment
+
+Cloud Run service `hack2skill` in `asia-southeast1` (project `galvanic-smoke-489914-u7`):
+- Public URL: `https://hack2skill-778200673789.asia-southeast1.run.app`
+- `min-instances=1` (no cold starts)
+- Redeploy from source: `gcloud run deploy hack2skill --source . --region asia-southeast1`
 
 ## Key Patterns
 
 - Agent instructions include exact data shapes (row counts, column names, model accuracy) to prevent hallucination
 - `function_calling_config mode=ANY` forces sub-agents to always use tools before responding
 - The `mcp_servers/` directory exists but MCP is not used — all tools are in-process FunctionTool
+
+## Sprint Rules (Apr 29-30 — Top 100 refinement)
+
+This 2-day sprint involves a frontend collaborator (Asha) working in `frontend/`. To avoid stomping each other's work:
+
+- **Don't edit `frontend/`** — that's Asha's territory, owned via Cursor
+- **SPEC.md is locked** after Day 1 morning sync. Don't change response schemas unilaterally
+- **Every tool function must log SQL** and return `{"result": ..., "sql": "..."}` per SPEC.md (needed for the Query Viewer feature)
+- **No new dependencies** without asking — sprint is feature-focused, not refactor-focused
+- **No `gcloud run deploy`** until Day 2 afternoon — keep iterations local until features are stable
+- **Branch then merge.** Backend work on `feature/backend-modes`, never direct to main
