@@ -42,9 +42,11 @@ marketing_intel_agent = LlmAgent(
         "YOUR DATA: 186 rows of daily metrics covering sessions, users, page views, purchases, "
         "and revenue. Includes a notable Jan 18 traffic spike.\n\n"
 
-        "BEHAVIOR: Always call your tools FIRST. Then emit findings as labeled sections — "
-        "the orchestrator will lift these fields into the response card JSON. Do NOT emit "
-        "JSON yourself.\n\n"
+        "BEHAVIOR: Always call your tools FIRST. Each tool now returns "
+        '{"result": ..., "sql": ...} — read your data from result, and collect every sql '
+        "string (or every item if sql is a list) so you can list them in the SQL_QUERIES "
+        "section below. Then emit findings as labeled sections — the orchestrator will "
+        "lift these fields into the response card JSON. Do NOT emit JSON yourself.\n\n"
 
         "OUTPUT (return as labeled sections, in this exact order):\n"
         "HEADLINE: <1 sentence, max 80 chars, tone-matched>\n"
@@ -52,7 +54,11 @@ marketing_intel_agent = LlmAgent(
         "  - <label> | <value> | <delta-or-blank>\n"
         "  - ... (1–4 items total)\n"
         "INSIGHT: <1–3 sentences, tone-matched>\n"
-        "ACTION: <imperative phrase starting with a verb>\n\n"
+        "ACTION: <imperative phrase starting with a verb>\n"
+        "SQL_QUERIES:\n"
+        "  - <sql string from tool call 1>\n"
+        "  - ... (every sql string from every tool you called this turn, in call order; "
+        "preserve `?` placeholders, do not substitute params)\n\n"
 
         'Example: When asked "[tone:executive] how\'s marketing doing?", call '
         "get_morning_briefing immediately and emit the labeled sections. Don't ask "
@@ -92,7 +98,10 @@ competitive_intel_agent = LlmAgent(
         "YOUR DATA: 512 citations across multiple brands analyzed from buyer-intent prompts, "
         "with sentiment scores, citation positions, and cross-platform analysis.\n\n"
 
-        "BEHAVIOR: Always call your tools FIRST. Then emit findings as labeled sections — "
+        "BEHAVIOR: Always call your tools FIRST. Each tool now returns "
+        '{"result": ..., "sql": ...} — read your data from result, and collect every sql '
+        "string (or every item if sql is a list) so you can list them in the SQL_QUERIES "
+        "section at the bottom of your output. Then emit findings as labeled sections — "
         "the orchestrator will lift these fields into the response card or battlecard JSON. "
         "Do NOT emit JSON yourself.\n\n"
 
@@ -109,7 +118,11 @@ competitive_intel_agent = LlmAgent(
         "  - <label> | <value> | <delta-or-blank>\n"
         "  - ... (1–4 items: share-of-voice leaders, sentiment leader, etc.)\n"
         "INSIGHT: <1–3 sentences on cross-platform differences or shifts, tone-matched>\n"
-        "ACTION: <imperative phrase starting with a verb — strategic response>\n\n"
+        "ACTION: <imperative phrase starting with a verb — strategic response>\n"
+        "SQL_QUERIES:\n"
+        "  - <sql string from tool call 1>\n"
+        "  - ... (every sql string from every tool you called this turn, in call order; "
+        "preserve `?` placeholders, do not substitute params)\n\n"
 
         "OUTPUT — BATTLECARD MODE (return as labeled sections, in this exact order):\n"
         "SUBJECTS:\n"
@@ -127,7 +140,11 @@ competitive_intel_agent = LlmAgent(
         "    METRICS: ... (same shape)\n"
         "    STRENGTHS: ... (2–4)\n"
         "    WEAKNESSES: ... (2–4)\n"
-        "(Exactly 2 subjects.)\n\n"
+        "(Exactly 2 subjects.)\n"
+        "SQL_QUERIES:\n"
+        "  - <sql string from tool call 1>\n"
+        "  - ... (every sql string from every tool you called this turn, in call order; "
+        "preserve `?` placeholders, do not substitute params)\n\n"
 
         'Example: When asked "[tone:executive] what are competitors doing?", call '
         "scan_competitors() with no filter and emit CARD MODE sections. When asked "
@@ -174,9 +191,11 @@ customer_intel_agent = LlmAgent(
         "- Questions about customer groups, lifetime value, segments, churn → get_customer_segments\n"
         '- General "tell me about customers" → run ALL three tools\n\n'
 
-        "BEHAVIOR: Always call your tools FIRST. Then emit findings as labeled sections — "
-        "the orchestrator will lift these fields into the response card JSON. Do NOT emit "
-        "JSON yourself.\n\n"
+        "BEHAVIOR: Always call your tools FIRST. Each tool now returns "
+        '{"result": ..., "sql": ...} — read your data from result, and collect every sql '
+        "string (or every item if sql is a list) so you can list them in the SQL_QUERIES "
+        "section below. Then emit findings as labeled sections — the orchestrator will "
+        "lift these fields into the response card JSON. Do NOT emit JSON yourself.\n\n"
 
         "OUTPUT (return as labeled sections, in this exact order):\n"
         "HEADLINE: <1 sentence, max 80 chars, tone-matched>\n"
@@ -184,7 +203,11 @@ customer_intel_agent = LlmAgent(
         "  - <label> | <value> | <delta-or-blank>\n"
         "  - ... (1–4 items total — pick the most decision-relevant)\n"
         "INSIGHT: <1–3 sentences, tone-matched, covers problem areas / risks>\n"
-        "ACTION: <imperative phrase starting with a verb>\n\n"
+        "ACTION: <imperative phrase starting with a verb>\n"
+        "SQL_QUERIES:\n"
+        "  - <sql string from tool call 1>\n"
+        "  - ... (every sql string from every tool you called this turn, in call order; "
+        "preserve `?` placeholders, do not substitute params)\n\n"
 
         'Example: When asked "[tone:executive] how do customers feel?", call '
         'analyze_sentiment immediately and emit the labeled sections. When asked '
@@ -231,9 +254,11 @@ operations_agent = LlmAgent(
         "- Questions about channels, attribution, ROI, which marketing works → get_attribution_analysis\n"
         '- General "operations status" → run BOTH tools\n\n'
 
-        "BEHAVIOR: Always call your tools FIRST. Then emit findings as labeled sections — "
-        "the orchestrator will lift these fields into the response card JSON. Do NOT emit "
-        "JSON yourself.\n\n"
+        "BEHAVIOR: Always call your tools FIRST. Each tool now returns "
+        '{"result": ..., "sql": ...} — read your data from result, and collect every sql '
+        "string (or every item if sql is a list) so you can list them in the SQL_QUERIES "
+        "section below. Then emit findings as labeled sections — the orchestrator will "
+        "lift these fields into the response card JSON. Do NOT emit JSON yourself.\n\n"
 
         "OUTPUT (return as labeled sections, in this exact order):\n"
         "HEADLINE: <1 sentence, max 80 chars, tone-matched>\n"
@@ -241,7 +266,11 @@ operations_agent = LlmAgent(
         "  - <label> | <value> | <delta-or-blank>\n"
         "  - ... (1–4 items total — pipeline value, conversion rate, top channel, etc.)\n"
         "INSIGHT: <1–3 sentences, tone-matched, surface bottlenecks or underperforming channels>\n"
-        "ACTION: <imperative phrase starting with a verb — where to invest or cut>\n\n"
+        "ACTION: <imperative phrase starting with a verb — where to invest or cut>\n"
+        "SQL_QUERIES:\n"
+        "  - <sql string from tool call 1>\n"
+        "  - ... (every sql string from every tool you called this turn, in call order; "
+        "preserve `?` placeholders, do not substitute params)\n\n"
 
         'Example: When asked "[tone:executive] how\'s the pipeline?", call '
         'check_pipeline_health immediately and emit the labeled sections. When asked '
@@ -362,22 +391,33 @@ root_agent = LlmAgent(
         "'XGBoost', 'RFM'), no SQL strings in the insight body\n\n"
 
         "MAPPING SUB-AGENT OUTPUT → CARD JSON:\n"
-        "Sub-agents return labeled sections (HEADLINE / METRICS / INSIGHT / ACTION, or "
-        "SUBJECTS for battlecards). Lift each section directly:\n"
+        "Sub-agents return labeled sections (HEADLINE / METRICS / INSIGHT / ACTION / "
+        "SQL_QUERIES, or SUBJECTS / SQL_QUERIES for battlecards). Lift each section "
+        "directly:\n"
         "- sub-agent 'HEADLINE: X' → {\"headline\": \"X\"}\n"
         "- sub-agent 'METRICS:\\n  - L | V | D' → {\"metrics\":[{\"label\":\"L\","
         "\"value\":\"V\",\"delta\":\"D\"}]}  (omit delta key if D is blank)\n"
         "- sub-agent 'INSIGHT: X' → {\"insight\": \"X\"}\n"
         "- sub-agent 'ACTION: X' → {\"action\": \"X\"}\n"
+        "- sub-agent 'SQL_QUERIES:\\n  - X\\n  - Y' → contributes [\"X\", \"Y\"] to the "
+        "top-level sql_queries array (see SQL_QUERIES FIELD rules above)\n"
         "- For battlecards, lift SUBJECTS / NAME / METRICS / STRENGTHS / WEAKNESSES "
         "into the corresponding JSON keys.\n"
         "When chaining multiple sub-agents, merge metrics (cap at 4 most decision-relevant) "
-        "and combine insights into a single 1–3 sentence summary in the orchestrator's tone.\n\n"
+        "and combine insights into a single 1–3 sentence summary in the orchestrator's tone. "
+        "Concatenate SQL_QUERIES from all sub-agents (preserve order, dedup exact matches).\n\n"
 
         "SQL_QUERIES FIELD:\n"
-        "Set sql_queries to []. (TODO: when tools.py is updated to return "
-        "{result, sql} per SPEC, aggregate the sql strings from all tool calls in this "
-        "session into the array, deduplicated, preserving call order.)\n\n"
+        "Aggregate every SQL string from sub-agent SQL_QUERIES sections into the top-level "
+        "sql_queries array of your final card or battlecard JSON.\n"
+        "- Read each sub-agent's SQL_QUERIES labeled section and append every listed SQL "
+        "string to sql_queries, in the order they appeared, deduplicating exact-string "
+        "matches across sub-agents.\n"
+        "- DO NOT include SQL from your own orchestrator tools (log_workflow, log_action, "
+        "get_recent_workflows, create_task). Those are infrastructure write/read calls, "
+        "not data queries the user asked for. The Query Viewer is for data queries only.\n"
+        "- If no sub-agent ran tools (rare), emit \"sql_queries\": [].\n"
+        "- SQL strings preserve `?` placeholders — do not substitute parameters in.\n\n"
 
         "MULTI-QUERY SESSIONS:\n"
         "After a sub-agent completes its analysis and returns control to you, you are "
