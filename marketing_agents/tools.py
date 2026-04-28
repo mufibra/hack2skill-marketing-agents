@@ -1,10 +1,14 @@
 """Plain Python tool functions for ADK FunctionTool.
 
-Each function queries SQLite directly and returns a dict.
+Each function queries SQLite directly and returns
+``{"result": <data dict>, "sql": <str | list[str]>}``. The SQL strings are the
+literal queries executed (with ``?`` placeholders intact); they are also
+printed at runtime via ``[SQL] ...`` log lines and surfaced by the orchestrator
+into the ``sql_queries`` field of the final response card.
+
 ADK auto-wraps these as FunctionTool and serializes return values to JSON.
 """
 
-import json
 import math
 import sqlite3
 from datetime import datetime
@@ -19,14 +23,30 @@ def _conn():
     return conn
 
 
+def _logged_execute(conn, sqls, query, params=()):
+    """Execute SQL, recording it for the response and stdout.
+
+    Stores the literal query string with ``?`` placeholders intact — params are
+    NOT substituted in. Frontend Query Viewer displays as-is.
+    """
+    stripped = query.strip()
+    print(f"[SQL] {stripped}")
+    sqls.append(stripped)
+    return conn.execute(query, params)
+
+
+def _shape_sql(sqls):
+    """Per SPEC: single query → string, multiple → list of strings."""
+    return sqls[0] if len(sqls) == 1 else sqls
+
+
 # ═══════════════════════════════════════════════════════════════════════
 # ANALYTICS TOOLS (from mcp_servers/analytics_server.py)
 # ═══════════════════════════════════════════════════════════════════════
 
-def _query_daily_totals(limit=31):
+def _query_daily_totals(limit=31, _sqls=None):
     conn = _conn()
-    rows = conn.execute(
-        """
+    query = """
         SELECT date,
                SUM(users)      AS users,
                SUM(sessions)   AS sessions,
@@ -37,9 +57,11 @@ def _query_daily_totals(limit=31):
         GROUP BY date
         ORDER BY date DESC
         LIMIT ?
-        """,
-        (limit,),
-    ).fetchall()
+        """
+    if _sqls is not None:
+        rows = _logged_execute(conn, _sqls, query, (limit,)).fetchall()
+    else:
+        rows = conn.execute(query, (limit,)).fetchall()
     conn.close()
     return [dict(r) for r in reversed(rows)]
 
@@ -89,14 +111,12 @@ def _compute_anomalies(daily_rows, window=7, warn_threshold=2.0, crit_threshold=
 
 
 def get_morning_briefing() -> dict:
-    """Get the morning marketing briefing with period summary and anomaly detection.
-
-    Returns totals, daily averages, conversion rate, revenue per session,
-    best/worst days, and all anomalies detected via z-score analysis."""
-    daily = _query_daily_totals(31)
+    """Get the morning marketing briefing with period summary and anomaly detection."""
+    sqls = []
+    daily = _query_daily_totals(31, _sqls=sqls)
 
     if not daily:
-        return {"error": "No data in daily_metrics table"}
+        return {"result": {"error": "No data in daily_metrics table"}, "sql": _shape_sql(sqls)}
 
     n = len(daily)
     metrics = ["sessions", "users", "page_views", "purchases", "revenue"]
@@ -124,7 +144,7 @@ def get_morning_briefing() -> dict:
     latest = daily[-1]
     anomalies = _compute_anomalies(daily)
 
-    return {
+    result = {
         "report_date": latest["date"],
         "period": {"start": daily[0]["date"], "end": daily[-1]["date"], "days": n},
         "latest_day": latest,
@@ -141,41 +161,40 @@ def get_morning_briefing() -> dict:
             "details": anomalies,
         },
     }
+    return {"result": result, "sql": _shape_sql(sqls)}
 
 
 def detect_anomalies() -> dict:
-    """Detect statistical anomalies in marketing metrics using z-score analysis.
-
-    Returns only the anomalies found, each with date, metric, value,
-    rolling average, z-score, severity (WARNING or CRITICAL), and percent change."""
-    daily = _query_daily_totals(31)
+    """Detect statistical anomalies in marketing metrics using z-score analysis."""
+    sqls = []
+    daily = _query_daily_totals(31, _sqls=sqls)
 
     if not daily:
-        return {"error": "No data in daily_metrics table"}
+        return {"result": {"error": "No data in daily_metrics table"}, "sql": _shape_sql(sqls)}
 
     anomalies = _compute_anomalies(daily)
 
-    return {
+    result = {
         "period": {"start": daily[0]["date"], "end": daily[-1]["date"]},
         "total_anomalies": len(anomalies),
         "critical": [a for a in anomalies if a["severity"] == "CRITICAL"],
         "warnings": [a for a in anomalies if a["severity"] == "WARNING"],
     }
+    return {"result": result, "sql": _shape_sql(sqls)}
 
 
 # ═══════════════════════════════════════════════════════════════════════
 # COMPETITIVE TOOLS (from mcp_servers/competitive_server.py)
 # ═══════════════════════════════════════════════════════════════════════
 
-def _brand_metrics(conn, platform_filter=None):
+def _brand_metrics(conn, platform_filter=None, _sqls=None):
     where = ""
     params = ()
     if platform_filter:
         where = "WHERE resp.platform = ?"
         params = (platform_filter,)
 
-    rows = conn.execute(
-        f"""
+    query = f"""
         SELECT c.brand_mentioned,
                COUNT(*)                          AS citation_count,
                AVG(CASE WHEN c.sentiment = 'positive' THEN 1.0
@@ -190,9 +209,11 @@ def _brand_metrics(conn, platform_filter=None):
         {where}
         GROUP BY c.brand_mentioned
         ORDER BY citation_count DESC
-        """,
-        params,
-    ).fetchall()
+        """
+    if _sqls is not None:
+        rows = _logged_execute(conn, _sqls, query, params).fetchall()
+    else:
+        rows = conn.execute(query, params).fetchall()
 
     total_citations = sum(r["citation_count"] for r in rows) if rows else 1
 
@@ -222,14 +243,11 @@ def _brand_metrics(conn, platform_filter=None):
 
 
 def scan_competitors(competitors: str = "") -> dict:
-    """Scan the competitive landscape for share-of-voice, sentiment, and citation quality.
-
-    Pass comma-separated brand names to filter (e.g. 'HubSpot,Salesforce'),
-    or leave empty for all tracked brands. Returns per-brand analysis,
-    platform breakdown, and cross-platform differences."""
+    """Scan the competitive landscape for share-of-voice, sentiment, and citation quality."""
     conn = _conn()
+    sqls = []
 
-    all_brands = _brand_metrics(conn)
+    all_brands = _brand_metrics(conn, _sqls=sqls)
 
     matched = {}
     if competitors.strip():
@@ -242,13 +260,14 @@ def scan_competitors(competitors: str = "") -> dict:
     if not matched:
         matched = all_brands
 
-    platforms = [r[0] for r in conn.execute(
-        "SELECT DISTINCT platform FROM competitive_responses"
+    platforms = [r[0] for r in _logged_execute(
+        conn, sqls,
+        "SELECT DISTINCT platform FROM competitive_responses",
     ).fetchall()]
 
     platform_comparison = {}
     for platform in platforms:
-        platform_comparison[platform] = _brand_metrics(conn, platform_filter=platform)
+        platform_comparison[platform] = _brand_metrics(conn, platform_filter=platform, _sqls=sqls)
 
     changes = []
     if len(platforms) >= 2:
@@ -274,18 +293,20 @@ def scan_competitors(competitors: str = "") -> dict:
                     "note": f"{brand} SoV differs by {abs(diff)}pp between {p1} and {p2}",
                 })
 
-    runs = conn.execute(
-        "SELECT * FROM competitive_runs ORDER BY run_date DESC LIMIT 5"
+    runs = _logged_execute(
+        conn, sqls,
+        "SELECT * FROM competitive_runs ORDER BY run_date DESC LIMIT 5",
     ).fetchall()
     run_info = [dict(r) for r in runs]
 
-    categories = conn.execute(
-        "SELECT category, COUNT(*) AS cnt FROM competitive_prompts GROUP BY category ORDER BY cnt DESC"
+    categories = _logged_execute(
+        conn, sqls,
+        "SELECT category, COUNT(*) AS cnt FROM competitive_prompts GROUP BY category ORDER BY cnt DESC",
     ).fetchall()
 
     conn.close()
 
-    return {
+    result = {
         "scan_summary": {
             "total_citations": sum(b["citation_count"] for b in matched.values()),
             "brands_tracked": len(matched),
@@ -297,23 +318,24 @@ def scan_competitors(competitors: str = "") -> dict:
         "cross_platform_changes": changes,
         "recent_runs": run_info,
     }
+    return {"result": result, "sql": _shape_sql(sqls)}
 
 
 def get_competitive_history() -> dict:
-    """Get historical competitive scan data showing trends over time.
-
-    Returns past scan timestamps and per-run brand metrics including
-    citation counts, share-of-voice, sentiment, and position."""
+    """Get historical competitive scan data showing trends over time."""
     conn = _conn()
+    sqls = []
 
-    runs = conn.execute(
-        "SELECT * FROM competitive_runs ORDER BY run_date"
+    runs = _logged_execute(
+        conn, sqls,
+        "SELECT * FROM competitive_runs ORDER BY run_date",
     ).fetchall()
 
     history = []
     for run in runs:
         platform = run["platform"]
-        brand_data = conn.execute(
+        brand_data = _logged_execute(
+            conn, sqls,
             """
             SELECT c.brand_mentioned,
                    COUNT(*)  AS citations,
@@ -352,10 +374,11 @@ def get_competitive_history() -> dict:
 
     conn.close()
 
-    return {
+    result = {
         "total_runs": len(history),
         "history": history,
     }
+    return {"result": result, "sql": _shape_sql(sqls)}
 
 
 # ═══════════════════════════════════════════════════════════════════════
@@ -363,19 +386,20 @@ def get_competitive_history() -> dict:
 # ═══════════════════════════════════════════════════════════════════════
 
 def analyze_sentiment() -> dict:
-    """Analyze customer sentiment from 10,000 support tickets.
-
-    Returns sentiment distribution, per-category breakdown with negativity
-    ranking, high-priority negative tickets, resolution stats, and plan breakdown."""
+    """Analyze customer sentiment from 10,000 support tickets."""
     conn = _conn()
+    sqls = []
 
-    total = conn.execute("SELECT COUNT(*) AS n FROM support_tickets").fetchone()["n"]
+    total = _logged_execute(
+        conn, sqls, "SELECT COUNT(*) AS n FROM support_tickets"
+    ).fetchone()["n"]
     if total == 0:
         conn.close()
-        return {"error": "No support tickets in database"}
+        return {"result": {"error": "No support tickets in database"}, "sql": _shape_sql(sqls)}
 
-    dist = conn.execute(
-        "SELECT sentiment_label, COUNT(*) AS count FROM support_tickets GROUP BY sentiment_label"
+    dist = _logged_execute(
+        conn, sqls,
+        "SELECT sentiment_label, COUNT(*) AS count FROM support_tickets GROUP BY sentiment_label",
     ).fetchall()
 
     sentiment_dist = {}
@@ -388,7 +412,8 @@ def analyze_sentiment() -> dict:
         sentiment_score += score_map.get(label, 0) * cnt
     sentiment_score = round(sentiment_score / total, 3)
 
-    cats = conn.execute(
+    cats = _logged_execute(
+        conn, sqls,
         """
         SELECT category,
                COUNT(*) AS total,
@@ -399,7 +424,7 @@ def analyze_sentiment() -> dict:
         FROM support_tickets
         GROUP BY category
         ORDER BY negative DESC
-        """
+        """,
     ).fetchall()
 
     categories = []
@@ -415,7 +440,8 @@ def analyze_sentiment() -> dict:
             "avg_resolve_days": r["avg_resolve_days"],
         })
 
-    high_neg = conn.execute(
+    high_neg = _logged_execute(
+        conn, sqls,
         """
         SELECT ticket_id, customer_id, customer_name, customer_plan,
                category, text, resolution_status, days_to_resolve
@@ -423,29 +449,31 @@ def analyze_sentiment() -> dict:
         WHERE sentiment_label = 'negative' AND priority = 'high'
         ORDER BY days_to_resolve DESC
         LIMIT 10
-        """
+        """,
     ).fetchall()
 
-    resolution = conn.execute(
+    resolution = _logged_execute(
+        conn, sqls,
         """
         SELECT resolution_status, COUNT(*) AS count,
                ROUND(AVG(days_to_resolve), 1) AS avg_days
         FROM support_tickets GROUP BY resolution_status
-        """
+        """,
     ).fetchall()
 
-    plans = conn.execute(
+    plans = _logged_execute(
+        conn, sqls,
         """
         SELECT customer_plan, COUNT(*) AS total,
                SUM(CASE WHEN sentiment_label = 'negative' THEN 1 ELSE 0 END) AS negative,
                ROUND(AVG(days_to_resolve), 1) AS avg_resolve_days
         FROM support_tickets GROUP BY customer_plan ORDER BY total DESC
-        """
+        """,
     ).fetchall()
 
     conn.close()
 
-    return {
+    result = {
         "total_tickets": total,
         "overall_sentiment_score": sentiment_score,
         "sentiment_distribution": sentiment_dist,
@@ -463,25 +491,23 @@ def analyze_sentiment() -> dict:
         ],
         "high_priority_negatives": [dict(r) for r in high_neg],
     }
+    return {"result": result, "sql": _shape_sql(sqls)}
 
 
 def score_leads(hot_threshold: float = 80.0, warm_threshold: float = 50.0) -> dict:
-    """Score and classify leads as hot, warm, or cold based on XGBoost predictions.
-
-    Args:
-        hot_threshold: Score above this is hot (default 80).
-        warm_threshold: Score above this but below hot is warm (default 50).
-
-    Returns distribution, conversion accuracy (93.8%), feature insights,
-    and top hot leads."""
+    """Score and classify leads as hot, warm, or cold based on XGBoost predictions."""
     conn = _conn()
+    sqls = []
 
-    total = conn.execute("SELECT COUNT(*) AS n FROM scored_leads").fetchone()["n"]
+    total = _logged_execute(
+        conn, sqls, "SELECT COUNT(*) AS n FROM scored_leads"
+    ).fetchone()["n"]
     if total == 0:
         conn.close()
-        return {"error": "No scored leads in database"}
+        return {"result": {"error": "No scored leads in database"}, "sql": _shape_sql(sqls)}
 
-    buckets = conn.execute(
+    buckets = _logged_execute(
+        conn, sqls,
         """
         SELECT
             SUM(CASE WHEN lead_score >= ? THEN 1 ELSE 0 END) AS hot,
@@ -498,16 +524,18 @@ def score_leads(hot_threshold: float = 80.0, warm_threshold: float = 50.0) -> di
         "cold": {"count": buckets["cold"], "percent": round(buckets["cold"] / total * 100, 1)},
     }
 
-    stats = conn.execute(
+    stats = _logged_execute(
+        conn, sqls,
         """
         SELECT ROUND(MIN(lead_score), 1) AS min_score,
                ROUND(MAX(lead_score), 1) AS max_score,
                ROUND(AVG(lead_score), 1) AS avg_score
         FROM scored_leads
-        """
+        """,
     ).fetchone()
 
-    accuracy = conn.execute(
+    accuracy = _logged_execute(
+        conn, sqls,
         """
         SELECT
             COUNT(*) AS total,
@@ -515,10 +543,11 @@ def score_leads(hot_threshold: float = 80.0, warm_threshold: float = 50.0) -> di
             SUM(actual_converted) AS actual_conversions,
             SUM(predicted_converted) AS predicted_conversions
         FROM scored_leads
-        """
+        """,
     ).fetchone()
 
-    top_leads = conn.execute(
+    top_leads = _logged_execute(
+        conn, sqls,
         """
         SELECT id, lead_source, current_occupation, tags,
                website_engagement_level, lead_score, predicted_proba,
@@ -533,25 +562,29 @@ def score_leads(hot_threshold: float = 80.0, warm_threshold: float = 50.0) -> di
 
     feature_insights = {}
 
-    sources = conn.execute(
+    sources = _logged_execute(
+        conn, sqls,
         "SELECT lead_source, COUNT(*) AS cnt FROM scored_leads WHERE lead_score >= ? GROUP BY lead_source ORDER BY cnt DESC LIMIT 5",
         (hot_threshold,),
     ).fetchall()
     feature_insights["top_lead_sources"] = {r["lead_source"]: r["cnt"] for r in sources}
 
-    eng = conn.execute(
+    eng = _logged_execute(
+        conn, sqls,
         "SELECT website_engagement_level, COUNT(*) AS cnt FROM scored_leads WHERE lead_score >= ? GROUP BY website_engagement_level ORDER BY cnt DESC",
         (hot_threshold,),
     ).fetchall()
     feature_insights["engagement_levels"] = {r["website_engagement_level"]: r["cnt"] for r in eng}
 
-    tags = conn.execute(
+    tags = _logged_execute(
+        conn, sqls,
         "SELECT tags, COUNT(*) AS cnt FROM scored_leads WHERE lead_score >= ? GROUP BY tags ORDER BY cnt DESC LIMIT 5",
         (hot_threshold,),
     ).fetchall()
     feature_insights["top_tags"] = {r["tags"]: r["cnt"] for r in tags}
 
-    hot_vs_cold = conn.execute(
+    hot_vs_cold = _logged_execute(
+        conn, sqls,
         """
         SELECT
             CASE WHEN lead_score >= ? THEN 'hot' ELSE 'cold' END AS bucket,
@@ -569,7 +602,7 @@ def score_leads(hot_threshold: float = 80.0, warm_threshold: float = 50.0) -> di
 
     conn.close()
 
-    return {
+    result = {
         "total_leads": total,
         "thresholds": {"hot": hot_threshold, "warm": warm_threshold},
         "score_stats": dict(stats),
@@ -584,21 +617,23 @@ def score_leads(hot_threshold: float = 80.0, warm_threshold: float = 50.0) -> di
         "feature_insights": feature_insights,
         "top_hot_leads": [dict(r) for r in top_leads],
     }
+    return {"result": result, "sql": _shape_sql(sqls)}
 
 
 def get_customer_segments() -> dict:
-    """Get customer segmentation with RFM scores, K-Means clusters, and CLV predictions.
-
-    Returns per-segment stats, per-cluster stats, CLV tier distribution,
-    top 10 highest-value customers, and at-risk high-value customers."""
+    """Get customer segmentation with RFM scores, K-Means clusters, and CLV predictions."""
     conn = _conn()
+    sqls = []
 
-    total = conn.execute("SELECT COUNT(*) AS n FROM customer_segments").fetchone()["n"]
+    total = _logged_execute(
+        conn, sqls, "SELECT COUNT(*) AS n FROM customer_segments"
+    ).fetchone()["n"]
     if total == 0:
         conn.close()
-        return {"error": "No customer segments in database"}
+        return {"result": {"error": "No customer segments in database"}, "sql": _shape_sql(sqls)}
 
-    segments = conn.execute(
+    segments = _logged_execute(
+        conn, sqls,
         """
         SELECT segment, COUNT(*) AS count,
                ROUND(AVG(recency), 0) AS avg_recency,
@@ -607,7 +642,7 @@ def get_customer_segments() -> dict:
                ROUND(AVG(clv), 0) AS avg_clv,
                ROUND(AVG(prob_alive), 3) AS avg_prob_alive
         FROM customer_segments GROUP BY segment ORDER BY avg_clv DESC
-        """
+        """,
     ).fetchall()
 
     segment_list = []
@@ -623,7 +658,8 @@ def get_customer_segments() -> dict:
             "avg_prob_alive": r["avg_prob_alive"],
         })
 
-    clusters = conn.execute(
+    clusters = _logged_execute(
+        conn, sqls,
         """
         SELECT cluster_name, cluster_action, COUNT(*) AS count,
                ROUND(AVG(recency), 0) AS avg_recency,
@@ -631,7 +667,7 @@ def get_customer_segments() -> dict:
                ROUND(AVG(monetary), 0) AS avg_monetary,
                ROUND(AVG(clv), 0) AS avg_clv
         FROM customer_segments GROUP BY cluster_name ORDER BY avg_clv DESC
-        """
+        """,
     ).fetchall()
 
     cluster_list = [
@@ -648,7 +684,8 @@ def get_customer_segments() -> dict:
         for r in clusters
     ]
 
-    tiers = conn.execute(
+    tiers = _logged_execute(
+        conn, sqls,
         """
         SELECT CASE WHEN clv_tier = '' OR clv_tier IS NULL THEN 'No CLV (one-time)'
                     ELSE clv_tier END AS tier,
@@ -656,7 +693,7 @@ def get_customer_segments() -> dict:
                ROUND(AVG(clv), 0) AS avg_clv,
                ROUND(SUM(clv), 0) AS total_clv
         FROM customer_segments GROUP BY tier ORDER BY avg_clv DESC
-        """
+        """,
     ).fetchall()
 
     clv_tiers = [
@@ -670,16 +707,18 @@ def get_customer_segments() -> dict:
         for r in tiers
     ]
 
-    top_customers = conn.execute(
+    top_customers = _logged_execute(
+        conn, sqls,
         """
         SELECT customer_id, segment, cluster_name, clv, clv_tier,
                prob_alive, recency, frequency, monetary
         FROM customer_segments WHERE clv IS NOT NULL
         ORDER BY clv DESC LIMIT 10
-        """
+        """,
     ).fetchall()
 
-    at_risk = conn.execute(
+    at_risk = _logged_execute(
+        conn, sqls,
         """
         SELECT customer_id, segment, cluster_name, clv, clv_tier,
                prob_alive, recency, frequency, monetary
@@ -688,12 +727,12 @@ def get_customer_segments() -> dict:
           AND clv_tier IN ('Platinum', 'High')
           AND (prob_alive < 0.5 OR recency > 200)
         ORDER BY clv DESC LIMIT 10
-        """
+        """,
     ).fetchall()
 
     conn.close()
 
-    return {
+    result = {
         "total_customers": total,
         "rfm_segments": segment_list,
         "clusters": cluster_list,
@@ -701,6 +740,7 @@ def get_customer_segments() -> dict:
         "top_customers": [dict(r) for r in top_customers],
         "at_risk_high_value": [dict(r) for r in at_risk],
     }
+    return {"result": result, "sql": _shape_sql(sqls)}
 
 
 # ═══════════════════════════════════════════════════════════════════════
@@ -708,27 +748,29 @@ def get_customer_segments() -> dict:
 # ═══════════════════════════════════════════════════════════════════════
 
 def check_pipeline_health() -> dict:
-    """Check sales pipeline and ETL health.
-
-    Returns pipeline status (healthy/degraded/critical), ETL run history
-    with success rates, CRM deal funnel with $8.6M pipeline across 6
-    lifecycle stages, and industry breakdown."""
+    """Check sales pipeline and ETL health."""
     conn = _conn()
+    sqls = []
 
-    total_runs = conn.execute("SELECT COUNT(*) AS n FROM pipeline_runs").fetchone()["n"]
+    total_runs = _logged_execute(
+        conn, sqls, "SELECT COUNT(*) AS n FROM pipeline_runs"
+    ).fetchone()["n"]
 
-    latest = conn.execute(
-        "SELECT * FROM pipeline_runs ORDER BY run_date DESC LIMIT 1"
+    latest = _logged_execute(
+        conn, sqls,
+        "SELECT * FROM pipeline_runs ORDER BY run_date DESC LIMIT 1",
     ).fetchone()
 
-    recent = conn.execute(
-        "SELECT * FROM pipeline_runs ORDER BY run_date DESC LIMIT 7"
+    recent = _logged_execute(
+        conn, sqls,
+        "SELECT * FROM pipeline_runs ORDER BY run_date DESC LIMIT 7",
     ).fetchall()
 
     success_count = sum(1 for r in recent if r["status"] == "success")
     success_rate = round(success_count / len(recent) * 100, 1) if recent else 0
 
-    avg_stats = conn.execute(
+    avg_stats = _logged_execute(
+        conn, sqls,
         """
         SELECT ROUND(AVG(rows_extracted), 0) AS avg_extracted,
                ROUND(AVG(rows_loaded), 0) AS avg_loaded,
@@ -736,15 +778,16 @@ def check_pipeline_health() -> dict:
                ROUND(MIN(rows_loaded), 0) AS min_loaded,
                ROUND(MAX(rows_loaded), 0) AS max_loaded
         FROM pipeline_runs
-        """
+        """,
     ).fetchone()
 
-    failures = conn.execute(
+    failures = _logged_execute(
+        conn, sqls,
         """
         SELECT run_date, status, error_message, rows_extracted, rows_loaded
         FROM pipeline_runs WHERE status != 'success'
         ORDER BY run_date DESC LIMIT 5
-        """
+        """,
     ).fetchall()
 
     if success_rate >= 90 and latest and latest["status"] == "success":
@@ -783,40 +826,47 @@ def check_pipeline_health() -> dict:
         ],
     }
 
-    crm_total = conn.execute("SELECT COUNT(*) AS n FROM crm_contacts").fetchone()["n"]
+    crm_total = _logged_execute(
+        conn, sqls, "SELECT COUNT(*) AS n FROM crm_contacts"
+    ).fetchone()["n"]
 
-    stage_dist = conn.execute(
+    stage_dist = _logged_execute(
+        conn, sqls,
         """
         SELECT lifecycle_stage, COUNT(*) AS count,
                ROUND(SUM(deal_value), 2) AS total_value,
                ROUND(AVG(deal_value), 2) AS avg_value
         FROM crm_contacts GROUP BY lifecycle_stage ORDER BY count DESC
-        """
+        """,
     ).fetchall()
 
-    pipeline_value = conn.execute(
-        "SELECT ROUND(SUM(deal_value), 2) AS total FROM crm_contacts"
+    pipeline_value = _logged_execute(
+        conn, sqls,
+        "SELECT ROUND(SUM(deal_value), 2) AS total FROM crm_contacts",
     ).fetchone()["total"]
 
-    customers = conn.execute(
-        "SELECT COUNT(*) AS n FROM crm_contacts WHERE lifecycle_stage = 'customer'"
+    customers = _logged_execute(
+        conn, sqls,
+        "SELECT COUNT(*) AS n FROM crm_contacts WHERE lifecycle_stage = 'customer'",
     ).fetchone()["n"]
 
-    avg_engagement = conn.execute(
+    avg_engagement = _logged_execute(
+        conn, sqls,
         """
         SELECT ROUND(AVG(num_touches), 1) AS avg_touches,
                ROUND(AVG(email_opens), 1) AS avg_opens,
                ROUND(AVG(page_views), 1) AS avg_views
         FROM crm_contacts
-        """
+        """,
     ).fetchone()
 
-    industry_dist = conn.execute(
+    industry_dist = _logged_execute(
+        conn, sqls,
         """
         SELECT industry, COUNT(*) AS count,
                ROUND(SUM(deal_value), 2) AS total_value
         FROM crm_contacts GROUP BY industry ORDER BY total_value DESC
-        """
+        """,
     ).fetchall()
 
     conn.close()
@@ -842,18 +892,19 @@ def check_pipeline_health() -> dict:
         "engagement_averages": dict(avg_engagement),
     }
 
-    return {"pipeline_status": pipeline_status, "deal_pipeline": deal_pipeline}
+    result = {"pipeline_status": pipeline_status, "deal_pipeline": deal_pipeline}
+    return {"result": result, "sql": _shape_sql(sqls)}
 
 
 def get_attribution_analysis() -> dict:
-    """Get marketing attribution analysis across 7 models with journey insights.
-
-    Returns per-channel attribution weights from first-click, last-click, linear,
-    time-decay, position-based, Markov, and Shapley models, plus journey stats
-    and first-touch vs last-touch frequency from 47,364 user journeys."""
+    """Get marketing attribution analysis across 7 models with journey insights."""
     conn = _conn()
+    sqls = []
 
-    models = conn.execute("SELECT * FROM attribution_results ORDER BY markov DESC").fetchall()
+    models = _logged_execute(
+        conn, sqls,
+        "SELECT * FROM attribution_results ORDER BY markov DESC",
+    ).fetchall()
 
     model_names = ["first_click", "last_click", "linear", "time_decay", "position_based", "markov", "shapley"]
 
@@ -878,7 +929,8 @@ def get_attribution_analysis() -> dict:
         else:
             ch["model_agreement"] = 100.0
 
-    journey_stats = conn.execute(
+    journey_stats = _logged_execute(
+        conn, sqls,
         """
         SELECT COUNT(*) AS total_journeys,
                SUM(has_conversion) AS conversions,
@@ -887,18 +939,20 @@ def get_attribution_analysis() -> dict:
                MAX(journey_length) AS max_journey_length,
                ROUND(AVG(CASE WHEN has_conversion = 1 THEN conversion_value ELSE NULL END), 2) AS avg_conversion_value
         FROM journey_data
-        """
+        """,
     ).fetchone()
 
-    conv_lengths = conn.execute(
+    conv_lengths = _logged_execute(
+        conn, sqls,
         """
         SELECT has_conversion, ROUND(AVG(journey_length), 1) AS avg_length, COUNT(*) AS count
         FROM journey_data GROUP BY has_conversion
-        """
+        """,
     ).fetchall()
 
-    channel_freq = conn.execute(
-        "SELECT channel_list FROM journey_data WHERE has_conversion = 1"
+    channel_freq = _logged_execute(
+        conn, sqls,
+        "SELECT channel_list FROM journey_data WHERE has_conversion = 1",
     ).fetchall()
 
     first_touch = {}
@@ -922,7 +976,7 @@ def get_attribution_analysis() -> dict:
 
     conn.close()
 
-    return {
+    result = {
         "attribution_by_channel": channels,
         "journey_insights": {
             "total_journeys": journey_stats["total_journeys"],
@@ -951,17 +1005,23 @@ def get_attribution_analysis() -> dict:
             ],
         },
     }
+    return {"result": result, "sql": _shape_sql(sqls)}
 
 
 # ═══════════════════════════════════════════════════════════════════════
 # DATABASE / LOGGING TOOLS (from mcp_servers/database_server.py)
 # ═══════════════════════════════════════════════════════════════════════
+# These are housekeeping/infrastructure calls. Their SQL is logged like the
+# others, but the orchestrator filters them out of the user-facing
+# sql_queries array — the Query Viewer is for data queries, not session logs.
 
 def log_workflow(workflow_name: str, status: str = "completed", result_summary: str = "") -> dict:
     """Log a workflow run to the database. Returns the workflow run ID."""
     conn = _conn()
+    sqls = []
     now = datetime.now().isoformat()
-    c = conn.execute(
+    c = _logged_execute(
+        conn, sqls,
         "INSERT INTO workflow_runs (workflow_name, started_at, completed_at, status, result_summary) "
         "VALUES (?, ?, ?, ?, ?)",
         (workflow_name, now, now if status == "completed" else None, status, result_summary),
@@ -969,13 +1029,15 @@ def log_workflow(workflow_name: str, status: str = "completed", result_summary: 
     conn.commit()
     row_id = c.lastrowid
     conn.close()
-    return {"workflow_run_id": row_id, "status": status}
+    return {"result": {"workflow_run_id": row_id, "status": status}, "sql": _shape_sql(sqls)}
 
 
 def log_action(workflow_run_id: int, agent_name: str, tool_name: str, input_params: str = "", output_summary: str = "") -> dict:
     """Log an agent action within a workflow run. Returns the action ID."""
     conn = _conn()
-    c = conn.execute(
+    sqls = []
+    c = _logged_execute(
+        conn, sqls,
         "INSERT INTO agent_actions (workflow_run_id, agent_name, tool_name, input_params, output_summary) "
         "VALUES (?, ?, ?, ?, ?)",
         (workflow_run_id, agent_name, tool_name, input_params, output_summary),
@@ -983,27 +1045,32 @@ def log_action(workflow_run_id: int, agent_name: str, tool_name: str, input_para
     conn.commit()
     row_id = c.lastrowid
     conn.close()
-    return {"action_id": row_id, "workflow_run_id": workflow_run_id}
+    return {"result": {"action_id": row_id, "workflow_run_id": workflow_run_id}, "sql": _shape_sql(sqls)}
 
 
 def get_recent_workflows(limit: int = 10) -> dict:
     """Get recent workflow runs from the database."""
     conn = _conn()
-    rows = conn.execute(
-        "SELECT * FROM workflow_runs ORDER BY started_at DESC LIMIT ?", (limit,)
+    sqls = []
+    rows = _logged_execute(
+        conn, sqls,
+        "SELECT * FROM workflow_runs ORDER BY started_at DESC LIMIT ?",
+        (limit,),
     ).fetchall()
     conn.close()
-    return {"workflows": [dict(r) for r in rows]}
+    return {"result": {"workflows": [dict(r) for r in rows]}, "sql": _shape_sql(sqls)}
 
 
 def create_task(title: str, description: str = "", assigned_agent: str = "", priority: str = "medium") -> dict:
     """Create a task in the database and assign it to an agent."""
     conn = _conn()
-    c = conn.execute(
+    sqls = []
+    c = _logged_execute(
+        conn, sqls,
         "INSERT INTO tasks (title, description, assigned_agent, priority) VALUES (?, ?, ?, ?)",
         (title, description, assigned_agent, priority),
     )
     conn.commit()
     row_id = c.lastrowid
     conn.close()
-    return {"task_id": row_id, "title": title, "assigned_agent": assigned_agent}
+    return {"result": {"task_id": row_id, "title": title, "assigned_agent": assigned_agent}, "sql": _shape_sql(sqls)}
