@@ -362,12 +362,20 @@
 
             const QV_PLACEHOLDER_HTML = '<div class="opacity-50 italic text-gray-400 dark:text-adk-muted select-none">-- SQL queries will appear here --</div>';
 
+            // Tracks the AbortController for any in-flight /run_sse fetch so New Session can cancel it.
+            let activeStreamController = null;
+
             function resetToLandingState() {
+                if (activeStreamController) {
+                    try { activeStreamController.abort(); } catch (_) {}
+                    activeStreamController = null;
+                }
                 document.getElementById('messagesContainer').innerHTML = '';
                 document.getElementById('messagesArea').classList.add('hidden');
                 document.getElementById('chatBlueprints').classList.add('hidden');
                 document.getElementById('landingHero').classList.remove('hidden');
                 chatStarted = false;
+                setSendButtonState(true);
                 const qvBody = document.querySelector('#queryViewerPanel .flex-1');
                 if (qvBody) qvBody.innerHTML = QV_PLACEHOLDER_HTML;
             }
@@ -766,6 +774,8 @@
                     const typingId = appendTypingIndicator();
                     scrollToBottom();
                     
+                    activeStreamController = new AbortController();
+                    const streamSignal = activeStreamController.signal;
                     try {
                         if (!sessionReady) { await sessionBootstrap; }
                         if (!sessionReady) throw new Error(`Session bootstrap failed — backend at ${API_BASE} not reachable`);
@@ -781,7 +791,8 @@
                                     "role": "user",
                                     "parts": [{ "text": fullMessage }]
                                 }
-                            })
+                            }),
+                            signal: streamSignal
                         });
 
                         if (!response.ok) throw new Error('Network response was not ok');
@@ -898,12 +909,21 @@
                         }
                         scrollToBottom();
                     } catch (error) {
-                        console.error('Error:', error);
-                        const typingDiv = document.getElementById(typingId);
-                        if(typingDiv) typingDiv.remove();
-                        appendErrorBubble();
-                        scrollToBottom();
+                        if (error && error.name === 'AbortError') {
+                            // User clicked New Session mid-stream — silently drop the in-flight request.
+                            const typingDiv = document.getElementById(typingId);
+                            if (typingDiv) typingDiv.remove();
+                        } else {
+                            console.error('Error:', error);
+                            const typingDiv = document.getElementById(typingId);
+                            if(typingDiv) typingDiv.remove();
+                            appendErrorBubble();
+                            scrollToBottom();
+                        }
                     } finally {
+                        if (activeStreamController && activeStreamController.signal === streamSignal) {
+                            activeStreamController = null;
+                        }
                         setSendButtonState(true);
                         textarea.focus();
                     }
