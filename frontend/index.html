@@ -1,0 +1,970 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marketing Intelligence</title>
+    <link rel="icon" type="image/png" href="logo_black_on_white.png">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/geist@1.3.1/dist/fonts/geist-sans/style.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/geist@1.3.1/dist/fonts/geist-mono/style.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        adk: {
+                            bg: '#1e1e1e',
+                            panel: '#2d2d2d',
+                            card: '#333333',
+                            border: '#404040',
+                            text: '#e0e0e0',
+                            muted: '#a0a0a0',
+                            accent: '#4f8cff',
+                            userBubble: '#3a3a3a',
+                            btnBorder: '#404040',
+                            btnText: '#e0e0e0',
+                            codeBg: '#1a1a1a',
+                            errorBg: '#3b1111'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .dot {
+            animation: bounce 1.4s infinite ease-in-out both;
+        }
+        .dot:nth-child(1) { animation-delay: 0s; }
+        .dot:nth-child(2) { animation-delay: 0.15s; }
+        .dot:nth-child(3) { animation-delay: 0.3s; }
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-4px); }
+        }
+        
+        html {
+            font-size: 15px;
+        }
+        
+        body {
+            font-family: 'Geist Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+        
+        .font-mono {
+            font-family: 'Geist Mono', 'Courier New', monospace !important;
+        }
+        
+        /* Hide scrollbar for messages area to make it cleaner like ChatGPT */
+        #messagesArea::-webkit-scrollbar {
+            width: 8px;
+        }
+        #messagesArea::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        #messagesArea::-webkit-scrollbar-thumb {
+            background: #e5e7eb;
+            border-radius: 4px;
+        }
+        .dark #messagesArea::-webkit-scrollbar-thumb {
+            background: #3d3d5c;
+        }
+        #messagesArea::-webkit-scrollbar-thumb:hover {
+            background: #d1d5db;
+        }
+        .dark #messagesArea::-webkit-scrollbar-thumb:hover {
+            background: #4d4d6c;
+        }
+        
+        #inputContainer {
+            background: transparent;
+            padding-top: 0;
+        }
+
+        /* Trace toggle: when off, hide intermediate rows but keep final card visible */
+        #messagesContainer.trace-mode-off .trace-row {
+            display: none !important;
+        }
+        .trace-row-num {
+            font-family: 'Geist Mono', 'Courier New', monospace;
+            color: #9ca3af;
+            font-size: 11px;
+            min-width: 22px;
+            text-align: right;
+            user-select: none;
+            padding-top: 4px;
+        }
+        .dark .trace-row-num { color: #6b7280; }
+        #messagesArea:not(.hidden) + #inputContainer {
+            top: auto !important;
+            bottom: 0 !important;
+            transform: none !important;
+            padding-top: 1.5rem !important;
+        }
+    </style>
+</head>
+<body class="bg-white dark:bg-adk-bg h-screen flex flex-col font-sans text-gray-800 dark:text-adk-text overflow-hidden text-sm transition-colors duration-300">
+
+    <!-- Header -->
+    <header class="bg-white dark:bg-adk-panel px-6 py-3 flex justify-between items-center z-10 shrink-0 absolute top-0 w-full h-[60px] border-b border-gray-100 dark:border-adk-border transition-colors duration-300">
+        <div class="flex items-center gap-2.5">
+            <img src="logo_black_on_white.png" alt="Logo" class="h-10 w-10 dark:hidden" />
+            <img src="logo_white_on_black.png" alt="Logo" class="h-10 w-10 hidden dark:block" />
+            <h1 class="text-lg font-bold text-gray-800 dark:text-white">Marketing Intelligence</h1>
+        </div>
+        
+        <div class="flex items-center gap-2">
+            <!-- Reasoning Trace Toggle Button -->
+            <button id="traceToggleBtn" class="p-2 text-gray-500 hover:text-gray-900 dark:text-adk-muted dark:hover:text-white rounded-md transition-colors cursor-pointer flex items-center gap-1.5 focus:outline-none text-xs font-medium" aria-label="Toggle Reasoning Trace" title="Show/hide reasoning trace">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+                </svg>
+                <span id="traceToggleLabel" class="hidden md:inline">Trace</span>
+            </button>
+
+            <!-- Query Viewer Toggle Button -->
+            <button id="headerQueryToggleBtn" class="p-2 text-gray-500 hover:text-gray-900 dark:text-adk-muted dark:hover:text-white rounded-md transition-colors cursor-pointer flex items-center justify-center focus:outline-none" aria-label="Toggle Query Viewer">
+                <svg id="hamburgerIcon" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                </svg>
+                <svg id="closeIcon" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
+
+            <!-- Theme Toggle Button -->
+            <button id="themeToggleBtn" class="p-2 text-gray-500 hover:text-gray-900 dark:text-adk-muted dark:hover:text-white rounded-md transition-colors cursor-pointer flex items-center justify-center focus:outline-none" aria-label="Toggle Dark Mode">
+                <!-- Sun Icon (shown in dark mode) -->
+                <svg id="sunIcon" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                </svg>
+                <!-- Moon Icon (shown in light mode) -->
+                <svg id="moonIcon" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                </svg>
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="flex-1 flex overflow-hidden relative pt-[60px]">
+        
+        <!-- Left: Chat Interface -->
+        <section id="leftPanel" class="w-full flex flex-col min-h-0 min-w-0 transition-all duration-300 shrink-0 relative">
+            
+            <!-- Scrollable Messages Area -->
+            <div id="messagesArea" class="flex-1 overflow-y-auto overflow-x-hidden w-full hidden relative z-0 scroll-smooth">
+                <div class="max-w-[800px] mx-auto w-full p-4 space-y-5" style="padding-bottom: 250px;" id="messagesContainer">
+                    <!-- Messages go here -->
+                </div>
+            </div>
+
+            <!-- Input Area Container (Transitions from center to bottom) -->
+            <div class="w-full px-4 z-20 pb-4 transition-all duration-500 absolute top-1/2 left-0 -translate-y-1/2" id="inputContainer">
+                <div class="max-w-[800px] mx-auto w-full flex flex-col items-center">
+                    
+                    <!-- Landing State Hero -->
+                    <div id="landingHero" class="text-center flex flex-col items-center mb-8 w-full">
+                        <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-2">Marketing Intelligence</h2>
+                        <p class="text-gray-500 dark:text-adk-muted mb-8">Powered by Google ADK + Gemini</p>
+                        
+                        <div id="landingBlueprints" class="grid grid-cols-1 md:grid-cols-2 gap-3 w-full max-w-[600px] mx-auto">
+                            <button class="blueprint-btn bg-white dark:bg-adk-panel hover:bg-gray-50 dark:hover:bg-adk-card border border-gray-200 dark:border-adk-btnBorder text-gray-700 dark:text-adk-btnText text-sm py-3 px-4 rounded-xl transition-colors cursor-pointer shadow-sm text-center whitespace-nowrap">Campaign performance</button>
+                            <button class="blueprint-btn bg-white dark:bg-adk-panel hover:bg-gray-50 dark:hover:bg-adk-card border border-gray-200 dark:border-adk-btnBorder text-gray-700 dark:text-adk-btnText text-sm py-3 px-4 rounded-xl transition-colors cursor-pointer shadow-sm text-center whitespace-nowrap">Competitor pricing moves</button>
+                            <button class="blueprint-btn bg-white dark:bg-adk-panel hover:bg-gray-50 dark:hover:bg-adk-card border border-gray-200 dark:border-adk-btnBorder text-gray-700 dark:text-adk-btnText text-sm py-3 px-4 rounded-xl transition-colors cursor-pointer shadow-sm text-center whitespace-nowrap">Customer complaints</button>
+                            <button class="blueprint-btn bg-white dark:bg-adk-panel hover:bg-gray-50 dark:hover:bg-adk-card border border-gray-200 dark:border-adk-btnBorder text-gray-700 dark:text-adk-btnText text-sm py-3 px-4 rounded-xl transition-colors cursor-pointer shadow-sm text-center whitespace-nowrap">Score top leads</button>
+                        </div>
+                    </div>
+
+                    <!-- Chat State Blueprints (hidden initially) -->
+                    <div id="chatBlueprints" class="mb-2 flex flex-nowrap gap-2 hidden justify-center w-full overflow-hidden">
+                        <button class="blueprint-btn bg-white dark:bg-adk-panel hover:bg-gray-50 dark:hover:bg-adk-card border border-gray-200 dark:border-adk-btnBorder text-gray-600 dark:text-adk-btnText text-xs py-1 px-3 rounded-full transition-colors cursor-pointer shadow-sm whitespace-nowrap">Campaign performance</button>
+                        <button class="blueprint-btn bg-white dark:bg-adk-panel hover:bg-gray-50 dark:hover:bg-adk-card border border-gray-200 dark:border-adk-btnBorder text-gray-600 dark:text-adk-btnText text-xs py-1 px-3 rounded-full transition-colors cursor-pointer shadow-sm whitespace-nowrap">Competitor pricing moves</button>
+                        <button class="blueprint-btn bg-white dark:bg-adk-panel hover:bg-gray-50 dark:hover:bg-adk-card border border-gray-200 dark:border-adk-btnBorder text-gray-600 dark:text-adk-btnText text-xs py-1 px-3 rounded-full transition-colors cursor-pointer shadow-sm whitespace-nowrap">Customer complaints</button>
+                        <button class="blueprint-btn bg-white dark:bg-adk-panel hover:bg-gray-50 dark:hover:bg-adk-card border border-gray-200 dark:border-adk-btnBorder text-gray-600 dark:text-adk-btnText text-xs py-1 px-3 rounded-full transition-colors cursor-pointer shadow-sm whitespace-nowrap">Score top leads</button>
+                    </div>
+
+                    <!-- Input Box -->
+                    <div class="flex flex-col bg-gray-50 dark:bg-adk-panel rounded-2xl border border-gray-200 dark:border-adk-border focus-within:ring-1 focus-within:ring-gray-300 dark:focus-within:ring-adk-border transition-all p-3 shadow-sm w-full gap-2">
+                        <textarea id="promptTextarea" rows="1" style="min-height: 36px; max-height: 50vh; overflow-y: auto; resize: none; transition: height 0.1s ease;" class="block w-full bg-transparent border-none text-gray-900 dark:text-adk-text placeholder-gray-400 dark:placeholder-adk-muted focus:ring-0 outline-none leading-relaxed" placeholder="Message your agent..."></textarea>
+                        
+                        <div class="flex items-center justify-between w-full">
+                            <select id="toneSelect" class="bg-white dark:bg-adk-card border border-gray-200 dark:border-adk-border text-gray-500 dark:text-adk-muted hover:text-gray-700 dark:hover:text-white text-xs rounded-lg block py-1 px-2 cursor-pointer outline-none shadow-sm transition-colors">
+                                <option value="executive" selected>Tone: Executive</option>
+                                <option value="technical">Tone: Technical</option>
+                                <option value="client">Tone: Client</option>
+                            </select>
+
+                            <button id="sendBtn" class="bg-black dark:bg-adk-accent hover:bg-gray-800 dark:hover:bg-blue-600 text-white rounded-xl w-8 h-8 flex items-center justify-center shrink-0 cursor-pointer transition-colors">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M3.293 9.707a1 1 0 010-1.414l6-6a1 1 0 011.414 0l6 6a1 1 0 01-1.414 1.414L11 5.414V17a1 1 0 11-2 0V5.414L4.707 9.707a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="text-center text-[10px] text-gray-400 dark:text-adk-muted mt-2 w-full">Marketing Intelligence agents can make mistakes. Verify important information.</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Right: Query Viewer (Drawer Overlay) -->
+        <aside id="queryViewerPanel" class="absolute right-0 top-0 w-full md:w-[400px] shrink-0 bg-white dark:bg-adk-panel border-l border-gray-200 dark:border-adk-border flex flex-col h-full transform translate-x-full transition-transform duration-300 z-40 shadow-2xl hidden">
+            <!-- Header -->
+            <div class="p-3 bg-white dark:bg-adk-panel border-b border-gray-200 dark:border-adk-border flex justify-between items-center shrink-0">
+                <h2 class="text-sm font-semibold text-gray-800 dark:text-adk-text flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2 text-gray-500 dark:text-adk-muted" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4" />
+                    </svg>
+                    Query Viewer
+                </h2>
+                <button id="toggleQueryViewerBtn" class="text-gray-400 dark:text-adk-muted hover:text-gray-900 dark:hover:text-white transition-colors p-1 rounded hover:bg-gray-100 dark:hover:bg-adk-card cursor-pointer">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+            
+            <!-- Body -->
+            <div class="flex-1 p-4 overflow-y-auto bg-gray-50 dark:bg-adk-codeBg text-green-700 dark:text-green-400 font-mono text-xs leading-relaxed border-t border-gray-100 dark:border-adk-border shadow-inner">
+                <!-- Placeholder -->
+                <div class="opacity-50 italic text-gray-400 dark:text-adk-muted select-none">
+                    -- SQL queries will appear here --
+                </div>
+            </div>
+        </aside>
+
+        <!-- Overlay for when right panel is open -->
+        <div id="mobileOverlay" class="absolute inset-0 bg-gray-900 bg-opacity-20 dark:bg-opacity-50 z-30 hidden transition-opacity"></div>
+    </main>
+
+    <script>
+        // Dark Mode Initialization Logic
+        function initTheme() {
+            const savedTheme = localStorage.getItem('theme');
+            const sunIcon = document.getElementById('sunIcon');
+            const moonIcon = document.getElementById('moonIcon');
+            
+            // Default to dark mode
+            if (savedTheme === 'light') {
+                document.documentElement.classList.remove('dark');
+                sunIcon.classList.add('hidden');
+                moonIcon.classList.remove('hidden');
+            } else {
+                document.documentElement.classList.add('dark');
+                localStorage.setItem('theme', 'dark');
+                sunIcon.classList.remove('hidden');
+                moonIcon.classList.add('hidden');
+            }
+        }
+        // Run immediately to prevent flash
+        initTheme();
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // Re-run theme initialization to ensure icons are set correctly after DOM load
+            initTheme();
+            
+            // Trace toggle: persist in localStorage, default ON
+            const messagesContainerEl = document.getElementById('messagesContainer');
+            const traceToggleBtn = document.getElementById('traceToggleBtn');
+            const traceToggleLabel = document.getElementById('traceToggleLabel');
+            const applyTraceMode = (on) => {
+                if (on) {
+                    messagesContainerEl.classList.remove('trace-mode-off');
+                    traceToggleBtn.classList.add('text-emerald-600', 'dark:text-emerald-400');
+                    if (traceToggleLabel) traceToggleLabel.textContent = 'Trace';
+                    traceToggleBtn.title = 'Hide reasoning trace';
+                } else {
+                    messagesContainerEl.classList.add('trace-mode-off');
+                    traceToggleBtn.classList.remove('text-emerald-600', 'dark:text-emerald-400');
+                    if (traceToggleLabel) traceToggleLabel.textContent = 'Trace off';
+                    traceToggleBtn.title = 'Show reasoning trace';
+                }
+            };
+            const savedTrace = localStorage.getItem('traceMode');
+            applyTraceMode(savedTrace === null ? true : savedTrace === 'on');
+            traceToggleBtn.addEventListener('click', () => {
+                const isOn = !messagesContainerEl.classList.contains('trace-mode-off');
+                const next = !isOn;
+                localStorage.setItem('traceMode', next ? 'on' : 'off');
+                applyTraceMode(next);
+            });
+
+            // Theme toggle listener
+            document.getElementById('themeToggleBtn').addEventListener('click', () => {
+                const isDark = document.documentElement.classList.contains('dark');
+                const sunIcon = document.getElementById('sunIcon');
+                const moonIcon = document.getElementById('moonIcon');
+                
+                if (isDark) {
+                    document.documentElement.classList.remove('dark');
+                    localStorage.setItem('theme', 'light');
+                    sunIcon.classList.add('hidden');
+                    moonIcon.classList.remove('hidden');
+                } else {
+                    document.documentElement.classList.add('dark');
+                    localStorage.setItem('theme', 'dark');
+                    sunIcon.classList.remove('hidden');
+                    moonIcon.classList.add('hidden');
+                }
+            });
+
+            const blueprintBtns = document.querySelectorAll('.blueprint-btn');
+            const textarea = document.getElementById('promptTextarea');
+            const sendBtn = document.getElementById('sendBtn');
+            const toggleQueryViewerBtn = document.getElementById('toggleQueryViewerBtn');
+            const headerQueryToggleBtn = document.getElementById('headerQueryToggleBtn');
+            const hamburgerIcon = document.getElementById('hamburgerIcon');
+            const closeIcon = document.getElementById('closeIcon');
+            const rightPanel = document.getElementById('queryViewerPanel');
+            const mobileOverlay = document.getElementById('mobileOverlay');
+            
+            // Layout state
+            let isQueryViewerOpen = false;
+
+            // API base — localhost for dev, Cloud Run in prod
+            const API_BASE = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.protocol === 'file:')
+                ? 'http://localhost:8001'
+                : 'https://hack2skill-778200673789.asia-southeast1.run.app';
+
+            // Session ID + bootstrap (ADK requires session creation before /run_sse)
+            const sessionId = crypto.randomUUID();
+            let sessionReady = false;
+            const sessionBootstrap = fetch(`${API_BASE}/apps/marketing_agents/users/u1/sessions/${sessionId}`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: '{}'
+            }).then(r => {
+                if (!r.ok) throw new Error(`session bootstrap HTTP ${r.status}`);
+                sessionReady = true;
+            }).catch(err => {
+                console.error('Session bootstrap failed:', err);
+            });
+
+            let chatStarted = false;
+            function startChat() {
+                if (chatStarted) return;
+                chatStarted = true;
+                document.getElementById('landingHero').classList.add('hidden');
+                document.getElementById('messagesArea').classList.remove('hidden');
+                document.getElementById('chatBlueprints').classList.remove('hidden');
+            }
+
+            // Helpers
+            function escapeHTML(str) {
+                return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+            }
+
+            function scrollToBottom() {
+                setTimeout(function() {
+                    const area = document.getElementById('messagesArea');
+                    if (area) area.scrollTop = area.scrollHeight;
+                }, 150);
+            }
+
+            // Agent metadata: badge color (solid disc), pill colors (light bg + dark text), short initial
+            const AGENT_LABELS = {
+                'marketing_orchestrator': { initial: 'O', label: 'Orchestrator',       badge: 'bg-emerald-500', pill: 'bg-emerald-100 text-emerald-800 border-emerald-200 dark:bg-emerald-900/40 dark:text-emerald-300 dark:border-emerald-800' },
+                'marketing_intel':        { initial: 'M', label: 'Marketing Intel',    badge: 'bg-amber-500',   pill: 'bg-amber-100 text-amber-800 border-amber-200 dark:bg-amber-900/40 dark:text-amber-300 dark:border-amber-800' },
+                'competitive_intel':      { initial: 'C', label: 'Competitive Intel',  badge: 'bg-blue-500',    pill: 'bg-blue-100 text-blue-800 border-blue-200 dark:bg-blue-900/40 dark:text-blue-300 dark:border-blue-800' },
+                'customer_intel':         { initial: 'U', label: 'Customer Intel',     badge: 'bg-purple-500',  pill: 'bg-purple-100 text-purple-800 border-purple-200 dark:bg-purple-900/40 dark:text-purple-300 dark:border-purple-800' },
+                'operations':             { initial: 'P', label: 'Operations',         badge: 'bg-orange-500',  pill: 'bg-orange-100 text-orange-800 border-orange-200 dark:bg-orange-900/40 dark:text-orange-300 dark:border-orange-800' }
+            };
+
+            function agentMeta(name) {
+                return AGENT_LABELS[name] || { initial: '?', label: name || 'agent', badge: 'bg-gray-500', pill: 'bg-gray-100 text-gray-700 border-gray-200 dark:bg-gray-800 dark:text-gray-300 dark:border-gray-700' };
+            }
+
+            function renderAgentBadge(name) {
+                const m = agentMeta(name);
+                return `<span class="inline-flex items-center justify-center w-6 h-6 rounded-full text-white text-[11px] font-bold ${m.badge} shadow-sm shrink-0" title="${escapeHTML(m.label)}">${m.initial}</span>`;
+            }
+
+            function renderFunctionCallPill(toolName, agentName, targetAgent) {
+                const m = agentMeta(agentName);
+                const suffix = (toolName === 'transfer_to_agent' && targetAgent)
+                    ? ` <span class="opacity-60">→</span> ${escapeHTML(targetAgent)}`
+                    : '';
+                return `<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full border text-[11px] font-mono ${m.pill}"><span class="text-[9px]">▶</span>${escapeHTML(toolName)}${suffix}</span>`;
+            }
+
+            function renderFunctionResponsePill(toolName, agentName, targetAgent) {
+                const m = agentMeta(agentName);
+                const suffix = (toolName === 'transfer_to_agent' && targetAgent)
+                    ? ` <span class="opacity-60">→</span> ${escapeHTML(targetAgent)}`
+                    : '';
+                return `<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full border text-[11px] font-mono ${m.pill} opacity-70"><span class="text-[9px]">✓</span>${escapeHTML(toolName)}${suffix}</span>`;
+            }
+
+            function renderTextBubble(text, agentName) {
+                const m = agentMeta(agentName);
+                return `<div class="rounded-lg border border-gray-200 dark:border-adk-border bg-gray-50 dark:bg-adk-codeBg px-3 py-2 text-xs text-gray-700 dark:text-adk-muted whitespace-pre-wrap break-words leading-relaxed max-w-full" data-from="${escapeHTML(agentName || '')}">${escapeHTML(text)}</div>`;
+            }
+
+            function appendTraceRow(rowsContainer, idx, agentName, bodyHtml) {
+                const row = document.createElement('div');
+                row.className = 'trace-row flex items-start gap-2';
+                row.innerHTML = `<span class="trace-row-num">#${idx}</span>${renderAgentBadge(agentName)}<div class="flex-1 min-w-0 flex flex-wrap items-center gap-2">${bodyHtml}</div>`;
+                rowsContainer.appendChild(row);
+            }
+
+            // Housekeeping tools never get a "thinking" indicator — too noisy.
+            const HOUSEKEEPING_TOOLS = new Set(['log_workflow', 'log_action', 'get_recent_workflows', 'create_task']);
+
+            const TOOL_GERUNDS = {
+                'get_morning_briefing':     'fetching morning briefing',
+                'detect_anomalies':         'detecting anomalies',
+                'scan_competitors':         'scanning competitors',
+                'get_competitive_history':  'pulling competitive history',
+                'analyze_sentiment':        'analyzing sentiment',
+                'score_leads':              'scoring leads',
+                'get_customer_segments':    'segmenting customers',
+                'check_pipeline_health':    'checking pipeline health',
+                'get_attribution_analysis': 'running attribution analysis',
+                'transfer_to_agent':        'delegating'
+            };
+            function gerundForTool(name) {
+                return TOOL_GERUNDS[name] || ('running ' + (name || '').replace(/_/g, ' '));
+            }
+            const AGENT_TEXT_CLASS = {
+                'marketing_orchestrator': 'text-emerald-700 dark:text-emerald-400',
+                'marketing_intel':        'text-amber-700  dark:text-amber-400',
+                'competitive_intel':      'text-blue-700   dark:text-blue-400',
+                'customer_intel':         'text-purple-700 dark:text-purple-400',
+                'operations':             'text-orange-700 dark:text-orange-400'
+            };
+            function agentTextClass(name) { return AGENT_TEXT_CLASS[name] || 'text-gray-600 dark:text-gray-400'; }
+
+            function appendThinkingRow(rowsContainer, agentName, toolName) {
+                if (HOUSEKEEPING_TOOLS.has(toolName)) return;
+                const m = agentMeta(agentName);
+                const labelText = `${m.label} is ${gerundForTool(toolName)}…`;
+                const row = document.createElement('div');
+                row.className = 'trace-row flex items-start gap-2';
+                row.dataset.thinkingFor = `${agentName}::${toolName}`;
+                row.innerHTML = `<span class="trace-row-num"></span><span class="w-6 h-6 shrink-0"></span><div class="flex-1 min-w-0 text-[11px] italic ${agentTextClass(agentName)} pl-1">${escapeHTML(labelText)}</div>`;
+                rowsContainer.appendChild(row);
+            }
+            function removeThinkingRow(rowsContainer, agentName, toolName) {
+                if (!rowsContainer) return;
+                const sel = `[data-thinking-for="${agentName}::${toolName}"]`;
+                const row = rowsContainer.querySelector(sel);
+                if (row) row.remove();
+            }
+
+            // Sub-agents emit labeled sections (HEADLINE: ... METRICS: ... etc.) for the orchestrator
+            // to lift into JSON. That format leaks if rendered verbatim — suppress in the trace.
+            const LABELED_SECTION_RE = /^(?:HEADLINE|METRICS|INSIGHT|ACTION|SQL_QUERIES|SUBJECTS|NAME|STRENGTHS|WEAKNESSES)\s*:/m;
+            function isLabeledSectionDump(text) {
+                return LABELED_SECTION_RE.test(text);
+            }
+
+            function renderCardHtml(parsedJson) {
+                let metricsHtml = '';
+                if (parsedJson.metrics && parsedJson.metrics.length > 0) {
+                    metricsHtml = '<div class="flex flex-row flex-wrap gap-4 mb-4">';
+                    parsedJson.metrics.forEach(m => {
+                        let deltaHtml = '';
+                        if (m.delta) {
+                            const isPos = m.delta.startsWith('+');
+                            const isNeg = m.delta.startsWith('-');
+                            let color = 'text-gray-500 dark:text-adk-muted';
+                            if (isPos) color = 'text-green-600 dark:text-green-400';
+                            else if (isNeg) color = 'text-red-600 dark:text-red-400';
+                            deltaHtml = `<span class="font-mono text-xs font-medium ml-2 ${color}">${escapeHTML(m.delta)}</span>`;
+                        }
+                        metricsHtml += `
+                            <div class="flex flex-col bg-gray-50 dark:bg-adk-panel rounded-lg px-3 py-2 border border-gray-100 dark:border-adk-border">
+                                <span class="text-[10px] uppercase text-gray-500 dark:text-adk-muted font-semibold tracking-wide">${escapeHTML(m.label)}</span>
+                                <div class="flex items-baseline mt-1">
+                                    <span class="font-mono text-lg font-bold text-gray-900 dark:text-white">${escapeHTML(m.value)}</span>
+                                    ${deltaHtml}
+                                </div>
+                            </div>
+                        `;
+                    });
+                    metricsHtml += '</div>';
+                }
+                return `
+                    <div class="bg-white dark:bg-adk-card rounded-xl shadow-sm border border-gray-200 dark:border-adk-border p-5 w-full">
+                        <h3 class="font-bold text-lg text-gray-900 dark:text-white mb-4">${escapeHTML(parsedJson.headline || '')}</h3>
+                        ${metricsHtml}
+                        <p class="text-gray-700 dark:text-adk-text mb-4 leading-relaxed text-sm">${escapeHTML(parsedJson.insight || '')}</p>
+                        <div class="inline-block border border-gray-200 dark:border-adk-btnBorder text-gray-700 dark:text-adk-btnText hover:bg-gray-50 dark:hover:bg-adk-panel text-xs py-1.5 px-4 rounded-full font-medium transition-colors cursor-pointer">
+                            ${escapeHTML(parsedJson.action || '')}
+                        </div>
+                    </div>
+                `;
+            }
+
+            function renderBattlecardHtml(parsedJson) {
+                let subjectsHtml = '<div class="grid grid-cols-1 md:grid-cols-2 gap-4 w-full max-w-full">';
+                (parsedJson.subjects || []).forEach(sub => {
+                    let subMetrics = '<div class="flex flex-wrap gap-2 mb-3">';
+                    (sub.metrics || []).forEach(m => {
+                        subMetrics += `
+                            <div class="bg-gray-50 dark:bg-adk-panel border border-gray-100 dark:border-adk-border rounded-lg px-3 py-2 flex flex-col">
+                                <span class="text-[10px] uppercase text-gray-500 dark:text-adk-muted font-semibold tracking-wider">${escapeHTML(m.label)}</span>
+                                <span class="font-mono text-sm font-bold text-gray-800 dark:text-white">${escapeHTML(m.value)}</span>
+                            </div>
+                        `;
+                    });
+                    subMetrics += '</div>';
+                    let strengthsHtml = '<ul class="mb-4 space-y-1.5">';
+                    (sub.strengths || []).forEach(s => {
+                        strengthsHtml += `<li class="text-sm text-green-700 dark:text-green-400 flex items-start leading-snug"><span class="mr-2">✅</span> <span>${escapeHTML(s)}</span></li>`;
+                    });
+                    strengthsHtml += '</ul>';
+                    let weaknessesHtml = '<ul class="space-y-1.5">';
+                    (sub.weaknesses || []).forEach(w => {
+                        weaknessesHtml += `<li class="text-sm text-red-700 dark:text-red-400 flex items-start leading-snug"><span class="mr-2">❌</span> <span>${escapeHTML(w)}</span></li>`;
+                    });
+                    weaknessesHtml += '</ul>';
+                    subjectsHtml += `
+                        <div class="bg-white dark:bg-adk-card rounded-xl shadow-sm border border-gray-200 dark:border-adk-border p-5 flex flex-col">
+                            <h3 class="font-bold text-lg text-gray-900 dark:text-white mb-3 border-b border-gray-100 dark:border-adk-border pb-3">${escapeHTML(sub.name)}</h3>
+                            ${subMetrics}
+                            <div class="mt-auto">
+                                <div class="text-[10px] font-semibold text-gray-400 dark:text-adk-muted uppercase tracking-wider mb-2">Strengths</div>
+                                ${strengthsHtml}
+                                <div class="text-[10px] font-semibold text-gray-400 dark:text-adk-muted uppercase tracking-wider mb-2 mt-4">Weaknesses</div>
+                                ${weaknessesHtml}
+                            </div>
+                        </div>
+                    `;
+                });
+                subjectsHtml += '</div>';
+                return subjectsHtml;
+            }
+
+            function createTraceContainer() {
+                const wrap = document.createElement('div');
+                wrap.className = 'flex w-full justify-start mb-6';
+                wrap.innerHTML = `
+                    <div class="flex items-start max-w-full w-full">
+                        <div class="border border-gray-200 dark:border-adk-border bg-white dark:bg-adk-panel text-gray-800 dark:text-adk-text rounded-full w-8 h-8 flex items-center justify-center text-xs font-bold mr-4 shrink-0 shadow-sm mt-0.5">AI</div>
+                        <div class="flex-1 min-w-0 space-y-2">
+                            <div class="trace-rows space-y-1.5"></div>
+                            <div class="trace-final-card mt-3"></div>
+                        </div>
+                    </div>
+                `;
+                return wrap;
+            }
+
+            function appendUserMessage(text) {
+                startChat();
+                const div = document.createElement('div');
+                div.innerHTML = `
+<div style="display:flex;justify-content:flex-end;margin-bottom:8px;">
+  <span class="dark:!bg-[#3a3a3a] dark:!text-[#e0e0e0]" style="background:#e8e8e8;color:#111;padding:4px 12px;border-radius:16px;font-size:13px;line-height:1.3;max-width:65%;display:inline-block;word-wrap:break-word;white-space:pre-wrap;">${escapeHTML(text)}</span>
+</div>
+                `;
+                document.getElementById('messagesContainer').appendChild(div);
+            }
+
+            function appendTypingIndicator() {
+                startChat();
+                const id = 'typing-' + Date.now();
+                const div = document.createElement('div');
+                div.id = id;
+                div.className = "flex w-full justify-start mb-6";
+                div.innerHTML = `
+                    <div class="flex items-start max-w-full w-full">
+                        <div class="border border-gray-200 dark:border-adk-border bg-white dark:bg-adk-panel text-gray-800 dark:text-adk-text rounded-full w-8 h-8 flex items-center justify-center text-xs font-bold mr-4 shrink-0 shadow-sm mt-0.5">AI</div>
+                        <div class="flex-1 min-w-0">
+                            <div class="flex items-center h-8">
+                                <div class="flex space-x-1 mt-2">
+                                    <div class="w-2 h-2 bg-gray-400 dark:bg-gray-500 rounded-full dot inline-block"></div>
+                                    <div class="w-2 h-2 bg-gray-400 dark:bg-gray-500 rounded-full dot inline-block"></div>
+                                    <div class="w-2 h-2 bg-gray-400 dark:bg-gray-500 rounded-full dot inline-block"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                document.getElementById('messagesContainer').appendChild(div);
+                return id;
+            }
+
+            // Render the orchestrator's final synthesis into a target slot.
+            // Detects ```json fence in the accumulated text, parses it, picks card vs battlecard renderer.
+            // Falls back to raw text bubble if no JSON. Reads sql_queries into the Query Viewer.
+            function renderFinalSynthesisInto(slot, accumulatedText) {
+                if (!slot) return;
+                let parsedJson = null;
+                const jsonRegex = /```json\s*([\s\S]*?)\s*```/;
+                const match = (accumulatedText || '').match(jsonRegex);
+                if (match && match[1]) {
+                    try { parsedJson = JSON.parse(match[1]); }
+                    catch(e) { console.error("Failed to parse JSON block", e); }
+                }
+                if (parsedJson && parsedJson.type === 'card') {
+                    slot.innerHTML = renderCardHtml(parsedJson);
+                    handleSqlQueries(parsedJson.sql_queries);
+                } else if (parsedJson && parsedJson.type === 'battlecard' && parsedJson.subjects && parsedJson.subjects.length === 2) {
+                    slot.innerHTML = renderBattlecardHtml(parsedJson);
+                    handleSqlQueries(parsedJson.sql_queries);
+                } else if (accumulatedText && accumulatedText.trim()) {
+                    slot.innerHTML = `<div class="whitespace-pre-wrap break-words">${escapeHTML(accumulatedText)}</div>`;
+                } else {
+                    slot.innerHTML = `<div class="text-sm italic text-gray-500 dark:text-adk-muted">Orchestrator returned no synthesis. Toggle the trace to inspect intermediate agent activity.</div>`;
+                }
+            }
+            
+            function handleSqlQueries(queries) {
+                if(!queries || !Array.isArray(queries) || queries.length === 0) return;
+                
+                const qvBody = document.querySelector('#queryViewerPanel .flex-1');
+                const placeholder = qvBody.querySelector('.opacity-50');
+                if(placeholder) placeholder.remove();
+                
+                queries.forEach(q => {
+                    const block = document.createElement('div');
+                    block.className = 'mb-4 bg-gray-900 dark:bg-adk-codeBg text-green-400 font-mono text-xs leading-relaxed p-4 rounded-lg overflow-x-auto border border-gray-700 dark:border-adk-border whitespace-pre-wrap break-all';
+                    block.textContent = q;
+                    qvBody.appendChild(block);
+                });
+                
+                openPanel();
+            }
+
+            function appendErrorBubble() {
+                startChat();
+                const div = document.createElement('div');
+                div.className = "flex w-full justify-start mb-6";
+                div.innerHTML = `
+                    <div class="flex items-start max-w-full w-full">
+                        <div class="bg-red-100 dark:bg-adk-errorBg text-red-600 dark:text-red-400 rounded-full w-8 h-8 flex items-center justify-center font-bold mr-4 shrink-0 text-xs mt-0.5">!</div>
+                        <div class="flex-1 min-w-0">
+                            <div class="text-red-600 dark:text-red-400">Sorry, something went wrong. Please try again.</div>
+                        </div>
+                    </div>
+                `;
+                document.getElementById('messagesContainer').appendChild(div);
+            }
+
+            function setSendButtonState(enabled) {
+                if(enabled) {
+                    sendBtn.disabled = false;
+                    sendBtn.classList.remove('bg-gray-400', 'cursor-not-allowed', 'opacity-50');
+                    sendBtn.classList.add('bg-black', 'dark:bg-adk-accent', 'hover:bg-gray-800', 'dark:hover:bg-blue-600', 'cursor-pointer');
+                } else {
+                    sendBtn.disabled = true;
+                    sendBtn.classList.add('bg-gray-400', 'cursor-not-allowed', 'opacity-50');
+                    sendBtn.classList.remove('bg-black', 'dark:bg-adk-accent', 'hover:bg-gray-800', 'dark:hover:bg-blue-600', 'cursor-pointer');
+                }
+            }
+
+            // Blueprint button click
+            blueprintBtns.forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    textarea.value = e.target.textContent;
+                    textarea.focus();
+                });
+            });
+
+            textarea.addEventListener('input', function() {
+                this.style.height = 'auto';
+                this.style.height = Math.min(this.scrollHeight, window.innerHeight * 0.5) + 'px';
+            });
+
+            // Prevent default on send
+            sendBtn.addEventListener('click', async (e) => {
+                e.preventDefault();
+                if(sendBtn.disabled) return;
+                
+                const val = textarea.value.trim();
+                if(val) {
+                    const tone = document.getElementById('toneSelect').value;
+                    const tonePrefix = `[tone:${tone}]`;
+                    const fullMessage = `${tonePrefix} ${val}`;
+                    
+                    appendUserMessage(val);
+                    textarea.value = '';
+                    textarea.style.height = 'auto';
+                    scrollToBottom();
+                    setSendButtonState(false);
+                    
+                    const typingId = appendTypingIndicator();
+                    scrollToBottom();
+                    
+                    try {
+                        if (!sessionReady) { await sessionBootstrap; }
+                        if (!sessionReady) throw new Error(`Session bootstrap failed — backend at ${API_BASE} not reachable`);
+
+                        const response = await fetch(`${API_BASE}/run_sse`, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({
+                                "appName": "marketing_agents",
+                                "userId": "u1",
+                                "sessionId": sessionId,
+                                "newMessage": {
+                                    "role": "user",
+                                    "parts": [{ "text": fullMessage }]
+                                }
+                            })
+                        });
+
+                        if (!response.ok) throw new Error('Network response was not ok');
+
+                        const reader = response.body.getReader();
+                        const decoder = new TextDecoder("utf-8");
+                        let buffer = '';
+                        let traceContainer = null;
+                        let rowsContainer = null;
+                        let finalSlot = null;
+                        let rowIdx = 0;
+                        let orchestratorText = '';   // accumulator for the final orchestrator JSON text
+                        const pendingTransferTargets = [];   // FIFO of agent_name args from transfer_to_agent calls
+
+                        function ensureTrace() {
+                            if (traceContainer) return;
+                            const typingDiv = document.getElementById(typingId);
+                            if (typingDiv) typingDiv.remove();
+                            traceContainer = createTraceContainer();
+                            document.getElementById('messagesContainer').appendChild(traceContainer);
+                            rowsContainer = traceContainer.querySelector('.trace-rows');
+                            finalSlot = traceContainer.querySelector('.trace-final-card');
+                            scrollToBottom();
+                        }
+
+                        function handleEvent(data) {
+                            const author = data.author || data.agentName || null;
+                            const eventParts =
+                                (data.content && Array.isArray(data.content.parts)) ? data.content.parts :
+                                (data.message && Array.isArray(data.message.parts)) ? data.message.parts :
+                                (Array.isArray(data.parts)) ? data.parts :
+                                [];
+
+                            // Top-level fallback shape (data.text / data.content as string)
+                            if (eventParts.length === 0) {
+                                let topText = '';
+                                if (typeof data.text === 'string') topText = data.text;
+                                else if (typeof data.content === 'string') topText = data.content;
+                                if (topText) {
+                                    ensureTrace();
+                                    if (author === 'marketing_orchestrator' && /```json/.test(topText)) {
+                                        orchestratorText += topText;
+                                        renderFinalSynthesisInto(finalSlot, orchestratorText);
+                                    } else if (author !== 'marketing_orchestrator' && isLabeledSectionDump(topText)) {
+                                        console.log(`[trace] suppressing labeled-section dump from ${author}:`, topText.slice(0, 200));
+                                    } else {
+                                        appendTraceRow(rowsContainer, ++rowIdx, author, renderTextBubble(topText, author));
+                                    }
+                                    scrollToBottom();
+                                }
+                                return;
+                            }
+
+                            for (const p of eventParts) {
+                                if (p.functionCall && p.functionCall.name) {
+                                    ensureTrace();
+                                    const target = (p.functionCall.name === 'transfer_to_agent' && p.functionCall.args && p.functionCall.args.agent_name) || null;
+                                    if (target) pendingTransferTargets.push(target);
+                                    appendTraceRow(rowsContainer, ++rowIdx, author, renderFunctionCallPill(p.functionCall.name, author, target));
+                                    appendThinkingRow(rowsContainer, author, p.functionCall.name);
+                                } else if (p.functionResponse && p.functionResponse.name) {
+                                    ensureTrace();
+                                    removeThinkingRow(rowsContainer, author, p.functionResponse.name);
+                                    const respTarget = (p.functionResponse.name === 'transfer_to_agent') ? (pendingTransferTargets.shift() || null) : null;
+                                    appendTraceRow(rowsContainer, ++rowIdx, author, renderFunctionResponsePill(p.functionResponse.name, author, respTarget));
+                                } else if (typeof p.text === 'string' && p.text.length > 0) {
+                                    ensureTrace();
+                                    if (author === 'marketing_orchestrator' && /```json/.test(p.text)) {
+                                        orchestratorText += p.text;
+                                        renderFinalSynthesisInto(finalSlot, orchestratorText);
+                                    } else if (author !== 'marketing_orchestrator' && isLabeledSectionDump(p.text)) {
+                                        console.log(`[trace] suppressing labeled-section dump from ${author}:`, p.text.slice(0, 200));
+                                    } else {
+                                        appendTraceRow(rowsContainer, ++rowIdx, author, renderTextBubble(p.text, author));
+                                    }
+                                }
+                                // thoughtSignature etc. — ignore
+                            }
+                            scrollToBottom();
+                        }
+
+                        while (true) {
+                            const { done, value } = await reader.read();
+                            if (done) break;
+
+                            buffer += decoder.decode(value, { stream: true });
+                            let chunks = buffer.split('\n\n');
+                            buffer = chunks.pop();
+
+                            for (let chunk of chunks) {
+                                let lines = chunk.split('\n');
+                                for (let line of lines) {
+                                    if (line.startsWith('data: ')) {
+                                        let dataStr = line.slice(6).trim();
+                                        if (dataStr === '[DONE]') continue;
+                                        try {
+                                            let data = JSON.parse(dataStr);
+                                            console.log('[SSE event]', data);
+                                            handleEvent(data);
+                                        } catch(e) {
+                                            console.error('[SSE parse error]', e, dataStr.slice(0, 200));
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                        // Stream finished. If we never built a trace at all (no events), or no final card was rendered, surface that.
+                        if (!traceContainer) {
+                            ensureTrace();
+                        }
+                        if (finalSlot && finalSlot.innerHTML.trim() === '') {
+                            renderFinalSynthesisInto(finalSlot, orchestratorText);
+                        }
+                        scrollToBottom();
+                    } catch (error) {
+                        console.error('Error:', error);
+                        const typingDiv = document.getElementById(typingId);
+                        if(typingDiv) typingDiv.remove();
+                        appendErrorBubble();
+                        scrollToBottom();
+                    } finally {
+                        setSendButtonState(true);
+                        textarea.focus();
+                    }
+                }
+            });
+
+            // Ctrl+Enter in textarea
+            textarea.addEventListener('keydown', (e) => {
+                if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+                    e.preventDefault();
+                    sendBtn.click();
+                }
+            });
+
+            // Toggle logic for overlay drawer
+            const openPanel = () => {
+                rightPanel.classList.remove('hidden');
+                requestAnimationFrame(() => {
+                    rightPanel.classList.remove('translate-x-full');
+                });
+                mobileOverlay.classList.remove('hidden');
+                hamburgerIcon.classList.add('hidden');
+                closeIcon.classList.remove('hidden');
+                isQueryViewerOpen = true;
+            };
+
+            const closePanel = () => {
+                rightPanel.classList.add('translate-x-full');
+                mobileOverlay.classList.add('hidden');
+                setTimeout(() => {
+                    if(rightPanel.classList.contains('translate-x-full')) {
+                        rightPanel.classList.add('hidden');
+                    }
+                }, 300);
+                hamburgerIcon.classList.remove('hidden');
+                closeIcon.classList.add('hidden');
+                isQueryViewerOpen = false;
+            };
+
+            const togglePanel = () => {
+                if (isQueryViewerOpen) closePanel();
+                else openPanel();
+            };
+
+            toggleQueryViewerBtn.addEventListener('click', closePanel);
+            headerQueryToggleBtn.addEventListener('click', togglePanel);
+            mobileOverlay.addEventListener('click', closePanel);
+
+            window.testCard = function() {
+                const raw = `Here is your analysis:
+\`\`\`json
+{
+  "type": "card",
+  "headline": "Revenue dropped 18% in Q3",
+  "metrics": [
+    {"label": "Revenue", "value": "$4.2M", "delta": "-18%"},
+    {"label": "Hot Leads", "value": "631", "delta": "+34%"},
+    {"label": "Pipeline", "value": "$8.6M"},
+    {"label": "Anomalies", "value": "14", "delta": "+8"}
+  ],
+  "insight": "The drop correlates with a 32% rise in mobile bounce rate after the Sept 14 release. Customer sentiment is 56.4% negative, with billing and cancellation as top complaint categories.",
+  "action": "Review mobile performance and prioritize billing complaint resolution",
+  "sql_queries": [
+    "SELECT date, revenue, bounce_rate FROM daily_metrics WHERE quarter = 'Q3' ORDER BY date",
+    "SELECT category, sentiment_score FROM support_tickets GROUP BY category ORDER BY sentiment_score ASC LIMIT 5"
+  ]
+}
+\`\`\``;
+                const typingId = appendTypingIndicator();
+                setTimeout(() => {
+                    const t = document.getElementById(typingId);
+                    if (t) t.remove();
+                    const wrap = createTraceContainer();
+                    document.getElementById('messagesContainer').appendChild(wrap);
+                    renderFinalSynthesisInto(wrap.querySelector('.trace-final-card'), raw);
+                    scrollToBottom();
+                }, 500);
+            };
+
+            window.testBattlecard = function() {
+                const raw = `Here is the competitive analysis:
+\`\`\`json
+{
+  "type": "battlecard",
+  "subjects": [
+    {
+      "name": "Improvado",
+      "metrics": [
+        {"label": "Pricing", "value": "$2K-3K/mo"},
+        {"label": "Customers", "value": "1000+"}
+      ],
+      "strengths": [
+        "500+ data source connectors",
+        "Mature ETL platform since 2017",
+        "Enterprise-grade security"
+      ],
+      "weaknesses": [
+        "Single-domain analytics only",
+        "No multi-agent orchestration",
+        "Enterprise-only pricing"
+      ]
+    },
+    {
+      "name": "Our System",
+      "metrics": [
+        {"label": "Pricing", "value": "~$50/mo"},
+        {"label": "Domains", "value": "6 cross-domain"}
+      ],
+      "strengths": [
+        "Multi-agent AI orchestration with 5 agents",
+        "Cross-domain synthesis in 30 seconds",
+        "Runs on Cloud Run for pennies"
+      ],
+      "weaknesses": [
+        "Prototype stage",
+        "Limited data connectors",
+        "No enterprise auth yet"
+      ]
+    }
+  ],
+  "sql_queries": [
+    "SELECT competitor, share_of_voice, sentiment FROM competitive_citations ORDER BY share_of_voice DESC"
+  ]
+}
+\`\`\``;
+                const typingId = appendTypingIndicator();
+                setTimeout(() => {
+                    const t = document.getElementById(typingId);
+                    if (t) t.remove();
+                    const wrap = createTraceContainer();
+                    document.getElementById('messagesContainer').appendChild(wrap);
+                    renderFinalSynthesisInto(wrap.querySelector('.trace-final-card'), raw);
+                    scrollToBottom();
+                }, 500);
+            };
+
+        });
+    </script>
+</body>
+</html>

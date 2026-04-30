@@ -2,25 +2,55 @@
 
 > **This document is the source of truth for the API contract.** Locked after Day 1 morning sync. Changes require both Ibra and Asha to agree in WhatsApp.
 
-## Endpoint
+> **Day 2 correction:** earlier revisions of this file documented a non-existent URL pattern (`POST /apps/.../sessions/.../run_sse`). The real ADK routes were verified against `GET /openapi.json` on the running server. The corrected routes are below. App name is the **directory name** (`marketing_agents`), not the orchestrator agent's `name` field (`marketing_orchestrator`).
 
-Frontend POSTs to:
+## App name
+
+ADK routes apps by their **directory name** under the project root. The agent module is at `marketing_agents/agent.py`, so:
 
 ```
-POST {BASE_URL}/apps/marketing_orchestrator/users/u1/sessions/{sessionId}/run_sse
+appName = "marketing_agents"
 ```
+
+The orchestrator agent's `name="marketing_orchestrator"` is an internal display/delegation label — it is **not** a URL component.
+
+## Base URL
 
 `BASE_URL`:
-- Local dev: `http://localhost:8000`
+- Local dev: `http://localhost:8001`
 - Production: `https://hack2skill-778200673789.asia-southeast1.run.app`
 
+Frontend resolves this dynamically based on `window.location.hostname`.
+
+## Session bootstrap (required before first query)
+
+ADK rejects `/run_sse` with a 500 if the session does not exist. The frontend must create the session once on page load:
+
+```
+POST {BASE_URL}/apps/marketing_agents/users/u1/sessions/{sessionId}
+Content-Type: application/json
+
+{}
+```
+
 `sessionId` is generated once on page load via `crypto.randomUUID()` and reused for the rest of the session.
+
+Expected response: `200 OK` with the session record. If non-200, surface the error to the user and block sends.
+
+## SSE query endpoint
+
+```
+POST {BASE_URL}/run_sse
+Content-Type: application/json
+```
+
+Note: `/run_sse` is a **top-level route**, not nested under `/apps/...`. The body carries the routing info.
 
 ## Request body
 
 ```json
 {
-  "appName": "marketing_orchestrator",
+  "appName": "marketing_agents",
   "userId": "u1",
   "sessionId": "{sessionId}",
   "newMessage": {
@@ -42,7 +72,7 @@ The agent's system prompt parses the prefix and adjusts output style. The schema
 
 ## Response structure
 
-Agent returns text containing a JSON code block. Frontend parses the **first** ` ```json ... ``` ` block in the response.
+Agent returns text containing a JSON code block. Frontend parses the **first** ` ```json ... ``` ` block in the response (regex: `/```json\s*([\s\S]*?)\s*```/` — tolerant to missing leading/trailing whitespace).
 
 Three response types:
 
