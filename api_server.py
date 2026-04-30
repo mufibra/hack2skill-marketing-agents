@@ -6,13 +6,14 @@ Run:  python api_server.py
 
 import os
 import uvicorn
+from fastapi.staticfiles import StaticFiles
 from google.adk.cli.fast_api import get_fast_api_app
 
 app = get_fast_api_app(
     agents_dir=".",
     session_service_uri="sqlite:///./db/sessions.db",
     allow_origins=["*"],
-    web=True,
+    web=False,
 )
 
 
@@ -60,6 +61,9 @@ def agents():
             ],
         }
     }
+
+
+app.mount("/", StaticFiles(directory="frontend", html=True), name="frontend")
 
 
 if __name__ == "__main__":
