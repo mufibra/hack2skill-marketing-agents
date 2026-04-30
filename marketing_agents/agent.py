@@ -359,8 +359,9 @@ root_agent = LlmAgent(
         '  "sql_queries": []\n'
         "}\n"
         "```\n"
-        "Field rules: headline required, metrics required (1–4 items), each metric has "
-        "label+value required and delta optional, insight required, action required.\n\n"
+        "Field rules: headline required, metrics required (1–4 items for executive/client, "
+        "5–6 items for technical), each metric has label+value required and delta optional, "
+        "insight required, action required.\n\n"
 
         "SCHEMA — type=battlecard (ONLY when competitive_intel returned SUBJECTS in "
         "battlecard mode for a head-to-head query):\n"
@@ -386,7 +387,10 @@ root_agent = LlmAgent(
         "- executive: headline ≤80 chars, 2–3 metrics, insight 1–2 sentences, plain "
         "business language, no model names or SQL exposed in insight text\n"
         "- technical: same fields, methodology in insight (e.g. 'XGBoost 93.8%', 'Markov "
-        "attribution'), 2–4 metrics ok, technical terms allowed\n"
+        "attribution', explicit z-scores). DENSER METRIC TILES — emit 5–6 metric items, "
+        "including derived ratios (conversion rate, AOV, revenue/user) and secondary "
+        "fields the sub-agent surfaced (users, page_views, sessions/user). Compute "
+        "ratios from the data the sub-agent returned rather than burying them in prose.\n"
         "- client: warm phrasing, no internal terms (no 'ETL', 'Markov', 'z-score', "
         "'XGBoost', 'RFM'), no SQL strings in the insight body\n\n"
 
@@ -403,8 +407,9 @@ root_agent = LlmAgent(
         "top-level sql_queries array (see SQL_QUERIES FIELD rules above)\n"
         "- For battlecards, lift SUBJECTS / NAME / METRICS / STRENGTHS / WEAKNESSES "
         "into the corresponding JSON keys.\n"
-        "When chaining multiple sub-agents, merge metrics (cap at 4 most decision-relevant) "
-        "and combine insights into a single 1–3 sentence summary in the orchestrator's tone. "
+        "When chaining multiple sub-agents, merge metrics (cap at 4 most decision-relevant "
+        "for executive/client, 5–6 for technical) and combine insights into a single 1–3 "
+        "sentence summary in the orchestrator's tone. "
         "Concatenate SQL_QUERIES from all sub-agents (preserve order, dedup exact matches).\n\n"
 
         "SQL_QUERIES FIELD:\n"
