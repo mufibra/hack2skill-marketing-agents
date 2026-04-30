@@ -338,7 +338,7 @@
                 if(!div) return;
                 
                 let parsedJson = null;
-                const jsonRegex = /```json\s+([\s\S]*?)\s+```/;
+                const jsonRegex = /```json\s*([\s\S]*?)\s*```/;
                 const match = text.match(jsonRegex);
                 if(match && match[1]) {
                     try {
@@ -527,12 +527,12 @@
                     scrollToBottom();
                     
                     try {
-                        const response = await fetch(`https://hack2skill-778200673789.asia-southeast1.run.app/apps/marketing_agents/users/user/sessions/${sessionId}/run_sse`, {
+                        const response = await fetch(`https://hack2skill-778200673789.asia-southeast1.run.app/apps/marketing_orchestrator/users/u1/sessions/${sessionId}/run_sse`, {
                             method: 'POST',
                             headers: { 'Content-Type': 'application/json' },
                             body: JSON.stringify({
-                                "appName": "marketing_agents",
-                                "userId": "user",
+                                "appName": "marketing_orchestrator",
+                                "userId": "u1",
                                 "sessionId": sessionId,
                                 "newMessage": {
                                     "role": "user",
