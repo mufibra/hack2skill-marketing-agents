@@ -82,6 +82,21 @@
             background: transparent;
             padding-top: 0;
         }
+
+        /* Trace toggle: when off, hide intermediate rows but keep final card visible */
+        #messagesContainer.trace-mode-off .trace-row {
+            display: none !important;
+        }
+        .trace-row-num {
+            font-family: 'Geist Mono', 'Courier New', monospace;
+            color: #9ca3af;
+            font-size: 11px;
+            min-width: 22px;
+            text-align: right;
+            user-select: none;
+            padding-top: 4px;
+        }
+        .dark .trace-row-num { color: #6b7280; }
         #messagesArea:not(.hidden) + #inputContainer {
             top: auto !important;
             bottom: 0 !important;
@@ -101,6 +116,14 @@
         </div>
         
         <div class="flex items-center gap-2">
+            <!-- Reasoning Trace Toggle Button -->
+            <button id="traceToggleBtn" class="p-2 text-gray-500 hover:text-gray-900 dark:text-adk-muted dark:hover:text-white rounded-md transition-colors cursor-pointer flex items-center gap-1.5 focus:outline-none text-xs font-medium" aria-label="Toggle Reasoning Trace" title="Show/hide reasoning trace">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+                </svg>
+                <span id="traceToggleLabel" class="hidden md:inline">Trace</span>
+            </button>
+
             <!-- Query Viewer Toggle Button -->
             <button id="headerQueryToggleBtn" class="p-2 text-gray-500 hover:text-gray-900 dark:text-adk-muted dark:hover:text-white rounded-md transition-colors cursor-pointer flex items-center justify-center focus:outline-none" aria-label="Toggle Query Viewer">
                 <svg id="hamburgerIcon" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -242,6 +265,32 @@
             // Re-run theme initialization to ensure icons are set correctly after DOM load
             initTheme();
             
+            // Trace toggle: persist in localStorage, default ON
+            const messagesContainerEl = document.getElementById('messagesContainer');
+            const traceToggleBtn = document.getElementById('traceToggleBtn');
+            const traceToggleLabel = document.getElementById('traceToggleLabel');
+            const applyTraceMode = (on) => {
+                if (on) {
+                    messagesContainerEl.classList.remove('trace-mode-off');
+                    traceToggleBtn.classList.add('text-emerald-600', 'dark:text-emerald-400');
+                    if (traceToggleLabel) traceToggleLabel.textContent = 'Trace';
+                    traceToggleBtn.title = 'Hide reasoning trace';
+                } else {
+                    messagesContainerEl.classList.add('trace-mode-off');
+                    traceToggleBtn.classList.remove('text-emerald-600', 'dark:text-emerald-400');
+                    if (traceToggleLabel) traceToggleLabel.textContent = 'Trace off';
+                    traceToggleBtn.title = 'Show reasoning trace';
+                }
+            };
+            const savedTrace = localStorage.getItem('traceMode');
+            applyTraceMode(savedTrace === null ? true : savedTrace === 'on');
+            traceToggleBtn.addEventListener('click', () => {
+                const isOn = !messagesContainerEl.classList.contains('trace-mode-off');
+                const next = !isOn;
+                localStorage.setItem('traceMode', next ? 'on' : 'off');
+                applyTraceMode(next);
+            });
+
             // Theme toggle listener
             document.getElementById('themeToggleBtn').addEventListener('click', () => {
                 const isDark = document.documentElement.classList.contains('dark');
@@ -314,6 +363,196 @@
                 }, 150);
             }
 
+            // Agent metadata: badge color (solid disc), pill colors (light bg + dark text), short initial
+            const AGENT_LABELS = {
+                'marketing_orchestrator': { initial: 'O', label: 'Orchestrator',       badge: 'bg-emerald-500', pill: 'bg-emerald-100 text-emerald-800 border-emerald-200 dark:bg-emerald-900/40 dark:text-emerald-300 dark:border-emerald-800' },
+                'marketing_intel':        { initial: 'M', label: 'Marketing Intel',    badge: 'bg-amber-500',   pill: 'bg-amber-100 text-amber-800 border-amber-200 dark:bg-amber-900/40 dark:text-amber-300 dark:border-amber-800' },
+                'competitive_intel':      { initial: 'C', label: 'Competitive Intel',  badge: 'bg-blue-500',    pill: 'bg-blue-100 text-blue-800 border-blue-200 dark:bg-blue-900/40 dark:text-blue-300 dark:border-blue-800' },
+                'customer_intel':         { initial: 'U', label: 'Customer Intel',     badge: 'bg-purple-500',  pill: 'bg-purple-100 text-purple-800 border-purple-200 dark:bg-purple-900/40 dark:text-purple-300 dark:border-purple-800' },
+                'operations':             { initial: 'P', label: 'Operations',         badge: 'bg-orange-500',  pill: 'bg-orange-100 text-orange-800 border-orange-200 dark:bg-orange-900/40 dark:text-orange-300 dark:border-orange-800' }
+            };
+
+            function agentMeta(name) {
+                return AGENT_LABELS[name] || { initial: '?', label: name || 'agent', badge: 'bg-gray-500', pill: 'bg-gray-100 text-gray-700 border-gray-200 dark:bg-gray-800 dark:text-gray-300 dark:border-gray-700' };
+            }
+
+            function renderAgentBadge(name) {
+                const m = agentMeta(name);
+                return `<span class="inline-flex items-center justify-center w-6 h-6 rounded-full text-white text-[11px] font-bold ${m.badge} shadow-sm shrink-0" title="${escapeHTML(m.label)}">${m.initial}</span>`;
+            }
+
+            function renderFunctionCallPill(toolName, agentName, targetAgent) {
+                const m = agentMeta(agentName);
+                const suffix = (toolName === 'transfer_to_agent' && targetAgent)
+                    ? ` <span class="opacity-60">→</span> ${escapeHTML(targetAgent)}`
+                    : '';
+                return `<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full border text-[11px] font-mono ${m.pill}"><span class="text-[9px]">▶</span>${escapeHTML(toolName)}${suffix}</span>`;
+            }
+
+            function renderFunctionResponsePill(toolName, agentName, targetAgent) {
+                const m = agentMeta(agentName);
+                const suffix = (toolName === 'transfer_to_agent' && targetAgent)
+                    ? ` <span class="opacity-60">→</span> ${escapeHTML(targetAgent)}`
+                    : '';
+                return `<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full border text-[11px] font-mono ${m.pill} opacity-70"><span class="text-[9px]">✓</span>${escapeHTML(toolName)}${suffix}</span>`;
+            }
+
+            function renderTextBubble(text, agentName) {
+                const m = agentMeta(agentName);
+                return `<div class="rounded-lg border border-gray-200 dark:border-adk-border bg-gray-50 dark:bg-adk-codeBg px-3 py-2 text-xs text-gray-700 dark:text-adk-muted whitespace-pre-wrap break-words leading-relaxed max-w-full" data-from="${escapeHTML(agentName || '')}">${escapeHTML(text)}</div>`;
+            }
+
+            function appendTraceRow(rowsContainer, idx, agentName, bodyHtml) {
+                const row = document.createElement('div');
+                row.className = 'trace-row flex items-start gap-2';
+                row.innerHTML = `<span class="trace-row-num">#${idx}</span>${renderAgentBadge(agentName)}<div class="flex-1 min-w-0 flex flex-wrap items-center gap-2">${bodyHtml}</div>`;
+                rowsContainer.appendChild(row);
+            }
+
+            // Housekeeping tools never get a "thinking" indicator — too noisy.
+            const HOUSEKEEPING_TOOLS = new Set(['log_workflow', 'log_action', 'get_recent_workflows', 'create_task']);
+
+            const TOOL_GERUNDS = {
+                'get_morning_briefing':     'fetching morning briefing',
+                'detect_anomalies':         'detecting anomalies',
+                'scan_competitors':         'scanning competitors',
+                'get_competitive_history':  'pulling competitive history',
+                'analyze_sentiment':        'analyzing sentiment',
+                'score_leads':              'scoring leads',
+                'get_customer_segments':    'segmenting customers',
+                'check_pipeline_health':    'checking pipeline health',
+                'get_attribution_analysis': 'running attribution analysis',
+                'transfer_to_agent':        'delegating'
+            };
+            function gerundForTool(name) {
+                return TOOL_GERUNDS[name] || ('running ' + (name || '').replace(/_/g, ' '));
+            }
+            const AGENT_TEXT_CLASS = {
+                'marketing_orchestrator': 'text-emerald-700 dark:text-emerald-400',
+                'marketing_intel':        'text-amber-700  dark:text-amber-400',
+                'competitive_intel':      'text-blue-700   dark:text-blue-400',
+                'customer_intel':         'text-purple-700 dark:text-purple-400',
+                'operations':             'text-orange-700 dark:text-orange-400'
+            };
+            function agentTextClass(name) { return AGENT_TEXT_CLASS[name] || 'text-gray-600 dark:text-gray-400'; }
+
+            function appendThinkingRow(rowsContainer, agentName, toolName) {
+                if (HOUSEKEEPING_TOOLS.has(toolName)) return;
+                const m = agentMeta(agentName);
+                const labelText = `${m.label} is ${gerundForTool(toolName)}…`;
+                const row = document.createElement('div');
+                row.className = 'trace-row flex items-start gap-2';
+                row.dataset.thinkingFor = `${agentName}::${toolName}`;
+                row.innerHTML = `<span class="trace-row-num"></span><span class="w-6 h-6 shrink-0"></span><div class="flex-1 min-w-0 text-[11px] italic ${agentTextClass(agentName)} pl-1">${escapeHTML(labelText)}</div>`;
+                rowsContainer.appendChild(row);
+            }
+            function removeThinkingRow(rowsContainer, agentName, toolName) {
+                if (!rowsContainer) return;
+                const sel = `[data-thinking-for="${agentName}::${toolName}"]`;
+                const row = rowsContainer.querySelector(sel);
+                if (row) row.remove();
+            }
+
+            // Sub-agents emit labeled sections (HEADLINE: ... METRICS: ... etc.) for the orchestrator
+            // to lift into JSON. That format leaks if rendered verbatim — suppress in the trace.
+            const LABELED_SECTION_RE = /^(?:HEADLINE|METRICS|INSIGHT|ACTION|SQL_QUERIES|SUBJECTS|NAME|STRENGTHS|WEAKNESSES)\s*:/m;
+            function isLabeledSectionDump(text) {
+                return LABELED_SECTION_RE.test(text);
+            }
+
+            function renderCardHtml(parsedJson) {
+                let metricsHtml = '';
+                if (parsedJson.metrics && parsedJson.metrics.length > 0) {
+                    metricsHtml = '<div class="flex flex-row flex-wrap gap-4 mb-4">';
+                    parsedJson.metrics.forEach(m => {
+                        let deltaHtml = '';
+                        if (m.delta) {
+                            const isPos = m.delta.startsWith('+');
+                            const isNeg = m.delta.startsWith('-');
+                            let color = 'text-gray-500 dark:text-adk-muted';
+                            if (isPos) color = 'text-green-600 dark:text-green-400';
+                            else if (isNeg) color = 'text-red-600 dark:text-red-400';
+                            deltaHtml = `<span class="font-mono text-xs font-medium ml-2 ${color}">${escapeHTML(m.delta)}</span>`;
+                        }
+                        metricsHtml += `
+                            <div class="flex flex-col bg-gray-50 dark:bg-adk-panel rounded-lg px-3 py-2 border border-gray-100 dark:border-adk-border">
+                                <span class="text-[10px] uppercase text-gray-500 dark:text-adk-muted font-semibold tracking-wide">${escapeHTML(m.label)}</span>
+                                <div class="flex items-baseline mt-1">
+                                    <span class="font-mono text-lg font-bold text-gray-900 dark:text-white">${escapeHTML(m.value)}</span>
+                                    ${deltaHtml}
+                                </div>
+                            </div>
+                        `;
+                    });
+                    metricsHtml += '</div>';
+                }
+                return `
+                    <div class="bg-white dark:bg-adk-card rounded-xl shadow-sm border border-gray-200 dark:border-adk-border p-5 w-full">
+                        <h3 class="font-bold text-lg text-gray-900 dark:text-white mb-4">${escapeHTML(parsedJson.headline || '')}</h3>
+                        ${metricsHtml}
+                        <p class="text-gray-700 dark:text-adk-text mb-4 leading-relaxed text-sm">${escapeHTML(parsedJson.insight || '')}</p>
+                        <div class="inline-block border border-gray-200 dark:border-adk-btnBorder text-gray-700 dark:text-adk-btnText hover:bg-gray-50 dark:hover:bg-adk-panel text-xs py-1.5 px-4 rounded-full font-medium transition-colors cursor-pointer">
+                            ${escapeHTML(parsedJson.action || '')}
+                        </div>
+                    </div>
+                `;
+            }
+
+            function renderBattlecardHtml(parsedJson) {
+                let subjectsHtml = '<div class="grid grid-cols-1 md:grid-cols-2 gap-4 w-full max-w-full">';
+                (parsedJson.subjects || []).forEach(sub => {
+                    let subMetrics = '<div class="flex flex-wrap gap-2 mb-3">';
+                    (sub.metrics || []).forEach(m => {
+                        subMetrics += `
+                            <div class="bg-gray-50 dark:bg-adk-panel border border-gray-100 dark:border-adk-border rounded-lg px-3 py-2 flex flex-col">
+                                <span class="text-[10px] uppercase text-gray-500 dark:text-adk-muted font-semibold tracking-wider">${escapeHTML(m.label)}</span>
+                                <span class="font-mono text-sm font-bold text-gray-800 dark:text-white">${escapeHTML(m.value)}</span>
+                            </div>
+                        `;
+                    });
+                    subMetrics += '</div>';
+                    let strengthsHtml = '<ul class="mb-4 space-y-1.5">';
+                    (sub.strengths || []).forEach(s => {
+                        strengthsHtml += `<li class="text-sm text-green-700 dark:text-green-400 flex items-start leading-snug"><span class="mr-2">✅</span> <span>${escapeHTML(s)}</span></li>`;
+                    });
+                    strengthsHtml += '</ul>';
+                    let weaknessesHtml = '<ul class="space-y-1.5">';
+                    (sub.weaknesses || []).forEach(w => {
+                        weaknessesHtml += `<li class="text-sm text-red-700 dark:text-red-400 flex items-start leading-snug"><span class="mr-2">❌</span> <span>${escapeHTML(w)}</span></li>`;
+                    });
+                    weaknessesHtml += '</ul>';
+                    subjectsHtml += `
+                        <div class="bg-white dark:bg-adk-card rounded-xl shadow-sm border border-gray-200 dark:border-adk-border p-5 flex flex-col">
+                            <h3 class="font-bold text-lg text-gray-900 dark:text-white mb-3 border-b border-gray-100 dark:border-adk-border pb-3">${escapeHTML(sub.name)}</h3>
+                            ${subMetrics}
+                            <div class="mt-auto">
+                                <div class="text-[10px] font-semibold text-gray-400 dark:text-adk-muted uppercase tracking-wider mb-2">Strengths</div>
+                                ${strengthsHtml}
+                                <div class="text-[10px] font-semibold text-gray-400 dark:text-adk-muted uppercase tracking-wider mb-2 mt-4">Weaknesses</div>
+                                ${weaknessesHtml}
+                            </div>
+                        </div>
+                    `;
+                });
+                subjectsHtml += '</div>';
+                return subjectsHtml;
+            }
+
+            function createTraceContainer() {
+                const wrap = document.createElement('div');
+                wrap.className = 'flex w-full justify-start mb-6';
+                wrap.innerHTML = `
+                    <div class="flex items-start max-w-full w-full">
+                        <div class="border border-gray-200 dark:border-adk-border bg-white dark:bg-adk-panel text-gray-800 dark:text-adk-text rounded-full w-8 h-8 flex items-center justify-center text-xs font-bold mr-4 shrink-0 shadow-sm mt-0.5">AI</div>
+                        <div class="flex-1 min-w-0 space-y-2">
+                            <div class="trace-rows space-y-1.5"></div>
+                            <div class="trace-final-card mt-3"></div>
+                        </div>
+                    </div>
+                `;
+                return wrap;
+            }
+
             function appendUserMessage(text) {
                 startChat();
                 const div = document.createElement('div');
@@ -349,120 +588,29 @@
                 return id;
             }
 
-            function replaceTypingWithAI(id, text) {
-                const div = document.getElementById(id);
-                if(!div) return;
-                
+            // Render the orchestrator's final synthesis into a target slot.
+            // Detects ```json fence in the accumulated text, parses it, picks card vs battlecard renderer.
+            // Falls back to raw text bubble if no JSON. Reads sql_queries into the Query Viewer.
+            function renderFinalSynthesisInto(slot, accumulatedText) {
+                if (!slot) return;
                 let parsedJson = null;
                 const jsonRegex = /```json\s*([\s\S]*?)\s*```/;
-                const match = text.match(jsonRegex);
-                if(match && match[1]) {
-                    try {
-                        parsedJson = JSON.parse(match[1]);
-                    } catch(e) {
-                        console.error("Failed to parse JSON block", e);
-                    }
+                const match = (accumulatedText || '').match(jsonRegex);
+                if (match && match[1]) {
+                    try { parsedJson = JSON.parse(match[1]); }
+                    catch(e) { console.error("Failed to parse JSON block", e); }
                 }
-                
-                let contentHtml = '';
-                
                 if (parsedJson && parsedJson.type === 'card') {
-                    let metricsHtml = '';
-                    if (parsedJson.metrics && parsedJson.metrics.length > 0) {
-                        metricsHtml = '<div class="flex flex-row flex-wrap gap-4 mb-4">';
-                        parsedJson.metrics.forEach(m => {
-                            let deltaHtml = '';
-                            if (m.delta) {
-                                const isPos = m.delta.startsWith('+');
-                                const isNeg = m.delta.startsWith('-');
-                                let color = 'text-gray-500 dark:text-adk-muted';
-                                if (isPos) color = 'text-green-600 dark:text-green-400';
-                                else if (isNeg) color = 'text-red-600 dark:text-red-400';
-                                deltaHtml = `<span class="font-mono text-xs font-medium ml-2 ${color}">${escapeHTML(m.delta)}</span>`;
-                            }
-                            metricsHtml += `
-                                <div class="flex flex-col bg-gray-50 dark:bg-adk-panel rounded-lg px-3 py-2 border border-gray-100 dark:border-adk-border">
-                                    <span class="text-[10px] uppercase text-gray-500 dark:text-adk-muted font-semibold tracking-wide">${escapeHTML(m.label)}</span>
-                                    <div class="flex items-baseline mt-1">
-                                        <span class="font-mono text-lg font-bold text-gray-900 dark:text-white">${escapeHTML(m.value)}</span>
-                                        ${deltaHtml}
-                                    </div>
-                                </div>
-                            `;
-                        });
-                        metricsHtml += '</div>';
-                    }
-                    
-                    contentHtml = `
-                        <div class="bg-white dark:bg-adk-card rounded-xl shadow-sm border border-gray-200 dark:border-adk-border p-5 w-full max-w-[85%]">
-                            <h3 class="font-bold text-lg text-gray-900 dark:text-white mb-4">${escapeHTML(parsedJson.headline || '')}</h3>
-                            ${metricsHtml}
-                            <p class="text-gray-700 dark:text-adk-text mb-4 leading-relaxed text-sm">${escapeHTML(parsedJson.insight || '')}</p>
-                            <div class="inline-block border border-gray-200 dark:border-adk-btnBorder text-gray-700 dark:text-adk-btnText hover:bg-gray-50 dark:hover:bg-adk-panel text-xs py-1.5 px-4 rounded-full font-medium transition-colors cursor-pointer">
-                                ${escapeHTML(parsedJson.action || '')}
-                            </div>
-                        </div>
-                    `;
+                    slot.innerHTML = renderCardHtml(parsedJson);
                     handleSqlQueries(parsedJson.sql_queries);
-                    
                 } else if (parsedJson && parsedJson.type === 'battlecard' && parsedJson.subjects && parsedJson.subjects.length === 2) {
-                    let subjectsHtml = '<div class="grid grid-cols-1 md:grid-cols-2 gap-4 w-full max-w-full">';
-                    parsedJson.subjects.forEach(sub => {
-                        let subMetrics = '<div class="flex flex-wrap gap-2 mb-3">';
-                        (sub.metrics || []).forEach(m => {
-                            subMetrics += `
-                                <div class="bg-gray-50 dark:bg-adk-panel border border-gray-100 dark:border-adk-border rounded-lg px-3 py-2 flex flex-col">
-                                    <span class="text-[10px] uppercase text-gray-500 dark:text-adk-muted font-semibold tracking-wider">${escapeHTML(m.label)}</span>
-                                    <span class="font-mono text-sm font-bold text-gray-800 dark:text-white">${escapeHTML(m.value)}</span>
-                                </div>
-                            `;
-                        });
-                        subMetrics += '</div>';
-                        
-                        let strengthsHtml = '<ul class="mb-4 space-y-1.5">';
-                        (sub.strengths || []).forEach(s => {
-                            strengthsHtml += `<li class="text-sm text-green-700 dark:text-green-400 flex items-start leading-snug"><span class="mr-2">✅</span> <span>${escapeHTML(s)}</span></li>`;
-                        });
-                        strengthsHtml += '</ul>';
-                        
-                        let weaknessesHtml = '<ul class="space-y-1.5">';
-                        (sub.weaknesses || []).forEach(w => {
-                            weaknessesHtml += `<li class="text-sm text-red-700 dark:text-red-400 flex items-start leading-snug"><span class="mr-2">❌</span> <span>${escapeHTML(w)}</span></li>`;
-                        });
-                        weaknessesHtml += '</ul>';
-                        
-                        subjectsHtml += `
-                            <div class="bg-white dark:bg-adk-card rounded-xl shadow-sm border border-gray-200 dark:border-adk-border p-5 flex flex-col">
-                                <h3 class="font-bold text-lg text-gray-900 dark:text-white mb-3 border-b border-gray-100 dark:border-adk-border pb-3">${escapeHTML(sub.name)}</h3>
-                                ${subMetrics}
-                                <div class="mt-auto">
-                                    <div class="text-[10px] font-semibold text-gray-400 dark:text-adk-muted uppercase tracking-wider mb-2">Strengths</div>
-                                    ${strengthsHtml}
-                                    <div class="text-[10px] font-semibold text-gray-400 dark:text-adk-muted uppercase tracking-wider mb-2 mt-4">Weaknesses</div>
-                                    ${weaknessesHtml}
-                                </div>
-                            </div>
-                        `;
-                    });
-                    subjectsHtml += '</div>';
-                    
-                    contentHtml = subjectsHtml;
+                    slot.innerHTML = renderBattlecardHtml(parsedJson);
                     handleSqlQueries(parsedJson.sql_queries);
-                    
+                } else if (accumulatedText && accumulatedText.trim()) {
+                    slot.innerHTML = `<div class="whitespace-pre-wrap break-words">${escapeHTML(accumulatedText)}</div>`;
                 } else {
-                    contentHtml = `
-                        <div class="whitespace-pre-wrap break-words">${escapeHTML(text)}</div>
-                    `;
+                    slot.innerHTML = `<div class="text-sm italic text-gray-500 dark:text-adk-muted">Orchestrator returned no synthesis. Toggle the trace to inspect intermediate agent activity.</div>`;
                 }
-                
-                div.innerHTML = `
-                    <div class="flex items-start max-w-full w-full">
-                        <div class="border border-gray-200 dark:border-adk-border bg-white dark:bg-adk-panel text-gray-800 dark:text-adk-text rounded-full w-8 h-8 flex items-center justify-center text-xs font-bold mr-4 shrink-0 shadow-sm mt-0.5">AI</div>
-                        <div class="flex-1 min-w-0 text-gray-800 dark:text-adk-text leading-relaxed">
-                            ${contentHtml}
-                        </div>
-                    </div>
-                `;
             }
             
             function handleSqlQueries(queries) {
@@ -564,43 +712,114 @@
 
                         const reader = response.body.getReader();
                         const decoder = new TextDecoder("utf-8");
-                        let fullText = '';
                         let buffer = '';
-                        
+                        let traceContainer = null;
+                        let rowsContainer = null;
+                        let finalSlot = null;
+                        let rowIdx = 0;
+                        let orchestratorText = '';   // accumulator for the final orchestrator JSON text
+                        const pendingTransferTargets = [];   // FIFO of agent_name args from transfer_to_agent calls
+
+                        function ensureTrace() {
+                            if (traceContainer) return;
+                            const typingDiv = document.getElementById(typingId);
+                            if (typingDiv) typingDiv.remove();
+                            traceContainer = createTraceContainer();
+                            document.getElementById('messagesContainer').appendChild(traceContainer);
+                            rowsContainer = traceContainer.querySelector('.trace-rows');
+                            finalSlot = traceContainer.querySelector('.trace-final-card');
+                            scrollToBottom();
+                        }
+
+                        function handleEvent(data) {
+                            const author = data.author || data.agentName || null;
+                            const eventParts =
+                                (data.content && Array.isArray(data.content.parts)) ? data.content.parts :
+                                (data.message && Array.isArray(data.message.parts)) ? data.message.parts :
+                                (Array.isArray(data.parts)) ? data.parts :
+                                [];
+
+                            // Top-level fallback shape (data.text / data.content as string)
+                            if (eventParts.length === 0) {
+                                let topText = '';
+                                if (typeof data.text === 'string') topText = data.text;
+                                else if (typeof data.content === 'string') topText = data.content;
+                                if (topText) {
+                                    ensureTrace();
+                                    if (author === 'marketing_orchestrator' && /```json/.test(topText)) {
+                                        orchestratorText += topText;
+                                        renderFinalSynthesisInto(finalSlot, orchestratorText);
+                                    } else if (author !== 'marketing_orchestrator' && isLabeledSectionDump(topText)) {
+                                        console.log(`[trace] suppressing labeled-section dump from ${author}:`, topText.slice(0, 200));
+                                    } else {
+                                        appendTraceRow(rowsContainer, ++rowIdx, author, renderTextBubble(topText, author));
+                                    }
+                                    scrollToBottom();
+                                }
+                                return;
+                            }
+
+                            for (const p of eventParts) {
+                                if (p.functionCall && p.functionCall.name) {
+                                    ensureTrace();
+                                    const target = (p.functionCall.name === 'transfer_to_agent' && p.functionCall.args && p.functionCall.args.agent_name) || null;
+                                    if (target) pendingTransferTargets.push(target);
+                                    appendTraceRow(rowsContainer, ++rowIdx, author, renderFunctionCallPill(p.functionCall.name, author, target));
+                                    appendThinkingRow(rowsContainer, author, p.functionCall.name);
+                                } else if (p.functionResponse && p.functionResponse.name) {
+                                    ensureTrace();
+                                    removeThinkingRow(rowsContainer, author, p.functionResponse.name);
+                                    const respTarget = (p.functionResponse.name === 'transfer_to_agent') ? (pendingTransferTargets.shift() || null) : null;
+                                    appendTraceRow(rowsContainer, ++rowIdx, author, renderFunctionResponsePill(p.functionResponse.name, author, respTarget));
+                                } else if (typeof p.text === 'string' && p.text.length > 0) {
+                                    ensureTrace();
+                                    if (author === 'marketing_orchestrator' && /```json/.test(p.text)) {
+                                        orchestratorText += p.text;
+                                        renderFinalSynthesisInto(finalSlot, orchestratorText);
+                                    } else if (author !== 'marketing_orchestrator' && isLabeledSectionDump(p.text)) {
+                                        console.log(`[trace] suppressing labeled-section dump from ${author}:`, p.text.slice(0, 200));
+                                    } else {
+                                        appendTraceRow(rowsContainer, ++rowIdx, author, renderTextBubble(p.text, author));
+                                    }
+                                }
+                                // thoughtSignature etc. — ignore
+                            }
+                            scrollToBottom();
+                        }
+
                         while (true) {
                             const { done, value } = await reader.read();
                             if (done) break;
-                            
+
                             buffer += decoder.decode(value, { stream: true });
-                            let parts = buffer.split('\n\n');
-                            buffer = parts.pop();
-                            
-                            for (let part of parts) {
-                                let lines = part.split('\n');
+                            let chunks = buffer.split('\n\n');
+                            buffer = chunks.pop();
+
+                            for (let chunk of chunks) {
+                                let lines = chunk.split('\n');
                                 for (let line of lines) {
                                     if (line.startsWith('data: ')) {
                                         let dataStr = line.slice(6).trim();
                                         if (dataStr === '[DONE]') continue;
                                         try {
                                             let data = JSON.parse(dataStr);
-                                            let newText = '';
-                                            if (data.parts) {
-                                                newText = data.parts.map(p => p.text || '').join('');
-                                            } else if (data.message && data.message.parts) {
-                                                newText = data.message.parts.map(p => p.text || '').join('');
-                                            } else if (data.text) {
-                                                newText = data.text;
-                                            } else if (data.content) {
-                                                newText = data.content;
-                                            }
-                                            if (newText) fullText += newText;
-                                        } catch(e) {}
+                                            console.log('[SSE event]', data);
+                                            handleEvent(data);
+                                        } catch(e) {
+                                            console.error('[SSE parse error]', e, dataStr.slice(0, 200));
+                                        }
                                     }
                                 }
                             }
                         }
-                        
-                        replaceTypingWithAI(typingId, fullText);
+
+                        // Stream finished. If we never built a trace at all (no events), or no final card was rendered, surface that.
+                        if (!traceContainer) {
+                            ensureTrace();
+                        }
+                        if (finalSlot && finalSlot.innerHTML.trim() === '') {
+                            renderFinalSynthesisInto(finalSlot, orchestratorText);
+                        }
                         scrollToBottom();
                     } catch (error) {
                         console.error('Error:', error);
@@ -679,7 +898,11 @@
 \`\`\``;
                 const typingId = appendTypingIndicator();
                 setTimeout(() => {
-                    replaceTypingWithAI(typingId, raw);
+                    const t = document.getElementById(typingId);
+                    if (t) t.remove();
+                    const wrap = createTraceContainer();
+                    document.getElementById('messagesContainer').appendChild(wrap);
+                    renderFinalSynthesisInto(wrap.querySelector('.trace-final-card'), raw);
                     scrollToBottom();
                 }, 500);
             };
@@ -732,7 +955,11 @@
 \`\`\``;
                 const typingId = appendTypingIndicator();
                 setTimeout(() => {
-                    replaceTypingWithAI(typingId, raw);
+                    const t = document.getElementById(typingId);
+                    if (t) t.remove();
+                    const wrap = createTraceContainer();
+                    document.getElementById('messagesContainer').appendChild(wrap);
+                    renderFinalSynthesisInto(wrap.querySelector('.trace-final-card'), raw);
                     scrollToBottom();
                 }, 500);
             };
