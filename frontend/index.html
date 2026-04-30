@@ -116,6 +116,9 @@
         </div>
         
         <div class="flex items-center gap-2">
+            <!-- New Session Button -->
+            <button id="newSessionBtn" class="px-2.5 py-1.5 text-gray-600 hover:text-gray-900 dark:text-adk-muted dark:hover:text-white border border-gray-200 dark:border-adk-btnBorder hover:bg-gray-50 dark:hover:bg-adk-panel rounded-md transition-colors cursor-pointer text-xs font-medium focus:outline-none" title="Start a new session">+ New Session</button>
+
             <!-- Reasoning Trace Toggle Button -->
             <button id="traceToggleBtn" class="p-2 text-gray-500 hover:text-gray-900 dark:text-adk-muted dark:hover:text-white rounded-md transition-colors cursor-pointer flex items-center gap-1.5 focus:outline-none text-xs font-medium" aria-label="Toggle Reasoning Trace" title="Show/hide reasoning trace">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -329,18 +332,24 @@
                 : 'https://hack2skill-778200673789.asia-southeast1.run.app';
 
             // Session ID + bootstrap (ADK requires session creation before /run_sse)
-            const sessionId = crypto.randomUUID();
+            let sessionId = crypto.randomUUID();
             let sessionReady = false;
-            const sessionBootstrap = fetch(`${API_BASE}/apps/marketing_agents/users/u1/sessions/${sessionId}`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: '{}'
-            }).then(r => {
-                if (!r.ok) throw new Error(`session bootstrap HTTP ${r.status}`);
-                sessionReady = true;
-            }).catch(err => {
-                console.error('Session bootstrap failed:', err);
-            });
+            let sessionBootstrap;
+            function bootstrapSession(id) {
+                sessionReady = false;
+                sessionBootstrap = fetch(`${API_BASE}/apps/marketing_agents/users/u1/sessions/${id}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: '{}'
+                }).then(r => {
+                    if (!r.ok) throw new Error(`session bootstrap HTTP ${r.status}`);
+                    sessionReady = true;
+                }).catch(err => {
+                    console.error('Session bootstrap failed:', err);
+                });
+                return sessionBootstrap;
+            }
+            bootstrapSession(sessionId);
 
             let chatStarted = false;
             function startChat() {
@@ -349,6 +358,27 @@
                 document.getElementById('landingHero').classList.add('hidden');
                 document.getElementById('messagesArea').classList.remove('hidden');
                 document.getElementById('chatBlueprints').classList.remove('hidden');
+            }
+
+            const QV_PLACEHOLDER_HTML = '<div class="opacity-50 italic text-gray-400 dark:text-adk-muted select-none">-- SQL queries will appear here --</div>';
+
+            function resetToLandingState() {
+                document.getElementById('messagesContainer').innerHTML = '';
+                document.getElementById('messagesArea').classList.add('hidden');
+                document.getElementById('chatBlueprints').classList.add('hidden');
+                document.getElementById('landingHero').classList.remove('hidden');
+                chatStarted = false;
+                const qvBody = document.querySelector('#queryViewerPanel .flex-1');
+                if (qvBody) qvBody.innerHTML = QV_PLACEHOLDER_HTML;
+            }
+
+            const newSessionBtn = document.getElementById('newSessionBtn');
+            if (newSessionBtn) {
+                newSessionBtn.addEventListener('click', () => {
+                    sessionId = crypto.randomUUID();
+                    bootstrapSession(sessionId);
+                    resetToLandingState();
+                });
             }
 
             // Helpers
@@ -486,14 +516,60 @@
                     });
                     metricsHtml += '</div>';
                 }
+
+                const sectionHeader = (label) => `<div class="text-[11px] font-semibold uppercase tracking-wider text-gray-500 dark:text-adk-muted mt-4 mb-2">${label}</div>`;
+
+                let anomaliesHtml = '';
+                if (Array.isArray(parsedJson.anomalies) && parsedJson.anomalies.length > 0) {
+                    anomaliesHtml = sectionHeader('🔍 Critical Alerts') + '<ul class="space-y-1 mb-2">';
+                    parsedJson.anomalies.forEach(a => {
+                        const v = (a && a.value) || '';
+                        const isNeg = /(^|\s)-|down|drop|collapse|crash/i.test(v);
+                        const valColor = isNeg ? 'text-red-700 dark:text-red-400' : 'text-green-700 dark:text-green-400';
+                        anomaliesHtml += `<li class="text-sm flex items-start leading-snug"><span class="font-mono text-[11px] text-gray-500 dark:text-adk-muted mr-2 mt-0.5 shrink-0">${escapeHTML((a && a.label) || '')}</span><span class="${valColor}">${escapeHTML(v)}</span></li>`;
+                    });
+                    anomaliesHtml += '</ul>';
+                }
+
+                let opportunitiesHtml = '';
+                if (Array.isArray(parsedJson.opportunities) && parsedJson.opportunities.length > 0) {
+                    opportunitiesHtml = sectionHeader('💡 Opportunities') + '<ul class="space-y-1 mb-2">';
+                    parsedJson.opportunities.forEach(o => {
+                        opportunitiesHtml += `<li class="text-sm text-green-700 dark:text-green-400 flex items-start leading-snug"><span class="mr-2">+</span><span>${escapeHTML(o)}</span></li>`;
+                    });
+                    opportunitiesHtml += '</ul>';
+                }
+
+                let risksHtml = '';
+                if (Array.isArray(parsedJson.risks) && parsedJson.risks.length > 0) {
+                    risksHtml = sectionHeader('⚠️ Risks') + '<ul class="space-y-1 mb-2">';
+                    parsedJson.risks.forEach(r => {
+                        risksHtml += `<li class="text-sm text-red-700 dark:text-red-400 flex items-start leading-snug"><span class="mr-2">!</span><span>${escapeHTML(r)}</span></li>`;
+                    });
+                    risksHtml += '</ul>';
+                }
+
+                let actionsHtml = '';
+                const actionsList = Array.isArray(parsedJson.actions) && parsedJson.actions.length > 0
+                    ? parsedJson.actions
+                    : (parsedJson.action ? [parsedJson.action] : []);
+                if (actionsList.length > 0) {
+                    actionsHtml = sectionHeader('Recommended Actions') + '<ol class="list-decimal list-inside space-y-1 text-sm text-gray-700 dark:text-adk-text">';
+                    actionsList.forEach(a => {
+                        actionsHtml += `<li class="leading-snug">${escapeHTML(a)}</li>`;
+                    });
+                    actionsHtml += '</ol>';
+                }
+
                 return `
                     <div class="bg-white dark:bg-adk-card rounded-xl shadow-sm border border-gray-200 dark:border-adk-border p-5 w-full">
                         <h3 class="font-bold text-lg text-gray-900 dark:text-white mb-4">${escapeHTML(parsedJson.headline || '')}</h3>
                         ${metricsHtml}
-                        <p class="text-gray-700 dark:text-adk-text mb-4 leading-relaxed text-sm">${escapeHTML(parsedJson.insight || '')}</p>
-                        <div class="inline-block border border-gray-200 dark:border-adk-btnBorder text-gray-700 dark:text-adk-btnText hover:bg-gray-50 dark:hover:bg-adk-panel text-xs py-1.5 px-4 rounded-full font-medium transition-colors cursor-pointer">
-                            ${escapeHTML(parsedJson.action || '')}
-                        </div>
+                        <p class="text-gray-700 dark:text-adk-text mb-2 leading-relaxed text-sm">${escapeHTML(parsedJson.insight || '')}</p>
+                        ${anomaliesHtml}
+                        ${opportunitiesHtml}
+                        ${risksHtml}
+                        ${actionsHtml}
                     </div>
                 `;
             }
